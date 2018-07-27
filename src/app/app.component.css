@@ -1,11 +1,11 @@
 .ui.sidebar {
-    position: relative;
+    position: fixed;
     font-size: 18px;
     overflow: visible !important;
 }
 
 .ui.container {
-    margin-top: 5em;
+    padding-top: 120px;
 }
 
 .dropdown .menu {
@@ -16,6 +16,6 @@
 }
 
 .ui.footer.segment {
-    margin: 5em 0em 0em;
-    padding: 5em 0em;
+    margin: 70px 0em 0em;
+    padding: 70px 0em;
 }
