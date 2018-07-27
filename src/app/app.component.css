@@ -4,6 +4,10 @@
     overflow: visible !important;
 }
 
+.subscription {
+    font-size: 1rem;
+}
+
 .ui.container.main {
     padding-top: 120px;
 }

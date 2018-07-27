@@ -92,6 +92,19 @@ app.post('/login', (req, res) => {
     })
 })
 
+app.get('/subscriptions', (req, res) => {
+    client.query(`SELECT name FROM subtidders;`, (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).json('Something went wrong.');
+        }
+        else {
+            subscriptions = result.rows.map(sub => sub.name);
+            return res.status(200).send(subscriptions);
+        }
+    })
+})
+
 app.listen(PORT, () => {
     console.log('Server running on localhost:' + PORT);
 })
