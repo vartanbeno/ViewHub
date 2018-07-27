@@ -34,12 +34,8 @@ client.query(sql, (err, res) => {
 })
 
 app.get('/', (req, res) => {
-    res.send('Hello from server!')
-})
-
-app.get('/all', (req, res) => {
     client.query('\
-    SELECT title, content, username, pub_date FROM posts LEFT OUTER JOIN users ON (posts.author_id = users.id);\
+    SELECT title, content, username as author, pub_date FROM posts LEFT OUTER JOIN users ON (posts.author_id = users.id);\
     ', (error, result) => {
         if (error) {
             console.log(error);
@@ -48,7 +44,7 @@ app.get('/all', (req, res) => {
         else {
             posts = result.rows;
             for (i in posts) {
-                posts[i].username = posts[i].username || '[deleted]';
+                posts[i].author = posts[i].author || '[deleted]';
                 posts[i].pub_date = moment(posts[i].pub_date, 'MMMM DD YYYY').fromNow();
             }
             return res.status(200).send(posts);

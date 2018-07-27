@@ -1,0 +1,31 @@
+<!-- <div class="ui divided items">
+  <div class="item" *ngFor="let post of posts">
+    <div class="content">
+      <div class="header">{{ post.title }}</div>
+      <div class="meta">self.nba</div>
+      <div class="description">{{ post.content }}</div>
+    </div>
+  </div>
+</div> -->
+
+<div class="ui red message" *ngIf="!posts.length">
+  <div class="header">There doesn't seem to be any posts at the moment.</div>
+  <p>Is the website dead? :o</p>
+</div>
+
+<div class="ui fluid black card" *ngFor="let post of posts">
+  <div class="content">
+      <div class="header">
+          {{ post.title }}
+      </div>
+      <div class="meta">
+          {{ post.pub_date }} by {{ post.author }}
+      </div>
+  </div>
+  <div class="content">
+      <p>{{ post.content }}</p>
+  </div>
+  <div class="content extra">
+      <button class="ui mini black basic button">Read More</button>
+  </div>
+</div>
