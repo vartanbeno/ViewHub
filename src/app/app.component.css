@@ -4,7 +4,7 @@
     overflow: visible !important;
 }
 
-.ui.container {
+.ui.container.main {
     padding-top: 120px;
 }
 
