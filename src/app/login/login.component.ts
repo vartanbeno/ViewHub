@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { User } from '../models/user';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ export class LoginComponent implements OnInit {
   @ViewChild('usernameInput') usernameInput: ElementRef;
   userData = new User('', '');
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.usernameInput.nativeElement.focus();
@@ -21,7 +22,9 @@ export class LoginComponent implements OnInit {
 
   loginUser() {
     this.authService.loginUser(this.userData).subscribe(
-      res => console.log(res),
+      res => {
+        this.router.navigate(['']);
+      },
       err => {
         if (err.status === 401) {
           this.badCredentials = true;
