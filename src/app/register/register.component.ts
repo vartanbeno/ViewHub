@@ -22,7 +22,11 @@ export class RegisterComponent implements OnInit {
   registerUser() {
     this.authService.registerUser(this.userData).subscribe(
       res => console.log(res),
-      err => console.log(err)
+      err => {
+        if (err.status === 401) {
+          this.usernameTaken = true;
+        }
+      }
     )
   }
 

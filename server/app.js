@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
     ', (error, result) => {
         if (error) {
             console.log(error);
-            return res.status(500).send('Something went wrong.');
+            return res.status(500).json('Something went wrong.');
         }
         else {
             posts = result.rows;
@@ -54,17 +54,26 @@ app.get('/', (req, res) => {
 
 app.post('/register/', (req, res) => {
     let user = req.body;
-    client.query(`
-    INSERT INTO users (username, password) VALUES ('${user.username}', '${user.password}');
-    `, (error, result) => {
+    client.query(`SELECT username FROM users WHERE username = '${user.username}'`, (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).json('Something went wrong.');
         }
-        else {
-            return res.status(200).json('OK');
+        else if (result.rows.length) {
+            return res.status(401).json('Username already taken.');
         }
-    })
+        else {
+            client.query(`INSERT INTO users (username, password) VALUES ('${user.username}', '${user.password}');`, (error, result) => {
+                if (error) {
+                    console.log(error);
+                    return res.status(500).json('Something went wrong.');
+                }
+                else {
+                    return res.status(200).json('OK');
+                }
+            })
+        }
+    });
 })
 
 app.listen(PORT, () => {

@@ -10,7 +10,13 @@
                 type="text"
                 name="username"
                 id="username"
-                placeholder="Username">
+                placeholder="Username"
+                pattern=".{4,}"
+                (input)="usernameTaken = false"
+                required>
+        <div class="ui red pointing label" *ngIf="usernameTaken">
+            This username is taken.
+        </div>
       </div>
       <div class="field">
         <label for="password">Password</label>
@@ -18,20 +24,12 @@
                 type="password"
                 name="password"
                 id="password"
-                placeholder="Password">
+                placeholder="Password"
+                pattern=".{4,}"
+                required>
       </div>
-      <button class="ui black button" type="submit">Submit</button>
+      <button class="ui black button" type="submit" [disabled]="userForm.form.invalid">Submit</button>
     </form>
-
-    <div class="ui error message" *ngIf="usernameTaken">
-      <div class="header">Something went wrong.</div>
-      <ul class="list">
-        <!-- todo -->
-        <li>Please enter a username.</li>
-        <li>Please enter a password.</li>
-        <li>This username is already taken.</li>
-      </ul>
-    </div>
 
   </div>
 </div>
