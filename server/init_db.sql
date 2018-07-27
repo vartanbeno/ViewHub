@@ -8,11 +8,49 @@ CREATE TABLE IF NOT EXISTS users(
         CHECK (char_length(password) >= 4)
 );
 
+CREATE TABLE IF NOT EXISTS subtidders(
+    id SERIAL PRIMARY KEY,
+    name CITEXT UNIQUE NOT NULL
+        CHECK (char_length(name) >= 3 AND char_length(name) <= 20)
+);
+
 CREATE TABLE IF NOT EXISTS posts(
     id SERIAL PRIMARY KEY,
     title VARCHAR(300) NOT NULL,
     content VARCHAR(40000) NOT NULL,
     author_id INTEGER REFERENCES users(id)
         ON DELETE SET NULL,
+    subtidder_id INTEGER REFERENCES subtidders(id)
+        ON DELETE SET NULL,
     pub_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS subscriptions(
+    user_id INTEGER REFERENCES users(id),
+    subtidder_id INTEGER REFERENCES subtidders(id),
+    PRIMARY KEY (user_id, subtidder_id)
+);
+
+INSERT INTO users (username, password) VALUES
+    ('vartanbeno', '1234'),
+    ('helloworld', 'hello'),
+    ('angular', 'node'),
+    ('postgres', 'root'),
+    ('test', 'test');
+
+INSERT INTO subtidders (name) VALUES
+    ('nba'), ('AskTidder'), ('CSCareerQuestions'), ('programming'), ('EngineeringStudents');
+
+INSERT INTO posts (title, content, author_id, subtidder_id) VALUES
+    ('Test', 'This is a test.', 4, 2),
+    ('Hello world', 'Postgres is really cool', 3, 4),
+    ('LeBron James has agreed to a $154M/4-year deal with the Los Angeles Lakers.', 'Lonzo finally gets some help!', 1, 1),
+    ('Fake post title', 'Fake post content', 5, 2),
+    ('Why does user 2 never post anything?', 'They''re just a lurker.', 5, 5);
+
+INSERT INTO subscriptions (user_id, subtidder_id) VALUES
+    (1, 1), (1, 2), (1, 3), (1, 4), (1, 5),
+    (2, 2), (2, 5),
+    (3, 4), (3, 5),
+    (4, 2), (4, 3), (4, 4), (4, 5),
+    (5, 1), (5, 2), (5, 5);
