@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const pg = require('pg');
 const fs = require('fs');
+const moment = require('moment');
 
 const PORT = 3000;
 const app = express();
@@ -37,14 +38,15 @@ app.get('/all', (req, res) => {
     ', (error, result) => {
         if (error) {
             console.log(error);
-            return res.status(500).json('Something went wrong.');
+            return res.status(500).send('Something went wrong.');
         }
         else {
             posts = result.rows;
             for (i in posts) {
                 posts[i].username = posts[i].username || '[deleted]';
+                posts[i].pub_date = moment(posts[i].pub_date, 'MMMM DD YYYY').fromNow();
             }
-            return res.status(200).json(posts);
+            return res.status(200).send(posts);
         }
     })
 })
