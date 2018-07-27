@@ -8,7 +8,12 @@ const moment = require('moment');
 const PORT = 3000;
 const app = express();
 
-const connection = process.env.DATABASE_URL || 'postgres://localhost:5432/tidder';
+/**
+ * Make sure to fill out the data in the config file.
+ * Otherwise the server will throw an error.
+ */
+const config = require('./pg_config');
+const connection = process.env.DATABASE_URL || `postgres://${config.username}:${config.password}@${config.hostname}:${config.port}/${config.db}`;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -58,10 +63,10 @@ app.post('/register/', (req, res) => {
     `, (error, result) => {
         if (error) {
             console.log(error);
-            return res.status(500).send('Something went wrong.');
+            return res.status(500).json('Something went wrong.');
         }
         else {
-            return res.status(200).send('OK');
+            return res.status(200).json('OK');
         }
     })
 })
