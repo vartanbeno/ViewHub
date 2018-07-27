@@ -35,7 +35,7 @@ client.query(sql, (err, res) => {
 
 app.get('/', (req, res) => {
     client.query('\
-    SELECT title, content, username as author, pub_date FROM posts LEFT OUTER JOIN users ON (posts.author_id = users.id);\
+    SELECT title, content, username AS author, pub_date FROM posts LEFT OUTER JOIN users ON (posts.author_id = users.id);\
     ', (error, result) => {
         if (error) {
             console.log(error);
@@ -54,7 +54,7 @@ app.get('/', (req, res) => {
 
 app.post('/register/', (req, res) => {
     let user = req.body;
-    client.query(`SELECT username FROM users WHERE username = '${user.username}'`, (error, result) => {
+    client.query(`SELECT username FROM users WHERE username = '${user.username}';`, (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).json('Something went wrong.');
@@ -74,6 +74,22 @@ app.post('/register/', (req, res) => {
             })
         }
     });
+})
+
+app.post('/login', (req, res) => {
+    let user = req.body;
+    client.query(`SELECT username, password from users where username = '${user.username}' AND password = '${user.password}';`, (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).json('Something went wrong.');
+        }
+        else if (!result.rows.length) {
+            return res.status(401).json('Incorrect username and/or password.');
+        }
+        else {
+            return res.status(200).json('OK');
+        }
+    })
 })
 
 app.listen(PORT, () => {

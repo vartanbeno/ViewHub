@@ -1,6 +1,6 @@
 <div class="ui top fixed inverted sidebar menu visible">
   <div class="header item">Tidder</div>
-  <a class="item">Home</a>
+  <a class="item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
   <a class="item">All</a>
   <div class="ui dropdown item">
     My Subtidders
@@ -18,8 +18,8 @@
         <i class="search link icon"></i>
       </div>
     </div>
-    <a class="ui item">Login</a>
-    <a class="ui item" routerLink="/register">Register</a>
+    <a class="ui item" routerLink="/login" routerLinkActive="active">Login</a>
+    <a class="ui item" routerLink="/register" routerLinkActive="active">Register</a>
   </div>
 </div>
 
