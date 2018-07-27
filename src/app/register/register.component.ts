@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { User } from '../models/user';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-register',
@@ -12,14 +13,17 @@ export class RegisterComponent implements OnInit {
   @ViewChild('usernameInput') usernameInput: ElementRef;
   userData = new User('', '');
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.usernameInput.nativeElement.focus();
   }
 
   registerUser() {
-    console.log(this.userData);
+    this.authService.registerUser(this.userData).subscribe(
+      res => console.log(res),
+      err => console.log(err)
+    )
   }
 
 }

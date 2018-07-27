@@ -51,6 +51,21 @@ app.get('/all', (req, res) => {
     })
 })
 
+app.post('/register/', (req, res) => {
+    let user = req.body;
+    client.query(`
+    INSERT INTO users (username, password) VALUES ('${user.username}', '${user.password}');
+    `, (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send('Something went wrong.');
+        }
+        else {
+            return res.status(200).send('OK');
+        }
+    })
+})
+
 app.listen(PORT, () => {
     console.log('Server running on localhost:' + PORT);
 })
