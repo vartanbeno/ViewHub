@@ -1,0 +1,28 @@
+<div class="main">
+  <div class="column">
+    <h3>Sign Up for an Account</h3>
+
+    <form class="ui form" autocomplete="off">
+      <div class="field">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" placeholder="Username">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" placeholder="Password">
+      </div>
+      <button class="ui black button" type="submit">Submit</button>
+    </form>
+
+    <div class="ui error message" *ngIf="!usernameTaken">
+      <div class="header">Something went wrong.</div>
+      <ul class="list">
+        <!-- todo -->
+        <li>Please enter a username.</li>
+        <li>Please enter a password.</li>
+        <li>This username is already taken.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
