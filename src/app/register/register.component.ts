@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-register',
@@ -7,11 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterComponent implements OnInit {
 
-  usernameTaken: boolean = true;
+  usernameTaken: boolean = false;
+  @ViewChild('usernameInput') usernameInput: ElementRef;
+  userData = new User('', '');
 
   constructor() { }
 
   ngOnInit() {
+    this.usernameInput.nativeElement.focus();
+  }
+
+  registerUser() {
+    console.log(this.userData);
   }
 
 }

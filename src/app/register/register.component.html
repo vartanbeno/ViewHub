@@ -2,19 +2,28 @@
   <div class="column">
     <h3>Sign Up for an Account</h3>
 
-    <form class="ui form" autocomplete="off">
+    <form #userForm="ngForm" class="ui form" autocomplete="off" (ngSubmit)="registerUser()">
       <div class="field">
         <label for="username">Username</label>
-        <input type="text" name="username" id="username" placeholder="Username">
+        <input [(ngModel)]="userData.username"
+                #usernameInput
+                type="text"
+                name="username"
+                id="username"
+                placeholder="Username">
       </div>
       <div class="field">
         <label for="password">Password</label>
-        <input type="password" name="password" id="password" placeholder="Password">
+        <input [(ngModel)]="userData.password"
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Password">
       </div>
       <button class="ui black button" type="submit">Submit</button>
     </form>
 
-    <div class="ui error message" *ngIf="!usernameTaken">
+    <div class="ui error message" *ngIf="usernameTaken">
       <div class="header">Something went wrong.</div>
       <ul class="list">
         <!-- todo -->
