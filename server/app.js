@@ -4,6 +4,7 @@ const cors = require('cors');
 const pg = require('pg');
 const fs = require('fs');
 const moment = require('moment');
+const jwt = require('jsonwebtoken');
 
 const PORT = 3000;
 const app = express();
@@ -35,7 +36,7 @@ client.query(sql, (err, res) => {
 
 app.get('/', (req, res) => {
     client.query('\
-    SELECT title, content, username AS author, pub_date FROM posts LEFT OUTER JOIN users ON (posts.author_id = users.id);\
+    SELECT title, content, username AS author, pub_date FROM posts LEFT OUTER JOIN users ON (posts.author_id = users.id) ORDER BY pub_date DESC;\
     ', (error, result) => {
         if (error) {
             console.log(error);
@@ -63,13 +64,15 @@ app.post('/register/', (req, res) => {
             return res.status(401).json('Username already taken.');
         }
         else {
-            client.query(`INSERT INTO users (username, password) VALUES ('${user.username}', '${user.password}');`, (error, result) => {
+            client.query(`INSERT INTO users (username, password) VALUES ('${user.username}', '${user.password}') RETURNING id;`, (error, result) => {
                 if (error) {
                     console.log(error);
                     return res.status(500).json('Something went wrong.');
                 }
                 else {
-                    return res.status(200).json('OK');
+                    let payload = { subject: result.rows[0].id };
+                    let token = jwt.sign(payload, 'secretKey');
+                    return res.status(200).send({ token });
                 }
             })
         }
@@ -78,7 +81,7 @@ app.post('/register/', (req, res) => {
 
 app.post('/login', (req, res) => {
     let user = req.body;
-    client.query(`SELECT username, password from users where username = '${user.username}' AND password = '${user.password}';`, (error, result) => {
+    client.query(`SELECT id, username, password FROM users WHERE username = '${user.username}' AND password = '${user.password}';`, (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).json('Something went wrong.');
@@ -87,7 +90,9 @@ app.post('/login', (req, res) => {
             return res.status(401).json('Incorrect username and/or password.');
         }
         else {
-            return res.status(200).json('OK');
+            let payload = { subject: result.rows[0].id };
+            let token = jwt.sign(payload, 'secretKey');
+            return res.status(200).send({ token });
         }
     })
 })

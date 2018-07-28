@@ -19,5 +19,9 @@ export class AuthService {
   loginUser(user: User) {
     return this.http.post<any>(this.loginUrl, user);
   }
+
+  loggedIn() {
+    return !!localStorage.getItem('token');
+  }
   
 }
