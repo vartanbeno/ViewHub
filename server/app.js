@@ -34,6 +34,25 @@ client.query(sql, (err, res) => {
     }
 })
 
+function verifyToken(req, res, next) {
+    if (!req.headers.authorization) {
+        return res.status(401).send('Unauthorized request');
+    }
+
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized request');
+    }
+
+    let payload = jwt.verify(token, 'secretKey');
+    if (!payload) {
+        return res.status(401).send('Unauthorized request');
+    }
+
+    req.userId = payload.subject;
+    next();
+}
+
 app.get('/', (req, res) => {
     client.query('\
     SELECT title, content, username AS author, pub_date FROM posts LEFT OUTER JOIN users ON (posts.author_id = users.id) ORDER BY pub_date DESC;\
@@ -106,6 +125,19 @@ app.get('/subscriptions', (req, res) => {
         else {
             subscriptions = result.rows.map(sub => sub.name);
             return res.status(200).send(subscriptions);
+        }
+    })
+})
+
+app.get('/users', verifyToken, (req, res) => {
+    client.query(`SELECT username FROM users;`, (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).json('Something went wrong.');
+        }
+        else {
+            users = result.rows.map(user => user.username);
+            return res.status(200).send(users);
         }
     })
 })
