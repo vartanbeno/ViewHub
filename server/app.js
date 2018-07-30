@@ -78,7 +78,10 @@ app.post('/register/', (req, res) => {
             return res.status(401).json('Username already taken.');
         }
         else {
-            client.query(`INSERT INTO users (first_name, last_name, email, username, password) VALUES ('${user.firstName}', '${user.lastName}', '${user.email}', '${user.username}', '${user.password}') RETURNING id;`, (error, result) => {
+            client.query(`INSERT INTO users
+                (first_name, last_name, email, username, password) VALUES
+                ('${user.firstName}', '${user.lastName}', '${user.email}', '${user.username}', '${user.password}')
+                RETURNING id, CONCAT(first_name, ' ', last_name) as full_name;`, (error, result) => {
                 if (error) {
                     console.log(error);
                     return res.status(500).json('Something went wrong.');
@@ -86,7 +89,7 @@ app.post('/register/', (req, res) => {
                 else {
                     let payload = { subject: result.rows[0].id };
                     let token = jwt.sign(payload, 'secretKey');
-                    return res.status(200).send({ token });
+                    return res.status(200).send({ token: token, fullname: result.rows[0].full_name });
                 }
             })
         }
@@ -95,7 +98,8 @@ app.post('/register/', (req, res) => {
 
 app.post('/login', (req, res) => {
     let user = req.body;
-    client.query(`SELECT id, username, password FROM users WHERE username = '${user.username}' AND password = '${user.password}';`, (error, result) => {
+    client.query(`SELECT id, CONCAT(first_name, ' ', last_name) as full_name, username, password FROM users
+        WHERE username = '${user.username}' AND password = '${user.password}';`, (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).json('Something went wrong.');
@@ -106,7 +110,7 @@ app.post('/login', (req, res) => {
         else {
             let payload = { subject: result.rows[0].id };
             let token = jwt.sign(payload, 'secretKey');
-            return res.status(200).send({ token });
+            return res.status(200).send({ token: token, fullname: result.rows[0].full_name });
         }
     })
 })
