@@ -2,10 +2,14 @@ CREATE EXTENSION IF NOT EXISTS CITEXT;
 
 CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
     username CITEXT UNIQUE NOT NULL
         CHECK (char_length(username) >= 4 AND char_length(username) <= 30),
     password VARCHAR(30) NOT NULL
-        CHECK (char_length(password) >= 4)
+        CHECK (char_length(password) >= 4),
+    join_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS subtidders(
@@ -26,17 +30,19 @@ CREATE TABLE IF NOT EXISTS posts(
 );
 
 CREATE TABLE IF NOT EXISTS subscriptions(
-    user_id INTEGER REFERENCES users(id),
-    subtidder_id INTEGER REFERENCES subtidders(id),
+    user_id INTEGER REFERENCES users(id)
+        ON DELETE CASCADE,
+    subtidder_id INTEGER REFERENCES subtidders(id)
+        ON DELETE CASCADE,
     PRIMARY KEY (user_id, subtidder_id)
 );
 
-INSERT INTO users (username, password) VALUES
-    ('vartanbeno', '1234'),
-    ('helloworld', 'hello'),
-    ('angular', 'node'),
-    ('postgres', 'root'),
-    ('test', 'test');
+INSERT INTO users (first_name, last_name, email, username, password) VALUES
+    ('Vartan', 'Benohanian', 'vartabeno@gmail.com', 'vartanbeno', '1234'),
+    ('Hello', 'World', 'hello@world.com', 'helloworld', 'hello'),
+    ('Angular', 'Node', 'angular@node.com', 'angular', 'node'),
+    ('Postgres', 'Root', 'postgres@root.com', 'postgres', 'root'),
+    ('Test', 'Object', 'test@object.com', 'test', 'test');
 
 INSERT INTO subtidders (name) VALUES
     ('nba'), ('AskTidder'), ('CSCareerQuestions'), ('programming'), ('EngineeringStudents');

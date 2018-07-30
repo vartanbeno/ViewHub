@@ -3,10 +3,41 @@
     <h3>Sign Up for an Account</h3>
 
     <form #userForm="ngForm" class="ui form" autocomplete="off" (ngSubmit)="registerUser()">
+      <div class="three fields">
+        <div class="field">
+          <label for="firstname">First name</label>
+          <input [(ngModel)]="userData.firstName"
+                #firstNameInput
+                type="text"
+                name="firstname"
+                id="firstname"
+                placeholder="First name"
+                pattern=".{2,}"
+                required>
+        </div>
+        <div class="field">
+          <label for="lastname">Last name</label>
+          <input [(ngModel)]="userData.lastName"
+                type="text"
+                name="lastname"
+                id="lastname"
+                placeholder="Last name"
+                pattern=".{2,}"
+                required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input [(ngModel)]="userData.email"
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Email"
+                required>
+        </div>
+      </div>
       <div class="field">
         <label for="username">Username</label>
         <input [(ngModel)]="userData.username"
-                #usernameInput
                 type="text"
                 name="username"
                 id="username"

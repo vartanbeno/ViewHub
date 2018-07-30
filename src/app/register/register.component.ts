@@ -11,13 +11,13 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
 
   usernameTaken: boolean = false;
-  @ViewChild('usernameInput') usernameInput: ElementRef;
-  userData = new User('', '');
+  @ViewChild('firstNameInput') firstNameInput: ElementRef;
+  userData = new User();
 
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
-    this.usernameInput.nativeElement.focus();
+    this.firstNameInput.nativeElement.focus();
   }
 
   registerUser() {

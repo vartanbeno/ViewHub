@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
 
   badCredentials: boolean = false;
   @ViewChild('usernameInput') usernameInput: ElementRef;
-  userData = new User('', '');
+  userData = new User();
 
   constructor(private authService: AuthService, private router: Router) { }
 

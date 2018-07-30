@@ -62,7 +62,7 @@ app.get('/', (req, res) => {
             return res.status(500).json('Something went wrong.');
         }
         else {
-            posts = result.rows;
+            let posts = result.rows;
             for (i in posts) {
                 posts[i].author = posts[i].author || '[deleted]';
                 posts[i].pub_date = moment(posts[i].pub_date, 'MMMM DD YYYY').fromNow();
@@ -83,7 +83,7 @@ app.post('/register/', (req, res) => {
             return res.status(401).json('Username already taken.');
         }
         else {
-            client.query(`INSERT INTO users (username, password) VALUES ('${user.username}', '${user.password}') RETURNING id;`, (error, result) => {
+            client.query(`INSERT INTO users (first_name, last_name, email, username, password) VALUES ('${user.firstName}', '${user.lastName}', '${user.email}', '${user.username}', '${user.password}') RETURNING id;`, (error, result) => {
                 if (error) {
                     console.log(error);
                     return res.status(500).json('Something went wrong.');
@@ -130,13 +130,19 @@ app.get('/subscriptions', (req, res) => {
 })
 
 app.get('/users', verifyToken, (req, res) => {
-    client.query(`SELECT username FROM users;`, (error, result) => {
+    client.query(`
+    SELECT
+        CONCAT(first_name, ' ', last_name) as full_name,
+        email, username, join_date FROM users;`, (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).json('Something went wrong.');
         }
         else {
-            users = result.rows.map(user => user.username);
+            let users = result.rows;
+            for (i in users) {
+                users[i].join_date = moment(users[i].join_date, 'MMMM DD YYYY').fromNow();
+            }
             return res.status(200).send(users);
         }
     })
