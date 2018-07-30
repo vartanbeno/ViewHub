@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SubtidderService } from './subtidder.service';
+import { AuthService } from './auth.service';
 declare var $: any;
 
 @Component({
@@ -11,7 +12,7 @@ export class AppComponent {
 
   subscriptions: Array<any> = [];
 
-  constructor(private subtidderService: SubtidderService) { }
+  constructor(private subtidderService: SubtidderService, private authService: AuthService) { }
 
   ngAfterViewInit() {
     this.getSubscriptions();

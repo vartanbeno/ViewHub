@@ -17,8 +17,9 @@
         <i class="search link icon"></i>
       </div>
     </div>
-    <a class="ui item" routerLink="/login" routerLinkActive="active">Login</a>
-    <a class="ui item" routerLink="/register" routerLinkActive="active">Register</a>
+    <a class="ui item" *ngIf="!authService.loggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
+    <a class="ui item" *ngIf="!authService.loggedIn()" routerLink="/register" routerLinkActive="active">Register</a>
+    <a class="ui item" *ngIf="authService.loggedIn()" (click)="authService.logoutUser()">Logout</a>
   </div>
 </div>
 
