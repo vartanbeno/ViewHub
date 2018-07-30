@@ -10,6 +10,7 @@ import { PostService } from '../post.service';
 export class HomeComponent implements OnInit {
 
   posts: Array<any> = [];
+  isLoaded: boolean = false;
 
   constructor(private postService: PostService, private authService: AuthService) { }
 
@@ -25,7 +26,10 @@ export class HomeComponent implements OnInit {
 
   getPosts() {
     this.postService.getPosts().subscribe(
-      res => this.posts = res,
+      res => {
+        this.posts = res;
+        this.isLoaded = true;
+      },
       err => console.log(err)
     )
   }

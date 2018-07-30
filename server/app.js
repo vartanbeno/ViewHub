@@ -9,12 +9,7 @@ const jwt = require('jsonwebtoken');
 const PORT = 3000;
 const app = express();
 
-/**
- * Make sure to fill out the data in the config file.
- * Otherwise the server will throw an error.
- */
-const config = require('./pg_config');
-const connection = process.env.DATABASE_URL || `postgres://${config.username}:${config.password}@${config.hostname}:${config.port}/${config.db}`;
+const connection = process.env.ELEPHANTSQL_URL || 'postgres://nxtvgtwn:2axOHwC_2dqLEqohrBE0H1gPJWYX2dZD@pellefant.db.elephantsql.com:5432/nxtvgtwn';
 
 app.use(cors());
 app.use(bodyParser.json());
