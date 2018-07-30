@@ -89,7 +89,11 @@ app.post('/register/', (req, res) => {
                 else {
                     let payload = { subject: result.rows[0].id };
                     let token = jwt.sign(payload, 'secretKey');
-                    return res.status(200).send({ token: token, fullname: result.rows[0].full_name });
+                    return res.status(200).send({
+                        token: token,
+                        id: result.rows[0].id,
+                        fullname: result.rows[0].full_name
+                    });
                 }
             })
         }
@@ -110,13 +114,21 @@ app.post('/login', (req, res) => {
         else {
             let payload = { subject: result.rows[0].id };
             let token = jwt.sign(payload, 'secretKey');
-            return res.status(200).send({ token: token, fullname: result.rows[0].full_name });
+            return res.status(200).send({
+                token: token,
+                id: result.rows[0].id,
+                fullname: result.rows[0].full_name
+            });
         }
     })
 })
 
 app.get('/subscriptions', (req, res) => {
-    client.query(`SELECT name FROM subtidders;`, (error, result) => {
+    client.query(`SELECT subtidders.name FROM users
+        INNER JOIN subscriptions ON users.id = subscriptions.user_id
+        INNER JOIN subtidders ON subscriptions.subtidder_id = subtidders.id
+        WHERE users.id = ${req.query.id}
+        ORDER BY subtidders.name;`, (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).json('Something went wrong.');

@@ -10,8 +10,8 @@ export class SubtidderService {
 
   constructor(private http: HttpClient) { }
 
-  getSubscriptions() {
-    return this.http.get<any>(this.subscriptionsUrl);
+  getSubscriptions(userId: any) {
+    return this.http.get<any>(this.subscriptionsUrl, { params: userId });
   }
 
 }

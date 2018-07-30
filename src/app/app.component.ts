@@ -10,17 +10,21 @@ declare var $: any;
 })
 export class AppComponent {
 
+  userId: Object = {};
   subscriptions: Array<any> = [];
 
   constructor(private subtidderService: SubtidderService, private authService: AuthService) { }
 
   ngAfterViewInit() {
-    this.getSubscriptions();
-    $('.ui.dropdown').dropdown();
+    if (this.authService.loggedIn()) {
+      this.getSubscriptions();
+      $('.ui.dropdown').dropdown();  
+    }
   }
 
   getSubscriptions() {
-    this.subtidderService.getSubscriptions().subscribe(
+    this.userId['id'] = localStorage.getItem('id');
+    this.subtidderService.getSubscriptions(this.userId).subscribe(
       res => this.subscriptions = res,
       err => console.log(err)
     )

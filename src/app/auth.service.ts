@@ -22,11 +22,15 @@ export class AuthService {
   }
 
   loggedIn() {
-    return !!(localStorage.getItem('token') && localStorage.getItem('name'));
+    return !!(localStorage.getItem('token') && localStorage.getItem('name') && localStorage.getItem('id'));
   }
 
   getToken() {
     return localStorage.getItem('token');
+  }
+
+  getId() {
+    return localStorage.getItem('id');
   }
 
   getName() {
@@ -35,6 +39,7 @@ export class AuthService {
 
   logoutUser() {
     localStorage.removeItem('token');
+    localStorage.removeItem('id');
     localStorage.removeItem('name');
     this.router.navigate(['']);
   }
