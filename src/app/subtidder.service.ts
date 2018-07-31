@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class SubtidderService {
 
+  navbar: any;
+
   private subscriptionsUrl = 'http://localhost:3000/subscriptions';
 
   constructor(private http: HttpClient) { }

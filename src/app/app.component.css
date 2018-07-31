@@ -8,6 +8,11 @@
     font-size: 1rem;
 }
 
+.subscription.empty {
+    color: #2185d0;
+    cursor: pointer;
+}
+
 .ui.container.main {
     padding-top: 120px;
     padding-bottom: 470px;

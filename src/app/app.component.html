@@ -8,12 +8,13 @@
     <i class="dropdown icon"></i>
     <div class="menu">
         <div class="item" *ngFor="let subscription of subscriptions"><span class="subscription">{{ subscription }}</span></div>
+        <div class="item" *ngIf="!subscriptions.length"><span class="subscription empty" (click)="focusOnSearch()">Search and subscribe!</span></div>
     </div>
   </div>
   <div class="right menu">
     <div class="item">
       <div class="ui inverted transparent icon input">
-        <input type="text" placeholder="Search...">
+        <input #searchBox type="text" placeholder="Search...">
         <i class="search link icon"></i>
       </div>
     </div>
