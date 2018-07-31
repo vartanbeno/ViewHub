@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { PostService } from '../post.service';
+declare var $: any;
 
 @Component({
   selector: 'app-home',
@@ -11,8 +12,9 @@ export class HomeComponent implements OnInit {
 
   posts: Array<any> = [];
   isLoaded: boolean = false;
+  @ViewChild('addPostButton') addPostButton: ElementRef;
 
-  constructor(private postService: PostService, private authService: AuthService) { }
+  constructor(private postService: PostService, private authService: AuthService, private renderer: Renderer) { }
 
   ngOnInit() {
     this.getPosts();
@@ -22,6 +24,12 @@ export class HomeComponent implements OnInit {
     // setInterval(() => {
     //   this.getPosts();
     // }, 1000 * 10);
+  }
+
+  ngAfterViewInit() {
+    this.renderer.listen(this.addPostButton.nativeElement, 'click', (event) => {
+      $('#addpost').modal('show');
+    })
   }
 
   getPosts() {

@@ -14,6 +14,7 @@ import { SubtidderService } from './subtidder.service';
 import { AuthGuard } from './auth.guard';
 import { TokenInterceptorService } from './token-interceptor.service';
 import { UsersComponent } from './users/users.component';
+import { AddPostComponent } from './add-post/add-post.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { UsersComponent } from './users/users.component';
     HomeComponent,
     LoginComponent,
     UsersComponent,
+    AddPostComponent,
   ],
   imports: [
     BrowserModule,

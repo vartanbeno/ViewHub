@@ -1,4 +1,11 @@
-<h2 *ngIf="authService.loggedIn()">Hello, {{ authService.getName() }}.</h2>
+<div>
+    <h2 *ngIf="authService.loggedIn()">
+        Hello, {{ authService.getName() }}.
+        <button class="ui positive right floated right labeled icon button" #addPostButton>Add Post<i class="plus icon"></i></button>
+    </h2>
+</div>
+
+<app-add-post></app-add-post>
 
 <div class="ui red message" *ngIf="isLoaded && !posts.length">
   <div class="header">There doesn't seem to be any posts at the moment.</div>
