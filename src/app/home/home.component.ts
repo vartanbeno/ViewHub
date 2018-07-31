@@ -27,9 +27,11 @@ export class HomeComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.renderer.listen(this.addPostButton.nativeElement, 'click', (event) => {
-      $('#addpost').modal('show');
-    })
+    if (this.authService.loggedIn()) {
+      this.renderer.listen(this.addPostButton.nativeElement, 'click', (event) => {
+        $('#addpost').modal('show');
+      })  
+    }
   }
 
   getPosts() {

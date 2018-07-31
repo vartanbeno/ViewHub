@@ -142,7 +142,7 @@ app.get('/subscriptions', (req, res) => {
 
 app.get('/users', verifyToken, (req, res) => {
     client.query(`
-    SELECT
+        SELECT
         CONCAT(first_name, ' ', last_name) as full_name,
         email, username, join_date FROM users;`, (error, result) => {
         if (error) {
@@ -156,6 +156,23 @@ app.get('/users', verifyToken, (req, res) => {
             }
             return res.status(200).send(users);
         }
+    })
+})
+
+app.post('/t/:subtidder/add', (req, res) => {
+    let subtidder = req.params.subtidder;
+    let postData = req.body;
+    client.query(`
+        INSERT INTO posts (title, content, author_id, subtidder_id)
+        SELECT '${postData.title}', '${postData.content}', ${postData.userId}, s.id
+        FROM (SELECT id FROM subtidders WHERE name='${subtidder}') s;`, (error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json('Something went wrong.');
+            }
+            else {
+                return res.status(200).json('OK');
+            }
     })
 })
 

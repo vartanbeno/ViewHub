@@ -1,26 +1,39 @@
-<form>
-    <div class="ui medium modal" id="addpost">
-        <div class="header">Add Post</div>
-        <div class="content">
-            <div class="ui form">
-                <h4 class="ui dividing header">Both title and content are required.</h4>
-                <div class="field">
-                    <label>Title</label>
-                    <input type="text" placeholder="Title">
-                </div>
-                <div class="field">
-                    <label>Content</label>
-                    <textarea placeholder="Content"></textarea>
-                </div>
+<div class="ui medium modal" id="addpost">
+    <div class="header">Add Post</div>
+            <div class="content">
+        <div class="ui form">
+            <h4 class="ui dividing header">Both title and content are required.</h4>
+            <div class="field">
+                <label>Title</label>
+                <input [(ngModel)]="postData.title"
+                        #title
+                        type="text"
+                        name="title"
+                        id="title"
+                        placeholder="Title"
+                        pattern=".{1,300}"
+                        (input)="checkForError()"
+                        required>
             </div>
-        </div>
-        <div class="actions">
-            <div class="ui red cancel button">
-                <i class="remove icon"></i>Cancel
-            </div>
-            <div class="ui green ok button">
-                <i class="checkmark icon"></i>Submit
+            <div class="field">
+                <label>Content</label>
+                <textarea [(ngModel)]="postData.content"
+                        #content
+                        name="content"
+                        id="content"
+                        placeholder="Content"
+                        maxlength="40000"
+                        (input)="checkForError()"
+                        required></textarea>
             </div>
         </div>
     </div>
-</form>
+    <div class="actions">
+        <button class="ui red cancel button">
+            <i class="remove icon"></i>Cancel
+        </button>
+        <button type="submit" class="ui green ok button" (click)="submitPost()" [disabled]="postHasError">
+            <i class="checkmark icon"></i>Submit
+        </button>
+    </div>
+</div>
