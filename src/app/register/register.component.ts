@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { User } from '../models/user';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { SubtidderService } from '../subtidder.service';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +15,7 @@ export class RegisterComponent implements OnInit {
   @ViewChild('firstNameInput') firstNameInput: ElementRef;
   userData = new User();
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private subtidderService: SubtidderService) { }
 
   ngOnInit() {
     this.firstNameInput.nativeElement.focus();
@@ -26,6 +27,7 @@ export class RegisterComponent implements OnInit {
         localStorage.setItem('token', res.token);
         localStorage.setItem('id', res.id);
         localStorage.setItem('name', res.fullname);
+        this.subtidderService.navbar.getSubscriptions();
         this.router.navigate(['']);
       },
       err => {
