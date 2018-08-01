@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SubtidderService } from '../subtidder.service';
 
 @Component({
@@ -12,8 +12,9 @@ export class SearchSubtiddersComponent implements OnInit {
   searchTerm: string;
   subtidders: Array<any> = [];
 
-  constructor(private subtidderService: SubtidderService, private route: ActivatedRoute) {
+  constructor(private subtidderService: SubtidderService, private route: ActivatedRoute, private router: Router) {
     this.route.queryParams.subscribe(params => this.searchTerm = params.s);
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit() {

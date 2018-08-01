@@ -195,7 +195,7 @@ app.get('/search', (req, res) => {
 
     client.query(`
     SELECT name, description, creation_date FROM subtidders
-    WHERE to_tsvector('english', description)
+    WHERE to_tsvector('english', CONCAT(name, ' ', description))
     @@ to_tsquery('english', '${s}');
     `, (error, result) => {
         if (error) {
