@@ -51,7 +51,10 @@ export class AddPostComponent implements OnInit {
   submitPost() {
     this.postData.userId = localStorage.getItem('id');
     this.postService.submitPost(this.postData).subscribe(
-      res => console.log(res),
+      res => {
+        this.postService.notifyPostAddition();
+        this.postData = new Post();
+      },
       err => console.log(err)
     )
   }

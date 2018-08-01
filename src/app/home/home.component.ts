@@ -18,6 +18,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.getPosts();
+    this.postService.postAdded_Observable.subscribe(res => this.getPosts())
+
     /**
      * If we want to automatically update the list of posts every 10 seconds.
      */
@@ -30,7 +32,7 @@ export class HomeComponent implements OnInit {
     if (this.authService.loggedIn()) {
       this.renderer.listen(this.addPostButton.nativeElement, 'click', (event) => {
         $('#addpost').modal('show');
-      })  
+      })
     }
   }
 
