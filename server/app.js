@@ -52,7 +52,7 @@ app.get('/', (req, res) => {
     let offset = Number(req.query.offset);
 
     client.query(`
-    SELECT title, content, username AS author, pub_date FROM posts
+    SELECT title, content, username AS author, author_id, pub_date FROM posts
     LEFT OUTER JOIN users ON (posts.author_id = users.id)
     ORDER BY pub_date DESC
     LIMIT 10

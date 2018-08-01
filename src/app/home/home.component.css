@@ -1,3 +1,7 @@
 .content > p {
     white-space: pre-line;
 }
+
+div.pagination > a.item.active {
+    cursor: default;
+}
