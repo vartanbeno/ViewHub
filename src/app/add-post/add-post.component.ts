@@ -23,18 +23,6 @@ export class AddPostComponent implements OnInit {
     this.getAllSubtidders();
   }
 
-  /**
-   * Prevent the modal from closing on enter.
-   * For some reason even if the required fields
-   * are left empty, it closes.
-   */
-  @HostListener('document:keypress', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-    }
-  }
-
   submitPost() {
     this.postData.userId = localStorage.getItem('id');
     this.postService.submitPost(this.postData).subscribe(

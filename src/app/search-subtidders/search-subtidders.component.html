@@ -1,0 +1,11 @@
+<div class="ui cards">
+  <div class="card" *ngFor="let subtidder of subtidders">
+    <div class="content">
+      <div class="header">{{ subtidder.name }}</div>
+      <div class="meta">Created {{ subtidder.creation_date }}</div>
+      <div class="description">
+        {{ subtidder.description }}
+      </div>
+    </div>
+  </div>
+</div>

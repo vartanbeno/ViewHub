@@ -43,12 +43,11 @@
                 </div>
 
                 <div class="actions">
-                    <button type="reset" class="ui red cancel button">
-                        <i class="remove icon"></i>Cancel
-                    </button>
-                    <button type="submit" class="ui green ok button" [disabled]="postForm.form.invalid">
-                        <i class="checkmark icon"></i>Submit
-                    </button>
+                    <div class="ui buttons">
+                        <button type="reset" class="ui red cancel button">Cancel</button>
+                        <div class="or"></div>
+                        <button type="submit" class="ui green ok button" [disabled]="postForm.form.invalid">Submit</button>
+                    </div>
                 </div>
 
             </form>

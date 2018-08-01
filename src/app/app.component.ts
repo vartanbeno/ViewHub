@@ -1,6 +1,7 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { SubtidderService } from './subtidder.service';
 import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
 declare var $: any;
 
 @Component({
@@ -14,7 +15,7 @@ export class AppComponent {
   subscriptions: Array<any> = [];
   @ViewChild('searchBox') searchBox: ElementRef;
 
-  constructor(private subtidderService: SubtidderService, private authService: AuthService) { }
+  constructor(private subtidderService: SubtidderService, private authService: AuthService, private router: Router) { }
 
   ngAfterViewInit() {
     if (this.authService.loggedIn()) {
@@ -36,6 +37,17 @@ export class AppComponent {
 
   focusOnSearch() {
     this.searchBox.nativeElement.focus();
+  }
+
+  searchSubtidders() {
+    let s = this.searchBox.nativeElement.value;
+
+    if (!s) return;
+
+    this.router.navigate(['search'], { queryParams: { s: s } });
+    
+    this.searchBox.nativeElement.value = '';
+    this.searchBox.nativeElement.blur();
   }
 
 }

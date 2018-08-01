@@ -13,10 +13,12 @@
   </div>
   <div class="right menu">
     <div class="item">
-      <div class="ui inverted transparent icon input">
-        <input #searchBox type="text" placeholder="Search...">
-        <i class="search link icon"></i>
-      </div>
+      <form autocomplete="off" (ngSubmit)="searchSubtidders()">
+        <div class="ui inverted transparent icon input">
+          <input #searchBox type="text" placeholder="Search..." required>
+          <i class="search link icon" (click)="searchSubtidders()"></i>
+        </div>
+      </form>
     </div>
     <a class="ui item" *ngIf="!authService.loggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
     <a class="ui item" *ngIf="!authService.loggedIn()" routerLink="/register" routerLinkActive="active">Register</a>
