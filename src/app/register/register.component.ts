@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
         localStorage.setItem('token', res.token);
         localStorage.setItem('id', res.id);
         localStorage.setItem('name', res.fullname);
-        this.subtidderService.navbar.getSubscriptions();
+        this.subtidderService.updateSubscriptions();
         this.router.navigate(['']);
       },
       err => {

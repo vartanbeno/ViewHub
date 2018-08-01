@@ -19,8 +19,8 @@ export class AppComponent {
   ngAfterViewInit() {
     if (this.authService.loggedIn()) {
       this.getSubscriptions();
+      this.subtidderService.subscriptions_Observable.subscribe(res => this.getSubscriptions());
     }
-    this.subtidderService.navbar = this;
   }
 
   getSubscriptions() {

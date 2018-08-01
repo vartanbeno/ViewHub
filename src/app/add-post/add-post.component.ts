@@ -35,19 +35,6 @@ export class AddPostComponent implements OnInit {
     }
   }
 
-  checkForError() {
-    if (this.postData.subtidder &&
-        this.title.nativeElement.value.length &&
-        this.title.nativeElement.value.length <= 300 &&
-        this.content.nativeElement.value.length &&
-        this.content.nativeElement.value.length <= 40000) {
-      this.postHasError = false;
-    }
-    else {
-      this.postHasError = true;
-    }
-  }
-
   submitPost() {
     this.postData.userId = localStorage.getItem('id');
     this.postService.submitPost(this.postData).subscribe(

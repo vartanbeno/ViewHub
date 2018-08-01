@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Subject } from '../../node_modules/rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubtidderService {
 
-  navbar: any;
-
   private subscriptionsUrl = 'http://localhost:3000/subscriptions';
   private allSubtiddersUrl = 'http://localhost:3000/allsubtidders';
+
+  public subscriptions_Observable = new Subject();
 
   constructor(private http: HttpClient) { }
 
@@ -19,6 +20,10 @@ export class SubtidderService {
 
   getAllSubtidders() {
     return this.http.get<any>(this.allSubtiddersUrl);
+  }
+
+  updateSubscriptions() {
+    this.subscriptions_Observable.next();
   }
 
 }
