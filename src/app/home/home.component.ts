@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.route.queryParams.subscribe(params => this.currentPage = params.offset);
+    this.route.queryParams.subscribe(params => this.currentPage = params.page);
     this.currentPage = (!this.currentPage) ? 1 : this.currentPage;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
@@ -76,7 +76,7 @@ export class HomeComponent implements OnInit {
   }
 
   navigateToPage(pageNumber: number) {
-    this.router.navigate([''], { queryParams: { offset: pageNumber } })
+    this.router.navigate([''], { queryParams: { page: pageNumber } })
   }
 
 }

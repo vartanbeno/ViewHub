@@ -30,5 +30,8 @@
 </div>
 
 <div class="ui right floated pagination menu" *ngIf="posts.length">
-    <a class="item" *ngFor="let page of pages" (click)="navigateToPage($event.target.innerText)">{{ page }}</a>
+    <a class="item"
+        *ngFor="let page of pages"
+        (click)="navigateToPage($event.target.innerText)"
+        [class.active]="page == currentPage">{{ page }}</a>
 </div>
