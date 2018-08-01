@@ -1,47 +1,58 @@
 <div class="ui medium modal" id="addpost">
     <div class="header">Add Post</div>
+
     <div class="content">
         <div class="ui form">
             <h4 class="ui dividing header">Both title and content are required.</h4>
-            <div class="field">
-                <label>Subtidder</label>
-                <select class="ui search dropdown" [(ngModel)]="postData.subtidder" (change)="checkForError()">
-                    <option value="">Choose a subtidder</option>
-                    <option *ngFor="let subtidder of subtidders">{{ subtidder }}</option>
-                </select>
-            </div>
-            <div class="field">
-                <label>Title</label>
-                <input [(ngModel)]="postData.title"
-                        #title
-                        type="text"
-                        name="title"
-                        id="title"
-                        placeholder="Title"
-                        pattern=".{1,300}"
-                        (input)="checkForError()"
-                        autocomplete="off"
-                        required>
-            </div>
-            <div class="field">
-                <label>Content</label>
-                <textarea [(ngModel)]="postData.content"
-                        #content
-                        name="content"
-                        id="content"
-                        placeholder="Content"
-                        maxlength="40000"
-                        (input)="checkForError()"
-                        required></textarea>
-            </div>
+
+            <form #postForm="ngForm" autocomplete="off" (ngSubmit)="submitPost()">
+
+                <div class="field">
+                    <label>Subtidder</label>
+                    <select class="ui search dropdown"
+                            [(ngModel)]="postData.subtidder"
+                            name="subtidder"
+                            id="subtidder"
+                            required>
+                        <option value="">Choose a subtidder</option>
+                        <option *ngFor="let subtidder of subtidders">{{ subtidder }}</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Title</label>
+                    <input [(ngModel)]="postData.title"
+                            #title
+                            type="text"
+                            name="title"
+                            id="title"
+                            placeholder="Title"
+                            pattern=".{1,300}"
+                            required>
+                </div>
+
+                <div class="field">
+                    <label>Content</label>
+                    <textarea [(ngModel)]="postData.content"
+                            #content
+                            name="content"
+                            id="content"
+                            placeholder="Content"
+                            maxlength="40000"
+                            required></textarea>
+                </div>
+
+                <div class="actions">
+                    <button type="reset" class="ui red cancel button">
+                        <i class="remove icon"></i>Cancel
+                    </button>
+                    <button type="submit" class="ui green ok button" [disabled]="postForm.form.invalid">
+                        <i class="checkmark icon"></i>Submit
+                    </button>
+                </div>
+
+            </form>
+
         </div>
-    </div>
-    <div class="actions">
-        <button class="ui red cancel button">
-            <i class="remove icon"></i>Cancel
-        </button>
-        <button type="submit" class="ui green ok button" (click)="submitPost()" [disabled]="postHasError">
-            <i class="checkmark icon"></i>Submit
-        </button>
     </div>
 </div>

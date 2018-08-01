@@ -21,8 +21,10 @@ CREATE TABLE IF NOT EXISTS subtidders(
 
 CREATE TABLE IF NOT EXISTS posts(
     id SERIAL PRIMARY KEY,
-    title VARCHAR(300) NOT NULL,
-    content VARCHAR(40000) NOT NULL,
+    title VARCHAR(300) NOT NULL
+        CHECK(char_length(title) >= 1),
+    content VARCHAR(40000) NOT NULL
+        CHECK(char_length(content) >= 1),
     author_id INTEGER REFERENCES users(id)
         ON DELETE SET NULL,
     subtidder_id INTEGER REFERENCES subtidders(id)

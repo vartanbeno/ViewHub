@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Post } from '../models/post';
 import { PostService } from '../post.service';
 import { SubtidderService } from '../subtidder.service';
@@ -21,6 +21,18 @@ export class AddPostComponent implements OnInit {
   ngOnInit() {
     this.postData = new Post();
     this.getAllSubtidders();
+  }
+
+  /**
+   * Prevent the modal from closing on enter.
+   * For some reason even if the required fields
+   * are left empty, it closes.
+   */
+  @HostListener('document:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
   }
 
   checkForError() {
