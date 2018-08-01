@@ -8,7 +8,7 @@ import { Post } from './models/post';
 export class PostService {
 
   private homeUrl = 'http://localhost:3000/';
-  private submitPostUrl = 'http://localhost:3000/t/nba/add';
+  private subtidderUrl = 'http://localhost:3000/t/';
 
   constructor(private http: HttpClient) { }
 
@@ -17,7 +17,7 @@ export class PostService {
   }
 
   submitPost(post: Post) {
-    return this.http.post<any>(this.submitPostUrl, post);
+    return this.http.post<any>(this.subtidderUrl + post.subtidder + '/add', post);
   }
 
 }

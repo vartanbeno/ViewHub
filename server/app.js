@@ -140,6 +140,19 @@ app.get('/subscriptions', (req, res) => {
     })
 })
 
+app.get('/allsubtidders', (req, res) => {
+    client.query(`SELECT name FROM subtidders ORDER BY name`, (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).json('Something went wrong.');
+        }
+        else {
+            all = result.rows.map(sub => sub.name);
+            return res.status(200).send(all);
+        }
+    })
+})
+
 app.get('/users', verifyToken, (req, res) => {
     client.query(`
         SELECT

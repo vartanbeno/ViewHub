@@ -1,8 +1,15 @@
 <div class="ui medium modal" id="addpost">
     <div class="header">Add Post</div>
-            <div class="content">
+    <div class="content">
         <div class="ui form">
             <h4 class="ui dividing header">Both title and content are required.</h4>
+            <div class="field">
+                <label>Subtidder</label>
+                <select class="ui search dropdown" [(ngModel)]="postData.subtidder" (change)="checkForError()">
+                    <option value="">Choose a subtidder</option>
+                    <option *ngFor="let subtidder of subtidders">{{ subtidder }}</option>
+                </select>
+            </div>
             <div class="field">
                 <label>Title</label>
                 <input [(ngModel)]="postData.title"
@@ -13,6 +20,7 @@
                         placeholder="Title"
                         pattern=".{1,300}"
                         (input)="checkForError()"
+                        autocomplete="off"
                         required>
             </div>
             <div class="field">
