@@ -49,9 +49,15 @@ function verifyToken(req, res, next) {
 }
 
 app.get('/', (req, res) => {
-    client.query('\
-    SELECT title, content, username AS author, pub_date FROM posts LEFT OUTER JOIN users ON (posts.author_id = users.id) ORDER BY pub_date DESC;\
-    ', (error, result) => {
+    let offset = Number(req.query.offset);
+
+    client.query(`
+    SELECT title, content, username AS author, pub_date FROM posts
+    LEFT OUTER JOIN users ON (posts.author_id = users.id)
+    ORDER BY pub_date DESC
+    LIMIT 10
+    OFFSET 10*${offset};
+    `, (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).json('Something went wrong.');
@@ -63,6 +69,17 @@ app.get('/', (req, res) => {
                 posts[i].pub_date = moment(posts[i].pub_date, 'MMMM DD YYYY').fromNow();
             }
             return res.status(200).send(posts);
+        }
+    })
+})
+
+app.get('/countPosts', (req, res) => {
+    client.query(`SELECT COUNT(*) FROM posts`, (error, result) => {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            return res.status(200).send(result.rows[0].count);
         }
     })
 })

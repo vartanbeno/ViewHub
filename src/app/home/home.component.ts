@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { PostService } from '../post.service';
+import { ActivatedRoute, Router } from '@angular/router';
 declare var $: any;
 
 @Component({
@@ -11,21 +12,38 @@ declare var $: any;
 export class HomeComponent implements OnInit {
 
   posts: Array<any> = [];
+  pages: Array<number> = []
+  currentPage: number;
   isLoaded: boolean = false;
   @ViewChild('addPostButton') addPostButton: ElementRef;
 
-  constructor(private postService: PostService, private authService: AuthService, private renderer: Renderer) { }
+  constructor(
+    private postService: PostService,
+    private authService: AuthService,
+    private renderer: Renderer,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    this.route.queryParams.subscribe(params => this.currentPage = params.offset);
+    this.currentPage = (!this.currentPage) ? 1 : this.currentPage;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
 
   ngOnInit() {
     this.getPosts();
-    this.postService.postAdded_Observable.subscribe(res => this.getPosts())
-
+    this.postService.postAdded_Observable.subscribe(res => {
+      this.getPosts();
+      this.countPosts();
+    })
+    
     /**
      * If we want to automatically update the list of posts every 10 seconds.
      */
     // setInterval(() => {
     //   this.getPosts();
     // }, 1000 * 10);
+
+    this.countPosts();
   }
 
   ngAfterViewInit() {
@@ -37,13 +55,28 @@ export class HomeComponent implements OnInit {
   }
 
   getPosts() {
-    this.postService.getPosts().subscribe(
+    let pageOffset = (this.currentPage - 1).toString()
+    this.postService.getPosts(pageOffset).subscribe(
       res => {
         this.posts = res;
         this.isLoaded = true;
       },
       err => console.log(err)
     )
+  }
+
+  countPosts() {
+    this.postService.countPosts().subscribe(
+      res => {
+        let numberOfPages = Math.ceil(res/10);
+        this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
+      },
+      err => console.log(err)
+    )
+  }
+
+  navigateToPage(pageNumber: number) {
+    this.router.navigate([''], { queryParams: { offset: pageNumber } })
   }
 
 }

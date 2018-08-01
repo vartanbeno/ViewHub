@@ -28,3 +28,7 @@
       <button class="ui mini black basic button">Read More</button>
   </div>
 </div>
+
+<div class="ui right floated pagination menu" *ngIf="posts.length">
+    <a class="item" *ngFor="let page of pages" (click)="navigateToPage($event.target.innerText)">{{ page }}</a>
+</div>

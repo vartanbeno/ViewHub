@@ -10,13 +10,14 @@ export class PostService {
 
   private homeUrl = 'http://localhost:3000/';
   private subtidderUrl = 'http://localhost:3000/t/';
+  private countPostsUrl = 'http://localhost:3000/countPosts';
 
   public postAdded_Observable = new Subject();
 
   constructor(private http: HttpClient) { }
 
-  getPosts() {
-    return this.http.get<any>(this.homeUrl);
+  getPosts(offset: string) {
+    return this.http.get<any>(this.homeUrl, { params: { offset: offset } });
   }
 
   submitPost(post: Post) {
@@ -25,6 +26,10 @@ export class PostService {
 
   notifyPostAddition() {
     this.postAdded_Observable.next();
+  }
+
+  countPosts() {
+    return this.http.get<any>(this.countPostsUrl);
   }
 
 }
