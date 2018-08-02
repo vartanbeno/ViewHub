@@ -31,17 +31,17 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getPosts();
     this.countPosts();
+    this.getPosts();
 
     this.postService.postAdded_Observable.subscribe(res => {
-      this.getPosts();
       this.countPosts();
+      this.getPosts();
     })
 
     this.postService.postDelete_Observable.subscribe(res => {
-      this.getPosts();
       this.countPosts();
+      this.getPosts();
     })
     
     /**
@@ -66,13 +66,20 @@ export class HomeComponent implements OnInit {
   }
 
   getPosts() {
+    if (this.currentPage < 1 || !Number.isInteger(Number(this.currentPage))) {
+      this.currentPage = 1;
+      this.router.navigate([''], { queryParams: { page: this.currentPage } });
+      return;
+    }
     let pageOffset = (this.currentPage - 1).toString()
     this.postService.getPosts(pageOffset).subscribe(
       res => {
         this.posts = res;
         this.isLoaded = true;
         if (!this.posts.length && this.currentPage != 1) {
-          this.router.navigate([''], { queryParams: { page: this.currentPage - 1 } });
+          let maxPage = this.pages[this.pages.length - 1];
+          this.currentPage = (this.currentPage > maxPage) ? maxPage : 1;
+          this.router.navigate([''], { queryParams: { page: this.currentPage } });
         }
       },
       err => console.log(err)
