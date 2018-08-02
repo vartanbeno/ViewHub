@@ -22,6 +22,7 @@ export class AppComponent {
       this.getSubscriptions();
       this.subtidderService.subscriptions_Observable.subscribe(res => this.getSubscriptions());
     }
+    this.focusOnSearch();
   }
 
   getSubscriptions() {

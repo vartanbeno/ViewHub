@@ -58,7 +58,8 @@ export class HomeComponent implements OnInit {
         $('#addpost')
             .modal({
               transition: 'slide down',
-              autofocus: false })
+              autofocus: false
+            })
             .modal('show');
       })
     }
@@ -70,6 +71,9 @@ export class HomeComponent implements OnInit {
       res => {
         this.posts = res;
         this.isLoaded = true;
+        if (!this.posts.length && this.currentPage != 1) {
+          this.router.navigate([''], { queryParams: { page: this.currentPage - 1 } });
+        }
       },
       err => console.log(err)
     )
@@ -91,7 +95,11 @@ export class HomeComponent implements OnInit {
 
   setPostToDelete(post: Post) {
     this.postService.setPostToDelete(post);
-    $('#deletepost').modal('setting', 'transition', 'vertical flip').modal('show');
+    $('#deletepost')
+        .modal({
+          transition: 'vertical flip'
+        })
+        .modal('show');
   }
 
   setPostToEdit(post: Post) {
@@ -99,7 +107,8 @@ export class HomeComponent implements OnInit {
     $('#editpost')
         .modal({
           transition: 'slide down',
-          autofocus: false })
+          autofocus: false
+        })
         .modal('show');
   }
 
