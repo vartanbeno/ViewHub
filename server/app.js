@@ -53,8 +53,9 @@ app.get('/', (req, res) => {
     offset = (offset) ? offset : 0;
 
     client.query(`
-    SELECT posts.id, title, content, username AS author, author_id, pub_date FROM posts
+    SELECT posts.id, title, content, username AS author, author_id, subtidders.name as subtidder, pub_date FROM posts
     LEFT OUTER JOIN users ON (posts.author_id = users.id)
+    INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
     ORDER BY pub_date DESC
     LIMIT 10
     OFFSET 10*${offset};
@@ -112,6 +113,9 @@ app.post('/edit/:id', (req, res) => {
 
 app.post('/register/', (req, res) => {
     let user = req.body;
+    user.firstName = user.firstName.replace(/'/g, "''");
+    user.lastName = user.lastName.replace(/'/g, "''");
+    
     client.query(`SELECT username FROM users WHERE username = '${user.username}';`, (error, result) => {
         if (error) {
             console.log(error);
@@ -218,6 +222,9 @@ app.get('/users', verifyToken, (req, res) => {
 app.post('/t/:subtidder/add', (req, res) => {
     let subtidder = req.params.subtidder;
     let postData = req.body;
+    postData.title = postData.title.replace(/'/g, "''");
+    postData.content = postData.content.replace(/'/g, "''");
+
     client.query(`
         INSERT INTO posts (title, content, author_id, subtidder_id)
         SELECT '${postData.title}', '${postData.content}', ${postData.userId}, s.id
@@ -234,7 +241,7 @@ app.post('/t/:subtidder/add', (req, res) => {
 
 app.get('/search', (req, res) => {
     let s = req.query.s;
-    s = s.split(' ').join(' | ');
+    s = s.split(' ').join(' | ').replace(/'/g, "''");
 
     client.query(`
     SELECT name, description, creation_date FROM subtidders

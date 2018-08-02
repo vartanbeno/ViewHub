@@ -3,6 +3,7 @@
     <h3>Sign Up for an Account</h3>
 
     <form #userForm="ngForm" class="ui form" autocomplete="off" (ngSubmit)="registerUser()">
+
       <div class="three fields">
         <div class="field">
           <label for="firstname">First name</label>
@@ -35,31 +36,41 @@
                 required>
         </div>
       </div>
+
       <div class="field">
         <label for="username">Username</label>
-        <input [(ngModel)]="userData.username"
-                type="text"
-                name="username"
-                id="username"
-                placeholder="Username"
-                pattern=".{4,}"
-                (input)="usernameTaken = false"
-                required>
+        <div class="ui left icon input">
+          <input [(ngModel)]="userData.username"
+                  type="text"
+                  name="username"
+                  id="username"
+                  placeholder="Username"
+                  pattern=".{4,}"
+                  (input)="usernameTaken = false"
+                  required>
+          <i class="user icon"></i>
+        </div>
         <div class="ui red pointing label" *ngIf="usernameTaken">
             This username is taken.
         </div>
       </div>
+
       <div class="field">
         <label for="password">Password</label>
-        <input [(ngModel)]="userData.password"
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Password"
-                pattern=".{4,}"
-                required>
+        <div class="ui left icon input">
+          <input [(ngModel)]="userData.password"
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="Password"
+                  pattern=".{4,}"
+                  required>
+        <i class="lock icon"></i>
+        </div>
       </div>
+
       <button class="ui black button" type="submit" [disabled]="userForm.form.invalid">Submit</button>
+      
     </form>
 
     <div class="ui warning message">

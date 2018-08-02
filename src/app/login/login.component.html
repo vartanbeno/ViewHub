@@ -3,31 +3,41 @@
     <h3>Login</h3>
 
     <form #userForm="ngForm" class="ui form" autocomplete="off" (ngSubmit)="loginUser()">
+
       <div class="field">
         <label for="username">Username</label>
-        <input [(ngModel)]="userData.username"
-                #usernameInput
-                type="text"
-                name="username"
-                id="username"
-                placeholder="Username"
-                (input)="badCredentials = false"
-                required>
+        <div class="ui left icon input">
+          <input [(ngModel)]="userData.username"
+                  #usernameInput
+                  type="text"
+                  name="username"
+                  id="username"
+                  placeholder="Username"
+                  (input)="badCredentials = false"
+                  required>
+          <i class="user icon"></i>
+        </div>
         <div class="ui red pointing label" *ngIf="usernameTaken">
             This username is taken.
         </div>
       </div>
+
       <div class="field">
         <label for="password">Password</label>
-        <input [(ngModel)]="userData.password"
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Password"
-                (input)="badCredentials = false"
-                required>
+        <div class="ui left icon input">
+          <input [(ngModel)]="userData.password"
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="Password"
+                  (input)="badCredentials = false"
+                  required>
+          <i class="lock icon"></i>
+        </div>
       </div>
+      
       <button class="ui black button" type="submit" [disabled]="userForm.form.invalid">Submit</button>
+
     </form>
 
     <div class="ui red message" *ngIf="badCredentials">

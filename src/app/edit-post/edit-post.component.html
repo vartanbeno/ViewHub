@@ -8,14 +8,24 @@
 			<form #postForm="ngForm" autocomplete="off" (ngSubmit)="editPost()">
 
 				<div class="field">
+					<label>Subtidder</label>
+					<input [(ngModel)]="postEditData.subtidder"
+							type="text"
+							name="subtidder"
+							id="subtidder"
+							pattern=".{3,20}"
+							disabled
+							required>
+				</div>
+
+				<div class="field">
 					<label>Title</label>
 					<input [(ngModel)]="postEditData.title"
 							type="text"
 							name="title"
 							id="title"
-							placeholder="Title"
 							pattern=".{1,300}"
-							readonly
+							disabled
 							required>
 				</div>
 
