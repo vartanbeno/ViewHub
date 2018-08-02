@@ -61,7 +61,14 @@ INSERT INTO posts (title, content, author_id, subtidder_id) VALUES
     ('Hello world', 'Postgres is really cool', 3, 4),
     ('LeBron James has agreed to a $154M/4-year deal with the Los Angeles Lakers.', 'Lonzo finally gets some help!', 1, 1),
     ('Fake post title', 'Fake post content', 5, 2),
-    ('Why does user 2 never post anything?', 'They''re just a lurker.', 5, 5);
+    ('Why does user 2 never post anything?', 'They''re just a lurker.', 5, 5),
+    ('Some random stuff', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. In pariatur harum dolorem ipsa! Officia nostrum possimus provident quasi animi, cum quos minima, ipsum, amet facilis obcaecati. Laboriosam accusantium nemo ea.', 1, 3),
+    ('Some other random stuff', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde libero nulla tempore suscipit maxime, earum, alias laboriosam optio natus soluta laborum, dolor quasi cum repudiandae dolore corporis laudantium odio perspiciatis.', 1, 3),
+    ('Test adding post', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur eos excepturi, soluta esse magni numquam obcaecati totam! Modi possimus consectetur aperiam? Reiciendis quasi voluptate ad distinctio quis corrupti repellendus qui?', 3, 5),
+    ('Test deleting post', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate nesciunt praesentium molestiae ad ipsa quaerat facilis, voluptatum similique laborum animi sint libero voluptate, accusantium quia sapiente reiciendis quam. Voluptates, dolores?', 4, 2),
+    ('Test editing post', 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptas molestiae fugiat maxime est officia. Reprehenderit excepturi id est, eius maxime aliquid minus modi alias et eaque quod ducimus dignissimos possimus.', 2, 1),
+    ('Filler title', 'Filler content', 3, 3),
+    ('Paginated', 'results', 1, 2);
 
 INSERT INTO subscriptions (user_id, subtidder_id) VALUES
     (1, 1), (1, 2), (1, 3), (1, 4), (1, 5),

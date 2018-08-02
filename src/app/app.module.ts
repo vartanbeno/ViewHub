@@ -16,6 +16,7 @@ import { TokenInterceptorService } from './token-interceptor.service';
 import { UsersComponent } from './users/users.component';
 import { AddPostComponent } from './add-post/add-post.component';
 import { SearchSubtiddersComponent } from './search-subtidders/search-subtidders.component';
+import { DeletePostComponent } from './delete-post/delete-post.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { SearchSubtiddersComponent } from './search-subtidders/search-subtidders
     UsersComponent,
     AddPostComponent,
     SearchSubtiddersComponent,
+    DeletePostComponent,
   ],
   imports: [
     BrowserModule,

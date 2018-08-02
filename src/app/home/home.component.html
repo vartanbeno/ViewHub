@@ -14,7 +14,7 @@
   </div>
 </div>
 
-<div class="ui fluid black card" *ngFor="let post of posts">
+<div class="ui fluid black card" *ngFor="let post of posts; let i = index">
   <div class="content">
       <div class="header">
           {{ post.title }}
@@ -30,7 +30,8 @@
       <button class="ui mini black basic button">Read More</button>
       <span *ngIf="authService.loggedIn() && post.author_id == authService.getId()" class="right floated">
           <i class="big black edit alternate outline icon"></i>
-          <i class="big black trash alternate outline icon"></i>
+          <i class="big black trash alternate outline icon" (click)="setPostToDelete(post)"></i>
+          <app-delete-post></app-delete-post>
       </span>
   </div>
 </div>

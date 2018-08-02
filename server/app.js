@@ -50,9 +50,10 @@ function verifyToken(req, res, next) {
 
 app.get('/', (req, res) => {
     let offset = Number(req.query.offset);
+    offset = (offset) ? offset : 0;
 
     client.query(`
-    SELECT title, content, username AS author, author_id, pub_date FROM posts
+    SELECT posts.id, title, content, username AS author, author_id, pub_date FROM posts
     LEFT OUTER JOIN users ON (posts.author_id = users.id)
     ORDER BY pub_date DESC
     LIMIT 10
@@ -80,6 +81,18 @@ app.get('/countPosts', (req, res) => {
         }
         else {
             return res.status(200).send(result.rows[0].count);
+        }
+    })
+})
+
+app.delete('/delete/:id', (req, res) => {
+    let postId = req.params.id;
+    client.query(`DELETE FROM posts WHERE id = ${postId};`, (error, result) => {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            return res.status(200).json('Post deleted.');
         }
     })
 })

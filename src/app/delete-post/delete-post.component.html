@@ -1,0 +1,10 @@
+<div class="ui mini modal" id="deletepost">
+    <div class="header">Delete Post</div>
+    <div class="content">Are you sure you want to delete this post?</div>
+    <div class="actions">
+        <button class="ui negative button" (click)="unsetPostToDelete()">No</button>
+        <button class="ui positive right labeled icon button" (click)="deletePost()">
+            Yes<i class="checkmark icon"></i>
+        </button>
+    </div>
+</div>

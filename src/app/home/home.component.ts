@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/cor
 import { AuthService } from '../auth.service';
 import { PostService } from '../post.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Post } from '../models/post';
 declare var $: any;
 
 @Component({
@@ -31,7 +32,14 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.getPosts();
+    this.countPosts();
+
     this.postService.postAdded_Observable.subscribe(res => {
+      this.getPosts();
+      this.countPosts();
+    })
+
+    this.postService.postDelete_Observable.subscribe(res => {
       this.getPosts();
       this.countPosts();
     })
@@ -42,8 +50,6 @@ export class HomeComponent implements OnInit {
     // setInterval(() => {
     //   this.getPosts();
     // }, 1000 * 10);
-
-    this.countPosts();
   }
 
   ngAfterViewInit() {
@@ -77,6 +83,11 @@ export class HomeComponent implements OnInit {
 
   navigateToPage(pageNumber: number) {
     this.router.navigate([''], { queryParams: { page: pageNumber } })
+  }
+
+  setPostToDelete(post: Post) {
+    this.postService.setPostToDelete(post);
+    $('#deletepost').modal('show');
   }
 
 }
