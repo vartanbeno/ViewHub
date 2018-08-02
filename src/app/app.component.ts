@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { SubtidderService } from './subtidder.service';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';

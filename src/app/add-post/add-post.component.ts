@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Post } from '../models/post';
 import { PostService } from '../post.service';
 import { SubtidderService } from '../subtidder.service';

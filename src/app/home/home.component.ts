@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit {
   ngAfterViewInit() {
     if (this.authService.loggedIn()) {
       this.renderer.listen(this.addPostButton.nativeElement, 'click', (event) => {
-        $('#addpost').modal('show');
+        $('#addpost').modal('setting', 'transition', 'slide down').modal('show');
       })
     }
   }
@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit {
 
   setPostToDelete(post: Post) {
     this.postService.setPostToDelete(post);
-    $('#deletepost').modal('show');
+    $('#deletepost').modal('setting', 'transition', 'vertical flip').modal('show');
   }
 
 }
