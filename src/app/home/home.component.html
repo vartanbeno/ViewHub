@@ -4,6 +4,8 @@
         <button class="ui positive right floated right labeled icon button" #addPostButton>Add Post<i class="plus icon"></i></button>
     </h2>
     <app-add-post></app-add-post>
+    <app-edit-post></app-edit-post>
+    <app-delete-post></app-delete-post>
 </div>
 
 <div class="ui red icon message" *ngIf="isLoaded && !posts.length">
@@ -29,9 +31,8 @@
   <div class="content extra">
       <button class="ui mini black basic button">Read More</button>
       <span *ngIf="authService.loggedIn() && post.author_id == authService.getId()" class="right floated">
-          <i class="big black edit alternate outline icon"></i>
+          <i class="big black edit alternate outline icon" (click)="setPostToEdit(post)"></i>
           <i class="big black trash alternate outline icon" (click)="setPostToDelete(post)"></i>
-          <app-delete-post></app-delete-post>
       </span>
   </div>
 </div>

@@ -13,9 +13,6 @@ export class AddPostComponent implements OnInit {
 
   postData: Post;
   subtidders: Array<any> = [];
-  @ViewChild('title') title: ElementRef;
-  @ViewChild('content') content: ElementRef;
-  postHasError: boolean = true;
 
   constructor(private postService: PostService, private subtidderService: SubtidderService) { }
 

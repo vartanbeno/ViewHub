@@ -17,6 +17,7 @@ import { UsersComponent } from './users/users.component';
 import { AddPostComponent } from './add-post/add-post.component';
 import { SearchSubtiddersComponent } from './search-subtidders/search-subtidders.component';
 import { DeletePostComponent } from './delete-post/delete-post.component';
+import { EditPostComponent } from './edit-post/edit-post.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { DeletePostComponent } from './delete-post/delete-post.component';
     AddPostComponent,
     SearchSubtiddersComponent,
     DeletePostComponent,
+    EditPostComponent,
   ],
   imports: [
     BrowserModule,

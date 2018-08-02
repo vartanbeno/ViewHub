@@ -12,11 +12,14 @@ export class PostService {
   private subtidderUrl = 'http://localhost:3000/t/';
   private countPostsUrl = 'http://localhost:3000/countPosts/';
   private deletePostUrl = 'http://localhost:3000/delete/';
+  private editPostUrl = 'http://localhost:3000/edit/';
 
   public postToBeDeleted: Post;
+  public postToBeEdited: Post;
 
   public postAdded_Observable = new Subject();
   public postDelete_Observable = new Subject();
+  public postEdit_Observable = new Subject();
 
   constructor(private http: HttpClient) { }
 
@@ -37,19 +40,28 @@ export class PostService {
   }
 
   deletePost() {
-    return this.http.delete<any>(`${this.deletePostUrl}${this.postToBeDeleted.id}`)
+    return this.http.delete<any>(`${this.deletePostUrl}${this.postToBeDeleted.id}`);
   }
 
   setPostToDelete(post: Post) {
     this.postToBeDeleted = post;
   }
 
-  unsetPostToDelete() {
-    this.postToBeDeleted = null;
-  }
-
   notifyPostDeletion() {
     this.postDelete_Observable.next();
+  }
+
+  editPost(post: Post) {
+    return this.http.post<any>(`${this.editPostUrl}${this.postToBeEdited.id}`, post);
+  }
+
+  notifyPostEdition() {
+    this.postEdit_Observable.next();
+  }
+
+  setPostToEdit(post: Post) {
+    this.postToBeEdited = post;
+    this.notifyPostEdition();
   }
 
 }

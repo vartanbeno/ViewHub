@@ -97,6 +97,19 @@ app.delete('/delete/:id', (req, res) => {
     })
 })
 
+app.post('/edit/:id', (req, res) => {
+    let post = req.body;
+    let postId = req.params.id;
+    client.query(`UPDATE posts SET content = '${post.content}' WHERE id = ${postId};`, (error, result) => {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            return res.status(200).json('Post edited.');
+        }
+    })
+})
+
 app.post('/register/', (req, res) => {
     let user = req.body;
     client.query(`SELECT username FROM users WHERE username = '${user.username}';`, (error, result) => {

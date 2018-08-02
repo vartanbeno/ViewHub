@@ -25,8 +25,4 @@ export class DeletePostComponent implements OnInit {
     )
   }
 
-  unsetPostToDelete() {
-    this.postService.unsetPostToDelete();
-  }
-
 }

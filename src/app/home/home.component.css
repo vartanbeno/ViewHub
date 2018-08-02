@@ -4,4 +4,9 @@
 
 div.pagination > a.item.active {
     cursor: default;
+    pointer-events: none;
+}
+
+.edit.icon, .trash.icon {
+    cursor: pointer;
 }
