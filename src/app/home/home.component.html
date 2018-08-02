@@ -1,15 +1,17 @@
-<div>
-    <h2 *ngIf="authService.loggedIn()">
+<div *ngIf="authService.loggedIn()">
+    <h2>
         Hello, {{ authService.getName() }}.
         <button class="ui positive right floated right labeled icon button" #addPostButton>Add Post<i class="plus icon"></i></button>
     </h2>
+    <app-add-post></app-add-post>
 </div>
 
-<app-add-post></app-add-post>
-
-<div class="ui red message" *ngIf="isLoaded && !posts.length">
-  <div class="header">There doesn't seem to be any posts at the moment.</div>
-  <p>Is the website dead? :o</p>
+<div class="ui red icon message" *ngIf="isLoaded && !posts.length">
+  <i class="frown outline icon"></i>
+  <div class="content">
+    <div class="header">There doesn't seem to be any posts at the moment.</div>
+    <p>Is the website dead?</p>
+  </div>
 </div>
 
 <div class="ui fluid black card" *ngFor="let post of posts">

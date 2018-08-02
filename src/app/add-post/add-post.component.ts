@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular
 import { Post } from '../models/post';
 import { PostService } from '../post.service';
 import { SubtidderService } from '../subtidder.service';
+declare var $: any;
 
 @Component({
   selector: 'app-add-post',
@@ -21,6 +22,7 @@ export class AddPostComponent implements OnInit {
   ngOnInit() {
     this.postData = new Post();
     this.getAllSubtidders();
+    $('.ui.dropdown').dropdown();
   }
 
   submitPost() {
