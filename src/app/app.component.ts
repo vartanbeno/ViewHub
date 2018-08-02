@@ -39,7 +39,7 @@ export class AppComponent {
     this.searchBox.nativeElement.focus();
   }
 
-  searchSubtidders() {
+  search() {
     let s = this.searchBox.nativeElement.value;
 
     if (!s) return;

@@ -31,7 +31,8 @@ CREATE TABLE IF NOT EXISTS posts(
         ON DELETE SET NULL,
     subtidder_id INTEGER REFERENCES subtidders(id)
         ON DELETE SET NULL,
-    pub_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+    pub_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    tokens TSVECTOR
 );
 
 CREATE TABLE IF NOT EXISTS subscriptions(
@@ -80,3 +81,7 @@ INSERT INTO subscriptions (user_id, subtidder_id) VALUES
 UPDATE subtidders s1
     SET tokens = to_tsvector(CONCAT(s1.name, ' ', s1.description))
     FROM subtidders s2;
+
+UPDATE posts p1
+    SET tokens = to_tsvector(CONCAT(p1.title, ' ', p1.content))
+    FROM posts p2;

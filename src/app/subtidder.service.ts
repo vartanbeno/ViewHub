@@ -10,7 +10,7 @@ export class SubtidderService {
 
   private subscriptionsUrl = 'http://localhost:3000/subscriptions';
   private allSubtiddersUrl = 'http://localhost:3000/allsubtidders';
-  private searchSubtiddersUrl = 'http://localhost:3000/search';
+  private searchSubtiddersUrl = 'http://localhost:3000/search/';
 
   public subscriptions_Observable = new Subject();
 

@@ -1,11 +1,35 @@
-<div class="ui cards">
-  <div class="card" *ngFor="let subtidder of subtidders">
+<h1 class="ui dividing header" *ngIf="subtidders.length">Subtidders</h1>
+
+<div class="ui divided items" *ngIf="subtidders.length">
+  <div class="item" *ngFor="let subtidder of subtidders">
     <div class="content">
       <div class="header">{{ subtidder.name }}</div>
       <div class="meta">Created {{ subtidder.creation_date }}</div>
       <div class="description">
-        {{ subtidder.description }}
+        <p>{{ subtidder.description }}</p>
       </div>
     </div>
+  </div>
+</div>
+
+<h1 class="ui dividing header" *ngIf="posts.length">Posts</h1>
+
+<div class="ui divided items" *ngIf="posts.length">
+  <div class="item" *ngFor="let post of posts">
+    <div class="content">
+      <div class="header">{{ post.title }}</div>
+      <div class="meta">{{ post.pub_date }}</div>
+      <div class="description">
+        <p>{{ post.content }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ui red icon message" *ngIf="isLoaded && !subtidders.length && !posts.length">
+  <i class="frown outline icon"></i>
+  <div class="content">
+    <div class="header">Your search didn't return any results.</div>
+    <p>Try searching for something else!</p>
   </div>
 </div>

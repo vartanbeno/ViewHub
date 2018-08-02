@@ -245,7 +245,7 @@ app.get('/search', (req, res) => {
 
     client.query(`
     SELECT name, description, creation_date FROM subtidders
-    WHERE to_tsvector('english', CONCAT(name, ' ', description))
+    WHERE to_tsvector('english', name || ' ' || description)
     @@ to_tsquery('english', '${s}');
     `, (error, result) => {
         if (error) {
@@ -258,6 +258,29 @@ app.get('/search', (req, res) => {
                 subtidders[i].creation_date = moment(subtidders[i].creation_date, 'MMMM DD YYYY').fromNow();
             }
             return res.status(200).json(subtidders);
+        }
+    })
+})
+
+app.get('/searchPosts', (req, res) => {
+    let s = req.query.s;
+    s = s.split(' ').join(' | ').replace(/'/g, "''");
+
+    client.query(`
+    SELECT title, content, pub_date FROM posts
+    WHERE to_tsvector('english', title || ' ' || content)
+    @@ to_tsquery('english', '${s}');
+    `, (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).json('Something went wrong.');
+        }
+        else {
+            let posts = result.rows;
+            for (i in posts) {
+                posts[i].pub_date = moment(posts[i].pub_date, 'MMMM DD YYYY').fromNow();
+            }
+            return res.status(200).json(posts);
         }
     })
 })

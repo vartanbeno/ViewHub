@@ -14,6 +14,8 @@ export class PostService {
   private deletePostUrl = 'http://localhost:3000/delete/';
   private editPostUrl = 'http://localhost:3000/edit/';
 
+  private searchPostsUrl = 'http://localhost:3000/searchPosts/';
+
   public postToBeDeleted: Post;
   public postToBeEdited: Post;
 
@@ -62,6 +64,10 @@ export class PostService {
   setPostToEdit(post: Post) {
     this.postToBeEdited = post;
     this.notifyPostEdition();
+  }
+
+  searchPosts(searchTerm: string) {
+    return this.http.get<any>(this.searchPostsUrl, { params: { s: searchTerm } });
   }
 
 }
