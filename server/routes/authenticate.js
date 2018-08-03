@@ -4,13 +4,13 @@ const express = require('express'),
     auth = express.Router();
 
 auth.post('/register/', (req, res) => {
-    let user = req.body;
-    user.firstName = user.firstName.replace(/'/g, "''");
-    user.lastName = user.lastName.replace(/'/g, "''");
+    let { firstName, lastName, email, username, password } = req.body;
+    firstName = firstName.replace(/'/g, "''");
+    lastName = lastName.replace(/'/g, "''");
     
     db.query(`
     SELECT username FROM users WHERE username = $1;`,
-    [user.username],
+    [username],
     (error, result) => {
         if (error) {
             console.log(error);
@@ -25,7 +25,7 @@ auth.post('/register/', (req, res) => {
             (first_name, last_name, email, username, password) VALUES
             ($1, $2, $3, $4, $5)
             RETURNING id, CONCAT(first_name, ' ', last_name) as full_name;`,
-            [user.firstName, user.lastName, user.email, user.username, user.password],
+            [firstName, lastName, email, username, password],
             (error, result) => {
                 if (error) {
                     console.log(error);
@@ -46,11 +46,12 @@ auth.post('/register/', (req, res) => {
 })
 
 auth.post('/login', (req, res) => {
-    let user = req.body;
+    let { username, password } = req.body;
+
     db.query(`
     SELECT id, CONCAT(first_name, ' ', last_name) as full_name, username, password FROM users
     WHERE username = $1 AND password = $2;`,
-    [user.username, user.password],
+    [username, password],
     (error, result) => {
         if (error) {
             console.log(error);

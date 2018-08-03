@@ -26,25 +26,25 @@ t.get('/all', (req, res) => {
     INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
     ORDER BY pub_date DESC
     LIMIT 10
-    OFFSET 10*${offset};
-    `, (error, result) => {
+    OFFSET 10 * $1;
+    `, [offset], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
             let posts = result.rows;
-            for (i in posts) {
-                posts[i].author = posts[i].author || '[deleted]';
-                posts[i].pub_date = moment(posts[i].pub_date, 'MMMM DD YYYY').fromNow();
-            }
+            posts.forEach((post) => {
+                post.author = post.author || '[deleted]';
+                post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
+            })
             return res.status(200).send(posts);
         }
     })
 })
 
 t.get('/:subtidder', (req, res) => {
-    
+
 })
 
 module.exports = t;

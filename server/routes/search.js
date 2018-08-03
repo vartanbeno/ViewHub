@@ -18,9 +18,9 @@ search.get('/subtidders', (req, res) => {
         }
         else {
             let subtidders = result.rows;
-            for (i in subtidders) {
-                subtidders[i].creation_date = moment(subtidders[i].creation_date, 'MMMM DD YYYY').fromNow();
-            }
+            subtidders.forEach((subtidder) => {
+                subtidder.creation_date = moment(subtidder.creation_date, 'MMMM DD YYYY').fromNow();
+            })
             return res.status(200).send(subtidders);
         }
     })
@@ -41,9 +41,9 @@ search.get('/posts', (req, res) => {
         }
         else {
             let posts = result.rows;
-            for (i in posts) {
-                posts[i].pub_date = moment(posts[i].pub_date, 'MMMM DD YYYY').fromNow();
-            }
+            posts.forEach((post) => {
+                post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
+            })
             return res.status(200).send(posts);
         }
     })

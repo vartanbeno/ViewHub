@@ -9,10 +9,11 @@ import { Subject } from 'rxjs';
 export class PostService {
 
   private homeUrl = 'http://localhost:3000/t/all';
+  
   private subtidderUrl = 'http://localhost:3000/posts/add/';
-  private countPostsUrl = 'http://localhost:3000/countPosts/';
-  private deletePostUrl = 'http://localhost:3000/delete/';
-  private editPostUrl = 'http://localhost:3000/edit/';
+  private deletePostUrl = 'http://localhost:3000/posts/delete/';
+  private editPostUrl = 'http://localhost:3000/posts/edit/';
+  private countPostsUrl = 'http://localhost:3000/posts/count/';
 
   private searchPostsUrl = 'http://localhost:3000/search/posts/';
 
@@ -54,7 +55,7 @@ export class PostService {
   }
 
   editPost(post: Post) {
-    return this.http.post<any>(`${this.editPostUrl}${this.postToBeEdited.id}`, post);
+    return this.http.post<any>(this.editPostUrl, post);
   }
 
   notifyPostEdition() {

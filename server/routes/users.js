@@ -25,18 +25,18 @@ function verifyToken(req, res, next) {
 
 users.get('/all', verifyToken, (req, res) => {
     db.query(`
-        SELECT
-        CONCAT(first_name, ' ', last_name) as full_name,
-        email, username, join_date FROM users;`, (error, result) => {
+    SELECT
+    CONCAT(first_name, ' ', last_name) as full_name, email, username, join_date
+    FROM users;`, (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
             let users = result.rows;
-            for (i in users) {
-                users[i].join_date = moment(users[i].join_date, 'MMMM DD YYYY').fromNow();
-            }
+            users.forEach((user) => {
+                user.join_date = moment(user.join_date, 'MMMM DD YYYY').fromNow();
+            })
             return res.status(200).send(users);
         }
     })

@@ -1,7 +1,5 @@
 const express = require('express'),
     db = require('../db'),
-    jwt = require('jsonwebtoken'),
-    moment = require('moment'),
     posts = express.Router();
 
 posts.post('/add', (req, res) => {
@@ -22,6 +20,41 @@ posts.post('/add', (req, res) => {
             else {
                 return res.status(200).json('OK');
             }
+    })
+})
+
+posts.post('/edit/', (req, res) => {
+    let { id, content } = req.body;
+    db.query(`UPDATE posts SET content = $1 WHERE id = $2;`, [content, id], (error, result) => {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            return res.status(200).json('Post edited.');
+        }
+    })
+})
+
+posts.delete('/delete/:id', (req, res) => {
+    let postId = req.params.id;
+    db.query(`DELETE FROM posts WHERE id = $1;`, [postId], (error, result) => {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            return res.status(200).json('Post deleted.');
+        }
+    })
+})
+
+posts.get('/count', (req, res) => {
+    db.query(`SELECT COUNT(*) FROM posts`, (error, result) => {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            return res.status(200).send(result.rows[0].count);
+        }
     })
 })
 

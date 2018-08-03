@@ -43,13 +43,6 @@ export class HomeComponent implements OnInit {
       this.countPosts();
       this.getPosts();
     })
-    
-    /**
-     * If we want to automatically update the list of posts every 10 seconds.
-     */
-    // setInterval(() => {
-    //   this.getPosts();
-    // }, 1000 * 10);
   }
 
   ngAfterViewInit() {
