@@ -15,7 +15,11 @@ export class LoginComponent implements OnInit {
   @ViewChild('usernameInput') usernameInput: ElementRef;
   userData = new User();
 
-  constructor(private authService: AuthService, private router: Router, private subtidderService: SubtidderService) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private subtidderService: SubtidderService
+  ) { }
 
   ngOnInit() {
     this.usernameInput.nativeElement.focus();

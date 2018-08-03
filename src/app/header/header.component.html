@@ -1,26 +1,39 @@
 <div class="ui top fixed inverted sidebar menu visible">
-  <a class="header item" routerLink="/">Tidder</a>
-  <a class="item">All</a>
-  <a class="item" routerLink="/u" routerLinkActive="active">Members</a>
-  <div class="ui dropdown item" *ngIf="authService.loggedIn()">
-    My Subtidders
-    <i class="dropdown icon"></i>
-    <div class="menu">
+  <div class="ui container">
+    <a class="header item" routerLink="/">Tidder</a>
+    <a class="item">All</a>
+    <a class="item" routerLink="/u" routerLinkActive="active">Members</a>
+    <div class="ui scrolling dropdown item" *ngIf="authService.loggedIn()">
+      My Subtidders
+      <i class="dropdown icon"></i>
+      <div class="menu">
         <div class="item" *ngFor="let subscription of subscriptions"><span class="subscription">{{ subscription }}</span></div>
         <div class="item" *ngIf="!subscriptions.length"><span class="subscription empty" (click)="focusOnSearch()">Search and subscribe!</span></div>
+      </div>
     </div>
-  </div>
-  <div class="right menu">
-    <div class="item">
-      <form autocomplete="off" (ngSubmit)="search()">
-        <div class="ui inverted transparent icon input">
-          <input #searchBox type="text" placeholder="Search..." required>
-          <i class="search link icon" (click)="search()"></i>
+    <div class="right menu">
+      <div class="item">
+        <form autocomplete="off" (ngSubmit)="search()">
+          <div class="ui inverted transparent icon input">
+            <input #searchBox type="text" placeholder="Search..." required>
+            <i class="search link icon" (click)="search()"></i>
+          </div>
+        </form>
+      </div>
+      <a class="ui item" *ngIf="!authService.loggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
+      <a class="ui item" *ngIf="!authService.loggedIn()" routerLink="/register" routerLinkActive="active">Register</a>
+      <div class="ui dropdown item" *ngIf="authService.loggedIn()">
+        <i class="user icon"></i>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <div class="item" routerLink="/u"><span class="subscription">
+            <i class="address card icon"></i>Profile
+          </span></div>
+          <div class="item" (click)="authService.logoutUser()"><span class="subscription">
+            <i class="power off icon"></i>Logout
+          </span></div>
         </div>
-      </form>
+      </div>
     </div>
-    <a class="ui item" *ngIf="!authService.loggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
-    <a class="ui item" *ngIf="!authService.loggedIn()" routerLink="/register" routerLinkActive="active">Register</a>
-    <a class="ui item" *ngIf="authService.loggedIn()" (click)="authService.logoutUser()">Logout</a>
   </div>
 </div>

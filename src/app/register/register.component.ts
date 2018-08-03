@@ -15,7 +15,11 @@ export class RegisterComponent implements OnInit {
   @ViewChild('firstNameInput') firstNameInput: ElementRef;
   userData = new User();
 
-  constructor(private authService: AuthService, private router: Router, private subtidderService: SubtidderService) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private subtidderService: SubtidderService
+  ) { }
 
   ngOnInit() {
     this.firstNameInput.nativeElement.focus();
