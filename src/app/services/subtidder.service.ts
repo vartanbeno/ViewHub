@@ -15,8 +15,8 @@ export class SubtidderService {
 
   constructor(private http: HttpClient) { }
 
-  getSubscriptions(userId: any) {
-    return this.http.get<any>(this.subscriptionsUrl, { params: userId });
+  getSubscriptions(id: string) {
+    return this.http.get<any>(this.subscriptionsUrl, { params: { id: id } });
   }
 
   getAllSubtidders() {

@@ -18,6 +18,8 @@ import { AddPostComponent } from './add-post/add-post.component';
 import { SearchComponent } from './search/search.component';
 import { DeletePostComponent } from './delete-post/delete-post.component';
 import { EditPostComponent } from './edit-post/edit-post.component';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { EditPostComponent } from './edit-post/edit-post.component';
     SearchComponent,
     DeletePostComponent,
     EditPostComponent,
+    HeaderComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
