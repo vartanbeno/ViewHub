@@ -15,7 +15,7 @@ import { AuthGuard } from './auth.guard';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { UsersComponent } from './users/users.component';
 import { AddPostComponent } from './add-post/add-post.component';
-import { SearchSubtiddersComponent } from './search-subtidders/search-subtidders.component';
+import { SearchComponent } from './search/search.component';
 import { DeletePostComponent } from './delete-post/delete-post.component';
 import { EditPostComponent } from './edit-post/edit-post.component';
 
@@ -27,7 +27,7 @@ import { EditPostComponent } from './edit-post/edit-post.component';
     LoginComponent,
     UsersComponent,
     AddPostComponent,
-    SearchSubtiddersComponent,
+    SearchComponent,
     DeletePostComponent,
     EditPostComponent,
   ],

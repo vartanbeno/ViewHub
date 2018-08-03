@@ -4,11 +4,11 @@ import { SubtidderService } from '../services/subtidder.service';
 import { PostService } from '../services/post.service';
 
 @Component({
-  selector: 'app-search-subtidders',
-  templateUrl: './search-subtidders.component.html',
-  styleUrls: ['./search-subtidders.component.css']
+  selector: 'app-search',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.css']
 })
-export class SearchSubtiddersComponent implements OnInit {
+export class SearchComponent implements OnInit {
 
   searchTerm: string;
   subtidders: Array<any> = [];

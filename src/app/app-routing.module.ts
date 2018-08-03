@@ -5,7 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { UsersComponent } from './users/users.component';
 import { AuthGuard } from './auth.guard';
-import { SearchSubtiddersComponent } from './search-subtidders/search-subtidders.component';
+import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
-  { path: 'search', component: SearchSubtiddersComponent },
+  { path: 'search', component: SearchComponent },
 ];
 
 @NgModule({
