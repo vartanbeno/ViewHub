@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
-import { AuthService } from '../auth.service';
-import { PostService } from '../post.service';
+import { AuthService } from '../services/auth.service';
+import { PostService } from '../services/post.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from '../models/post';
 declare var $: any;

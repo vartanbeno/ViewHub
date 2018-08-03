@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { SubtidderService } from './subtidder.service';
-import { AuthService } from './auth.service';
+import { SubtidderService } from './services/subtidder.service';
+import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 declare var $: any;
 

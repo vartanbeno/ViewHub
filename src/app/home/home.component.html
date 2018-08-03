@@ -29,10 +29,10 @@
       <p>{{ post.content }}</p>
   </div>
   <div class="content extra">
-      <button class="ui mini black basic button">Read More</button>
+      read more...
       <span *ngIf="authService.loggedIn() && post.author_id == authService.getId()" class="right floated">
-          <i class="big black edit alternate outline icon" (click)="setPostToEdit(post)"></i>
-          <i class="big black trash alternate outline icon" (click)="setPostToDelete(post)"></i>
+          <i class="large black edit alternate outline icon" (click)="setPostToEdit(post)"></i>
+          <i class="large black trash alternate outline icon" (click)="setPostToDelete(post)"></i>
       </span>
   </div>
 </div>

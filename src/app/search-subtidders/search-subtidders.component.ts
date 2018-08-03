@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SubtidderService } from '../subtidder.service';
-import { PostService } from '../post.service';
+import { SubtidderService } from '../services/subtidder.service';
+import { PostService } from '../services/post.service';
 
 @Component({
   selector: 'app-search-subtidders',

@@ -15,7 +15,7 @@
 
 .ui.container.main {
     padding-top: 120px;
-    padding-bottom: 470px;
+    padding-bottom: 445px;
 }
 
 .dropdown .menu {
@@ -27,7 +27,7 @@
 
 .ui.footer.segment {
     margin: 70px 0em 0em;
-    padding: 70px 0em;
+    padding: 45px 0em;
     position: absolute;
     bottom: 0;
     left: 0;

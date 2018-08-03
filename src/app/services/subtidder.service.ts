@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from '../../node_modules/rxjs';
-import { URLSearchParams } from 'url';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

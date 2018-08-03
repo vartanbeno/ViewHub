@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { User } from '../models/user';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { SubtidderService } from '../subtidder.service';
+import { SubtidderService } from '../services/subtidder.service';
 
 @Component({
   selector: 'app-register',
