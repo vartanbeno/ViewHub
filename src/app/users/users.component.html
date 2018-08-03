@@ -1,10 +1,10 @@
-<div class="ui cards">
-  <div class="card" *ngFor="let user of users">
+<div class="ui divided items">
+  <div class="item" *ngFor="let user of users">
     <div class="content">
       <div class="header">{{ user.full_name }}</div>
       <div class="meta">Joined {{ user.join_date }}</div>
       <div class="description">
-        Contact {{ user.username }} at {{ user.email }}.
+        <p>Contact {{ user.username }} at {{ user.email }}.</p>
       </div>
     </div>
   </div>

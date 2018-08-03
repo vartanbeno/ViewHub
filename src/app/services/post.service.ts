@@ -8,13 +8,13 @@ import { Subject } from 'rxjs';
 })
 export class PostService {
 
-  private homeUrl = 'http://localhost:3000/';
-  private subtidderUrl = 'http://localhost:3000/t/';
+  private homeUrl = 'http://localhost:3000/t/all';
+  private subtidderUrl = 'http://localhost:3000/posts/add/';
   private countPostsUrl = 'http://localhost:3000/countPosts/';
   private deletePostUrl = 'http://localhost:3000/delete/';
   private editPostUrl = 'http://localhost:3000/edit/';
 
-  private searchPostsUrl = 'http://localhost:3000/searchPosts/';
+  private searchPostsUrl = 'http://localhost:3000/search/posts/';
 
   public postToBeDeleted: Post;
   public postToBeEdited: Post;
@@ -30,7 +30,7 @@ export class PostService {
   }
 
   submitPost(post: Post) {
-    return this.http.post<any>(`${this.subtidderUrl}${post.subtidder}/add`, post);
+    return this.http.post<any>(this.subtidderUrl, post);
   }
 
   notifyPostAddition() {

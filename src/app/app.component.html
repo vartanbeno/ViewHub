@@ -2,7 +2,7 @@
   <div class="header item">Tidder</div>
   <a class="item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
   <a class="item">All</a>
-  <a class="item" routerLink="/users" routerLinkActive="active">Members</a>
+  <a class="item" routerLink="/u" routerLinkActive="active">Members</a>
   <div class="ui dropdown item" *ngIf="authService.loggedIn()">
     My Subtidders
     <i class="dropdown icon"></i>

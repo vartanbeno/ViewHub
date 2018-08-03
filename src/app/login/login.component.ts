@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['']);
       },
       err => {
+        console.log(err)
         if (err.status === 401) {
           this.badCredentials = true;
         }
