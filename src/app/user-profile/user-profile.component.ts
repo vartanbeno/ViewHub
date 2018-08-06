@@ -12,6 +12,8 @@ export class UserProfileComponent implements OnInit {
 
   user = {};
   username: string;
+  userDoesNotExist: boolean = false;
+  isLoaded: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -28,8 +30,17 @@ export class UserProfileComponent implements OnInit {
 
   getUserInfo() {
     this.userService.getUser(this.username).subscribe(
-      res => this.user = res.user,
-      err => console.log(err)
+      res => {
+        this.user = res.user;
+        this.isLoaded = true;
+      },
+      err => {
+        console.log(err);
+        if (err.status === 404) {
+          this.userDoesNotExist = true;
+          this.isLoaded = true;
+        }
+      }
     )
   }
 

@@ -1,4 +1,11 @@
-<h1>{{ user.first_name }} {{ user.last_name }}</h1>
-<h3>{{ user.username }}</h3>
-<p>{{ user.email }}</p>
-<small>Joined {{ user.join_date }}</small>
+<div *ngIf="isLoaded && !userDoesNotExist">
+    <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+    <h3>{{ user.username }}</h3>
+    <p>{{ user.email }}</p>
+    <small>Joined {{ user.join_date }}</small>
+</div>
+
+<app-error-message *ngIf="isLoaded && userDoesNotExist"
+    header="This user does not exist."
+    message="Try searching for another one!">
+</app-error-message>

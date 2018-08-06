@@ -21,6 +21,7 @@ import { EditPostComponent } from './edit-post/edit-post.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { ErrorMessageComponent } from './error-message/error-message.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     HeaderComponent,
     FooterComponent,
     UserProfileComponent,
+    ErrorMessageComponent,
   ],
   imports: [
     BrowserModule,

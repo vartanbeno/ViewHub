@@ -26,10 +26,7 @@
   </div>
 </div>
 
-<div class="ui red icon message" *ngIf="isLoaded && !subtidders.length && !posts.length">
-  <i class="frown outline icon"></i>
-  <div class="content">
-    <div class="header">Your search didn't return any results.</div>
-    <p>Try searching for something else!</p>
-  </div>
-</div>
+<app-error-message *ngIf="isLoaded && !subtidders.length && !posts.length"
+    header="Your search didn't return any results."
+    message="Try searching for something else!">
+</app-error-message>
