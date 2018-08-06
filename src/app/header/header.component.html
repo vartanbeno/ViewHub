@@ -2,7 +2,7 @@
   <div class="ui container">
     <a class="header item" routerLink="/">Tidder</a>
     <a class="item">All</a>
-    <a class="item" routerLink="/u" routerLinkActive="active">Members</a>
+    <a class="item" routerLink="/u" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Members</a>
     <div class="ui scrolling dropdown item" *ngIf="authService.loggedIn()">
       My Subtidders
       <i class="dropdown icon"></i>
@@ -26,7 +26,7 @@
         <i class="user icon"></i>
         <i class="dropdown icon"></i>
         <div class="menu">
-          <div class="item" routerLink="/u"><span class="subscription">
+          <div class="item" routerLink="/u/{{ username }}"><span class="subscription">
             <i class="address card icon"></i>Profile
           </span></div>
           <div class="item" (click)="authService.logoutUser()"><span class="subscription">

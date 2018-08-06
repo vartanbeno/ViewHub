@@ -15,11 +15,11 @@ export class UsersComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit() {
-    this.getUsers();
+    this.getAllUsers();
   }
 
-  getUsers() {
-    this.userService.getUsers().subscribe(
+  getAllUsers() {
+    this.userService.getAllUsers().subscribe(
       res => this.users = res,
       err => {
         if (err instanceof HttpErrorResponse) {

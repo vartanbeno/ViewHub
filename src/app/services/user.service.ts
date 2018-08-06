@@ -1,17 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private usersUrl = 'http://localhost:3000/users/all';
+  private allUsersUrl = 'http://localhost:3000/users/all';
+  private userUrl = 'http://localhost:3000/users/u/';
+  private usernameUrl = 'http://localhost:3000/users/u/id/';
+
+  public username_Observable = new Subject();
 
   constructor(private http: HttpClient) { }
 
-  getUsers() {
-    return this.http.get<any>(this.usersUrl);
+  getAllUsers() {
+    return this.http.get<any>(this.allUsersUrl);
+  }
+
+  getUser(username: string) {
+    return this.http.get<any>(`${this.userUrl}${username}`);
+  }
+
+  getUsername(id: string) {
+    return this.http.get<any>(`${this.usernameUrl}${id}`);
+  }
+
+  updateUsername() {
+    this.username_Observable.next();
   }
 
 }

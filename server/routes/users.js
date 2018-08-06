@@ -43,7 +43,42 @@ users.get('/all', verifyToken, (req, res) => {
 })
 
 users.get('/u/:username', (req, res) => {
-    
+    let { username } = req.params;
+    db.query(`SELECT * FROM users WHERE username = $1;`, [username], (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+        else {
+            let user = result.rows[0];
+            if (user) {
+                user.join_date = moment(user.join_date, 'MMMM DD YYYY').fromNow();
+                return res.status(200).send({ user: user });
+            }
+            else {
+                return res.status(404).send({ error: 'User not found.' });
+            }
+        }
+    })
+})
+
+users.get('/u/id/:id', (req, res) => {
+    let { id } = req.params;
+    db.query(`SELECT username FROM users WHERE id = $1;`, [id], (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+        else {
+            let user = result.rows[0];
+            if (user) {
+                return res.status(200).json(user.username);
+            }
+            else {
+                return res.status(404).send({ error: 'User not found.' });
+            }
+        }
+    })
 })
 
 module.exports = users;
