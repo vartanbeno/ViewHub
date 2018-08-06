@@ -14,7 +14,7 @@
           {{ post.title }}<span class="subtidder"> - {{ post.subtidder }}</span>
       </div>
       <div class="meta">
-          {{ post.pub_date }} by {{ post.author }}
+          {{ post.pub_date }} by <span class="link to user profile" routerLink="/u/{{ post.author }}">{{ post.author }}</span>
       </div>
   </div>
   <div class="content">

@@ -10,3 +10,14 @@ html, body {
     min-height: 100%;
     position: relative;
 }
+
+.link.to.user.profile {
+    color: #2284d1;
+    cursor: pointer;
+    outline: none;
+}
+
+.link.to.user.profile:hover,
+.link.to.user.profile:active {
+    text-decoration: underline;
+}

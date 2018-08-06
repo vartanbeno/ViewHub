@@ -1,7 +1,7 @@
 <div class="ui divided items">
   <div class="item" *ngFor="let user of users">
     <div class="content">
-      <div class="ui blue header" routerLink="/u/{{ user.username }}">{{ user.full_name }}</div>
+      <div class="ui blue header link to user profile" routerLink="/u/{{ user.username }}">{{ user.full_name }}</div>
       <div class="meta">Joined {{ user.join_date }}</div>
       <div class="description">
         <p>Contact {{ user.username }} at {{ user.email }}.</p>
