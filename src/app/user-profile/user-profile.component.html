@@ -1,8 +1,15 @@
-<div *ngIf="isLoaded && !userDoesNotExist">
-    <h1>{{ user.first_name }} {{ user.last_name }}</h1>
-    <h3>{{ user.username }}</h3>
-    <p>{{ user.email }}</p>
-    <small>Joined {{ user.join_date }}</small>
+<div class="ui items" *ngIf="isLoaded && !userDoesNotExist">
+    <div class="item">
+        <div class="image">
+            <img class="profile picture" #profilePic src="assets/images/default.png" alt="profile picture">
+        </div>
+        <div class="content">
+            <div class="header">{{ user.first_name }} {{ user.last_name }}</div>
+            <div class="meta">{{ user.username }}</div>
+            <div class="description">Contact at {{ user.email }}.</div>
+            <div class="extra">Joined {{ user.join_date }}</div>
+        </div>
+    </div>
 </div>
 
 <app-error-message *ngIf="isLoaded && userDoesNotExist"
