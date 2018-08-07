@@ -11,6 +11,7 @@ export class UserProfileComponent implements OnInit {
 
   user = {};
   username: string;
+  pictureData: Object = {};
   userDoesNotExist: boolean = false;
   isLoaded: boolean = false;
 
@@ -37,6 +38,7 @@ export class UserProfileComponent implements OnInit {
       res => {
         this.user = res.user;
         this.isLoaded = true;
+
         setTimeout(() => {
 
           this.renderer.listen(this.addProfilePicButton.nativeElement, 'click', () => {
@@ -52,15 +54,12 @@ export class UserProfileComponent implements OnInit {
                 let byteData = fr.result.split(';')[1].replace('base64,', '');
                 let imageName = file.name;
                 let contentType = file.type;
-                let pictureData = {
+                this.pictureData = {
                   byteData: byteData,
                   imageName: imageName,
                   contentType: contentType
                 };
-                this.userService.updateProfilePicture(this.username, pictureData).subscribe(
-                  res => console.log(res),
-                  err => console.log(err)
-                );
+                this.updateProfilePicture();
               }
               fr.readAsDataURL(file);
             }
@@ -75,6 +74,13 @@ export class UserProfileComponent implements OnInit {
           this.isLoaded = true;
         }
       }
+    )
+  }
+
+  updateProfilePicture() {
+    this.userService.updateProfilePicture(this.username, this.pictureData).subscribe(
+      res => console.log(res),
+      err => console.log(err)
     )
   }
 

@@ -46,7 +46,7 @@ users.get('/u/:username', (req, res) => {
     let { username } = req.params;
     db.query(`
     SELECT id, first_name, last_name, email, username, join_date,
-    ENCODE(image, 'base64') as base64
+    ENCODE(image, 'escape') as base64
     FROM users WHERE username = $1;`, [username], (error, result) => {
         if (error) {
             console.log(error);
