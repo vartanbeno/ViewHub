@@ -31,4 +31,8 @@ export class UserService {
     this.username_Observable.next();
   }
 
+  updateProfilePicture(username: string, pictureData: Object) {
+    return this.http.post<any>(`${this.userUrl}${username}/pic`, pictureData);
+  }
+
 }

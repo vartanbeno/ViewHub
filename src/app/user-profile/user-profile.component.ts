@@ -49,6 +49,18 @@ export class UserProfileComponent implements OnInit {
               let fr = new FileReader();
               fr.onload = () => {
                 this.profilePic.nativeElement.src = fr.result;
+                let byteData = fr.result.split(';')[1].replace('base64,', '');
+                let imageName = file.name;
+                let contentType = file.type;
+                let pictureData = {
+                  byteData: byteData,
+                  imageName: imageName,
+                  contentType: contentType
+                };
+                this.userService.updateProfilePicture(this.username, pictureData).subscribe(
+                  res => console.log(res),
+                  err => console.log(err)
+                );
               }
               fr.readAsDataURL(file);
             }

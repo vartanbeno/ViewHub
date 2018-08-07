@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS users(
         CHECK (char_length(username) >= 4 AND char_length(username) <= 30),
     password VARCHAR(30) NOT NULL
         CHECK (char_length(password) >= 4),
+    image BYTEA,
     join_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
