@@ -44,7 +44,10 @@ users.get('/all', verifyToken, (req, res) => {
 
 users.get('/u/:username', (req, res) => {
     let { username } = req.params;
-    db.query(`SELECT * FROM users WHERE username = $1;`, [username], (error, result) => {
+    db.query(`
+    SELECT id, first_name, last_name, email, username, join_date,
+    ENCODE(image, 'base64') as base64
+    FROM users WHERE username = $1;`, [username], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
