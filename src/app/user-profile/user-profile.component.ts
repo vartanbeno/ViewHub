@@ -15,6 +15,7 @@ export class UserProfileComponent implements OnInit {
   isLoaded: boolean = false;
 
   @ViewChild('addProfilePicButton') addProfilePicButton: ElementRef;
+  @ViewChild('profilePic') profilePic: ElementRef;
   @ViewChild('profilePicInput') profilePicInput: ElementRef;
 
   constructor(
@@ -37,10 +38,23 @@ export class UserProfileComponent implements OnInit {
         this.user = res.user;
         this.isLoaded = true;
         setTimeout(() => {
+
           this.renderer.listen(this.addProfilePicButton.nativeElement, 'click', () => {
             this.profilePicInput.nativeElement.click();
           })
-        }, 1000);
+
+          this.renderer.listen(this.profilePicInput.nativeElement, 'change', (event) => {
+            let file = event.srcElement.files[0];
+            if (FileReader && file) {
+              let fr = new FileReader();
+              fr.onload = () => {
+                this.profilePic.nativeElement.src = fr.result;
+              }
+              fr.readAsDataURL(file);
+            }
+          })
+          
+        }, 500);
       },
       err => {
         console.log(err);
