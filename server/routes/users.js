@@ -86,14 +86,14 @@ users.get('/u/id/:id', (req, res) => {
 
 users.post('/u/:username/pic', (req, res) => {
     let { username } = req.params;
-    let { byteData, imageName, contentType } = req.body;
-    db.query(`UPDATE users SET image = $1 WHERE username = $2;`, [byteData, username], (error, result) => {
+    let { base64 } = req.body;
+    db.query(`UPDATE users SET image = $1 WHERE username = $2;`, [base64, username], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            return res.status(200).send({ success: 'Successfuly changed profile picture.' });
+            return res.status(200).send({ success: 'Successfully changed profile picture.' });
         }
     })
 })
