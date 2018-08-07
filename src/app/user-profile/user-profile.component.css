@@ -1,3 +1,4 @@
-.profile.picture {
+.add.profile.picture,
+#plus {
     cursor: pointer;
 }

@@ -1,7 +1,8 @@
 <div class="ui items" *ngIf="isLoaded && !userDoesNotExist">
     <div class="item">
         <div class="image">
-            <img class="profile picture" #profilePic src="assets/images/default.png" alt="profile picture">
+            <a class="ui left corner label add profile picture" #addProfilePicButton><i class="plus icon" id="plus"></i></a>
+            <img src="assets/images/default.png" alt="profile picture">
         </div>
         <div class="content">
             <div class="header">{{ user.first_name }} {{ user.last_name }}</div>
@@ -10,6 +11,7 @@
             <div class="extra">Joined {{ user.join_date }}</div>
         </div>
     </div>
+    <input type="file" accept="image/png, image/jpeg" #profilePicInput placeholder="Choose file" hidden>
 </div>
 
 <app-error-message *ngIf="isLoaded && userDoesNotExist"

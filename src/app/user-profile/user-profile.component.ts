@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { User } from '../models/user';
 
 @Component({
   selector: 'app-user-profile',
@@ -15,10 +14,14 @@ export class UserProfileComponent implements OnInit {
   userDoesNotExist: boolean = false;
   isLoaded: boolean = false;
 
+  @ViewChild('addProfilePicButton') addProfilePicButton: ElementRef;
+  @ViewChild('profilePicInput') profilePicInput: ElementRef;
+
   constructor(
     private userService: UserService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private renderer: Renderer
   ) {
     this.username = this.route.snapshot.paramMap.get('username');
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -33,6 +36,11 @@ export class UserProfileComponent implements OnInit {
       res => {
         this.user = res.user;
         this.isLoaded = true;
+        setTimeout(() => {
+          this.renderer.listen(this.addProfilePicButton.nativeElement, 'click', () => {
+            this.profilePicInput.nativeElement.click();
+          })
+        }, 1000);
       },
       err => {
         console.log(err);
