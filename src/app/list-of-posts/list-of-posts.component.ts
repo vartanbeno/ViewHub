@@ -3,6 +3,7 @@ import { PostService } from '../services/post.service';
 import { AuthService } from '../services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Post } from '../models/post';
+import { UserService } from '../services/user.service';
 declare var $: any;
 
 @Component({
@@ -13,31 +14,73 @@ declare var $: any;
 export class ListOfPostsComponent implements OnInit {
 
   @Input() componentName: string;
+  @Input() username?: string;
 
-  @Input() posts: Array<any>;
-  @Input() pages: Array<number>;
-  @Input() currentPage: number;
+  posts: Array<any> = [];
+  pages: Array<number> = [];
+  currentPage: number;
 
   constructor(
     private postService: PostService,
+    private userService: UserService,
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {
+    this.route.queryParams.subscribe(params => this.currentPage = params.page);
+    this.currentPage = (!this.currentPage) ? 1 : this.currentPage;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
 
   ngOnInit() {
+
+    switch(this.componentName) {
+
+      case 'HomeComponent':
+        this.countPosts();
+        this.getPosts();
+
+        this.postService.postAdded_Observable.subscribe(res => {
+          this.countPosts();
+          this.getPosts();
+        })
+
+        this.postService.postDelete_Observable.subscribe(res => {
+          this.countPosts();
+          this.getPosts();
+        })
+        break;
+
+      case 'UserProfileComponent':
+        this.getUserPostCount();
+        this.getUserPosts();
+
+        this.postService.postDelete_Observable.subscribe(res => {
+          this.getUserPostCount();
+          this.getUserPosts();
+        })
+        break;
+
+      default:
+        console.log("There's something wrong...");
+
+    }
   }
 
   navigateToPage(pageNumber: number) {
     switch(this.componentName) {
+
       case 'HomeComponent':
         this.router.navigate([''], { queryParams: { page: pageNumber } });
         break;
+
       case 'UserProfileComponent':
         this.router.navigate([this.router.url.split('?')[0]], { queryParams: { page: pageNumber } });
         break;
+
       default:
         console.log("There's something wrong...");
+
     }
   }
 
@@ -58,6 +101,69 @@ export class ListOfPostsComponent implements OnInit {
         autofocus: false
       })
       .modal('show');
+  }
+
+  getPosts() {
+    if (this.currentPage < 1 || !Number.isInteger(Number(this.currentPage))) {
+      this.currentPage = 1;
+      this.router.navigate([''], { queryParams: { page: this.currentPage } });
+      return;
+    }
+    let pageOffset = (this.currentPage - 1).toString()
+    this.postService.getPosts(pageOffset).subscribe(
+      res => {
+        this.posts = res;
+        this.postService.allPosts = this.posts;
+        this.postService.homeLoaded = true;
+        if (!this.posts.length && this.currentPage != 1) {
+          let maxPage = this.pages[this.pages.length - 1];
+          this.currentPage = (this.currentPage > maxPage) ? maxPage : 1;
+          this.router.navigate([''], { queryParams: { page: this.currentPage } });
+        }
+      },
+      err => console.log(err)
+    )
+  }
+
+  countPosts() {
+    this.postService.countPosts().subscribe(
+      res => {
+        let numberOfPages = Math.ceil(res / 10);
+        this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
+      },
+      err => console.log(err)
+    )
+  }
+
+  getUserPosts() {
+    if (this.currentPage < 1 || !Number.isInteger(Number(this.currentPage))) {
+      this.currentPage = 1;
+      this.router.navigate([`u/${this.username}`], { queryParams: { page: this.currentPage } });
+      return;
+    }
+    let pageOffset = (this.currentPage - 1).toString();
+    this.userService.getUserPosts(this.username, pageOffset).subscribe(
+      res => {
+        this.posts = res;
+        this.userService.userPosts = this.posts;
+        this.userService.profileLoaded = true;
+        if (!this.posts.length && this.currentPage != 1) {
+          let maxPage = this.pages[this.pages.length - 1];
+          this.currentPage = (this.currentPage > maxPage) ? maxPage : 1;
+          this.router.navigate([`u/${this.username}`], { queryParams: { page: this.currentPage } });
+        }
+      },
+      err => console.log(err)
+    )
+  }
+
+  getUserPostCount() {
+    this.userService.getUserPostCount(this.username).subscribe(
+      res => {
+        let numberOfPages = Math.ceil(res / 10);
+        this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
+      }
+    )
   }
 
 }

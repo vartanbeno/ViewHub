@@ -24,6 +24,9 @@ export class PostService {
   public postDelete_Observable = new Subject();
   public postEdit_Observable = new Subject();
 
+  public allPosts: Array<any>;
+  public homeLoaded = false;
+
   constructor(private http: HttpClient) { }
 
   getPosts(offset: string) {

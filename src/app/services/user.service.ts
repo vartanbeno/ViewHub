@@ -13,6 +13,9 @@ export class UserService {
 
   public username_Observable = new Subject();
 
+  public userPosts: Array<any>;
+  public profileLoaded: boolean = false;
+
   constructor(private http: HttpClient) { }
 
   getAllUsers() {

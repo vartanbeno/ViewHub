@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded && !userDoesNotExist">
+<div *ngIf="!userDoesNotExist">
     <div class="ui items">
         <div class="item">
             <div class="image">
@@ -20,21 +20,21 @@
         </div>
     </div>
 
-    <h1 class="ui dividing header" *ngIf="posts.length">Posts</h1>
-    <app-list-of-posts [componentName]="this.constructor.name" [posts]="posts" [pages]="pages" [currentPage]="currentPage"></app-list-of-posts>
+    <h1 class="ui dividing header">Posts</h1>
+    <app-list-of-posts [componentName]="this.constructor.name" [username]="username"></app-list-of-posts>
 
-    <app-error-message *ngIf="!posts.length && isOwnProfile"
+    <app-error-message *ngIf="userService.profileLoaded && !userService.userPosts?.length && isOwnProfile"
         header="You haven't posted anything yet."
         message="Submit a post!">
     </app-error-message>
 
-    <app-error-message *ngIf="!posts.length && !isOwnProfile"
+    <app-error-message *ngIf="userService.profileLoaded && !userService.userPosts?.length && !isOwnProfile"
         header="{{ username }} hasn't posted anything yet."
         message="Any day now...">
     </app-error-message>
 </div>
 
-<app-error-message *ngIf="isLoaded && userDoesNotExist"
+<app-error-message *ngIf="userService.profileLoaded && userDoesNotExist"
     header="This user does not exist."
     message="Try searching for another one!">
 </app-error-message>
