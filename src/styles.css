@@ -21,3 +21,7 @@ html, body {
 .link.to.user.profile:active {
     text-decoration: underline;
 }
+
+.subtidder {
+    color: rgba(0, 0, 0, 0.4)
+}

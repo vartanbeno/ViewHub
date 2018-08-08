@@ -111,4 +111,28 @@ users.delete('/u/:username/pic', (req, res) => {
     })
 })
 
+users.get('/u/:username/posts', (req, res) => {
+    let { username } = req.params;
+    db.query(`
+    SELECT posts.id, title, content, author_id, username AS author, subtidders.name AS subtidder, pub_date
+    FROM posts
+    LEFT OUTER JOIN users ON (posts.author_id = users.id)
+    INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
+    WHERE username = $1
+    ORDER BY pub_date DESC
+    `, [username], (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+        else {
+            let posts = result.rows;
+            posts.forEach((post) => {
+                post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
+            })
+            res.status(200).send(posts);
+        }
+    })
+})
+
 module.exports = users;
