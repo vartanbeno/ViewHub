@@ -1,0 +1,66 @@
+<div *ngIf="isLoaded && !userDoesNotExist">
+    <div class="ui items">
+        <div class="item">
+            <div class="image">
+                <img src="{{ imageSource }}" alt="profile picture">
+            </div>
+            <div class="content">
+                <div class="header">{{ user.full_name }}</div>
+                <div class="meta">{{ user.username }}</div>
+                <div class="description">Contact at {{ user.email }}.</div>
+                <div class="extra">Joined {{ user.join_date }}</div>
+            </div>
+        </div>
+        <div *ngIf="isOwnProfile">
+            <input type="file" accept="image/png, image/jpeg" #profilePicInput (change)="setNewProfilePicture($event)" placeholder="Choose file" hidden>
+            <div class="ui vertical labeled icon buttons">
+                <button class="ui labeled icon green button" (click)="profilePicInput.click()"><i class="upload icon"></i>Upload Picture</button>
+                <button class="ui labeled icon red button" (click)="deleteProfilePicture()"><i class="delete icon"></i>Delete Picture</button>        
+            </div>
+        </div>
+    </div>
+
+    <h1 class="ui dividing header" *ngIf="posts.length">Posts</h1>
+    <div class="ui fluid black card" *ngFor="let post of posts; let i = index">
+        <div class="content">
+            <div class="header">
+                {{ post.title }}
+                <span class="subtidder"> - {{ post.subtidder }}</span>
+            </div>
+            <div class="meta">
+                {{ post.pub_date }} by
+                <span class="link to user profile" routerLink="/u/{{ post.author }}">{{ post.author }}</span>
+            </div>
+        </div>
+        <div class="content">
+            <p>{{ post.content }}</p>
+        </div>
+        <div class="content extra">
+            read more...
+            <span *ngIf="isOwnProfile" class="right floated">
+                <i class="large black edit alternate outline icon" (click)="setPostToEdit(post)"></i>
+                <i class="large black trash alternate outline icon" (click)="setPostToDelete(post)"></i>
+            </span>
+        </div>
+    </div>
+
+    <div *ngIf="isOwnProfile">
+        <app-edit-post></app-edit-post>
+        <app-delete-post></app-delete-post>
+    </div>
+
+    <app-error-message *ngIf="!posts.length && isOwnProfile"
+        header="You haven't posted anything yet."
+        message="Submit a post!">
+    </app-error-message>
+
+    <app-error-message *ngIf="!posts.length && !isOwnProfile"
+        header="{{ username }} hasn't posted anything yet."
+        message="Any day now...">
+    </app-error-message>
+</div>
+
+<app-error-message *ngIf="isLoaded && userDoesNotExist"
+    header="This user does not exist."
+    message="Try searching for another one!">
+</app-error-message>

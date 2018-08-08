@@ -12,10 +12,3 @@
     color: #2185d0;
     cursor: pointer;
 }
-
-.dropdown .menu {
-    width: 100%;
-    max-height: 500%;
-    overflow-x: hidden;
-    overflow-y: auto;
-}

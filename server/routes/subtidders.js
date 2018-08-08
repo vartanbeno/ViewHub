@@ -21,7 +21,7 @@ t.get('/all', (req, res) => {
     offset = (offset) ? offset : 0;
 
     db.query(`
-    SELECT posts.id, title, content, username AS author, author_id, subtidders.name as subtidder, pub_date FROM posts
+    SELECT posts.id, title, content, username AS author, author_id, subtidders.name AS subtidder, pub_date FROM posts
     LEFT OUTER JOIN users ON (posts.author_id = users.id)
     INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
     ORDER BY pub_date DESC

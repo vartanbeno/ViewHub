@@ -20,6 +20,8 @@ import { DeletePostComponent } from './delete-post/delete-post.component';
 import { EditPostComponent } from './edit-post/edit-post.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { ErrorMessageComponent } from './error-message/error-message.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { FooterComponent } from './footer/footer.component';
     EditPostComponent,
     HeaderComponent,
     FooterComponent,
+    UserProfileComponent,
+    ErrorMessageComponent,
   ],
   imports: [
     BrowserModule,

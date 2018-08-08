@@ -11,16 +11,22 @@ import { Router } from '@angular/router';
 export class UsersComponent implements OnInit {
 
   users: Array<any> = [];
+  defaultImageSource: string = 'assets/images/default.png';
 
   constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit() {
-    this.getUsers();
+    this.getAllUsers();
   }
 
-  getUsers() {
-    this.userService.getUsers().subscribe(
-      res => this.users = res,
+  getAllUsers() {
+    this.userService.getAllUsers().subscribe(
+      res => {
+        this.users = res;
+        this.users.forEach((user) => {
+          user.image = (user.image) ? 'data:image/png;base64,' + user.image : this.defaultImageSource;
+        })
+      },
       err => {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 401) {

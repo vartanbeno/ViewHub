@@ -2,15 +2,7 @@
     white-space: pre-line;
 }
 
-.subtidder {
-    color: rgba(0, 0, 0, 0.4)
-}
-
 div.pagination > a.item.active {
     cursor: default;
     pointer-events: none;
-}
-
-.edit.icon, .trash.icon {
-    cursor: pointer;
 }

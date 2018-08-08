@@ -8,21 +8,13 @@
     <app-delete-post></app-delete-post>
 </div>
 
-<div class="ui red icon message" *ngIf="isLoaded && !posts.length">
-  <i class="frown outline icon"></i>
-  <div class="content">
-    <div class="header">There doesn't seem to be any posts at the moment.</div>
-    <p>Is the website dead?</p>
-  </div>
-</div>
-
 <div class="ui fluid black card" *ngFor="let post of posts; let i = index">
   <div class="content">
       <div class="header">
           {{ post.title }}<span class="subtidder"> - {{ post.subtidder }}</span>
       </div>
       <div class="meta">
-          {{ post.pub_date }} by {{ post.author }}
+          {{ post.pub_date }} by <span class="link to user profile" routerLink="/u/{{ post.author }}">{{ post.author }}</span>
       </div>
   </div>
   <div class="content">
@@ -43,3 +35,8 @@
         (click)="navigateToPage($event.target.innerText)"
         [class.active]="page == currentPage">{{ page }}</a>
 </div>
+
+<app-error-message *ngIf="isLoaded && !posts.length"
+    header="There doesn't seem to be any posts at the moment."
+    message="Is the website dead?">
+</app-error-message>

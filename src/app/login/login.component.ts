@@ -3,6 +3,7 @@ import { User } from '../models/user';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { SubtidderService } from '../services/subtidder.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,12 @@ export class LoginComponent implements OnInit {
   @ViewChild('usernameInput') usernameInput: ElementRef;
   userData = new User();
 
-  constructor(private authService: AuthService, private router: Router, private subtidderService: SubtidderService) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private subtidderService: SubtidderService,
+    private userService: UserService
+  ) { }
 
   ngOnInit() {
     this.usernameInput.nativeElement.focus();
@@ -28,6 +34,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('id', res.id);
         localStorage.setItem('name', res.fullname);
         this.subtidderService.updateSubscriptions();
+        this.userService.updateUsername();
         this.router.navigate(['']);
       },
       err => {
