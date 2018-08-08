@@ -5,7 +5,7 @@
                 <img src="{{ imageSource }}" alt="profile picture">
             </div>
             <div class="content">
-                <div class="header">{{ user.first_name }} {{ user.last_name }}</div>
+                <div class="header">{{ user.full_name }}</div>
                 <div class="meta">{{ user.username }}</div>
                 <div class="description">Contact at {{ user.email }}.</div>
                 <div class="extra">Joined {{ user.join_date }}</div>

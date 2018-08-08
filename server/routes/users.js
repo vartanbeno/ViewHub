@@ -26,7 +26,7 @@ function verifyToken(req, res, next) {
 users.get('/all', verifyToken, (req, res) => {
     db.query(`
     SELECT
-    CONCAT(first_name, ' ', last_name) as full_name, email, username, join_date
+    CONCAT(first_name, ' ', last_name) as full_name, email, username, join_date, ENCODE(image, 'escape') as image
     FROM users;`, (error, result) => {
         if (error) {
             console.log(error);
@@ -45,7 +45,7 @@ users.get('/all', verifyToken, (req, res) => {
 users.get('/u/:username', (req, res) => {
     let { username } = req.params;
     db.query(`
-    SELECT id, first_name, last_name, email, username, join_date,
+    SELECT id, CONCAT(first_name, ' ', last_name) as full_name, email, username, join_date,
     ENCODE(image, 'escape') as base64
     FROM users WHERE username = $1;`, [username], (error, result) => {
         if (error) {
