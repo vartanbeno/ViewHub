@@ -23,6 +23,7 @@ import { FooterComponent } from './footer/footer.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ErrorMessageComponent } from './error-message/error-message.component';
 import { ListOfPostsComponent } from './list-of-posts/list-of-posts.component';
+import { SubtidderComponent } from './subtidder/subtidder.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { ListOfPostsComponent } from './list-of-posts/list-of-posts.component';
     UserProfileComponent,
     ErrorMessageComponent,
     ListOfPostsComponent,
+    SubtidderComponent,
   ],
   imports: [
     BrowserModule,
