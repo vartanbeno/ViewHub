@@ -98,4 +98,17 @@ users.post('/u/:username/pic', (req, res) => {
     })
 })
 
+users.delete('/u/:username/pic', (req, res) => {
+    let { username } = req.params;
+    db.query(`UPDATE users SET image = NULL WHERE username = $1;`, [username], (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+        else {
+            return res.status(200).send({ success: 'Successfully deleted profile picture.' });
+        }
+    })
+})
+
 module.exports = users;

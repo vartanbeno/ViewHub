@@ -35,4 +35,8 @@ export class UserService {
     return this.http.post<any>(`${this.userUrl}${username}/pic`, { base64: base64String });
   }
 
+  deleteProfilePicture(username: string) {
+    return this.http.delete<any>(`${this.userUrl}${username}/pic`);
+  }
+
 }

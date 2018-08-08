@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -11,18 +11,21 @@ export class UserProfileComponent implements OnInit {
 
   user = {};
   username: string;
+  loggedInUserId: string;
+  loggedInUsername: string;
 
   base64String: string;
   imageSource: string;
+  defaultImageSource: string = 'assets/images/default.png';
 
   userDoesNotExist: boolean = false;
   isLoaded: boolean = false;
+  isOwnProfile = false;
 
   constructor(
     private userService: UserService,
     private router: Router,
-    private route: ActivatedRoute,
-    private renderer: Renderer
+    private route: ActivatedRoute
   ) {
     this.username = this.route.snapshot.paramMap.get('username');
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -36,8 +39,8 @@ export class UserProfileComponent implements OnInit {
     this.userService.getUser(this.username).subscribe(
       res => {
         this.user = res.user;
-        this.imageSource = (this.user['base64']) ? 'data:image/png;base64,' + this.user['base64'] : 'assets/images/default.png';
-        this.isLoaded = true;
+        this.imageSource = (this.user['base64']) ? 'data:image/png;base64,' + this.user['base64'] : this.defaultImageSource;
+        this.getLoggedInUsername();
       },
       err => {
         console.log(err);
@@ -70,6 +73,40 @@ export class UserProfileComponent implements OnInit {
 
       fr.readAsDataURL(file);
     }
+
+    event.target['value'] = '';
+  }
+
+  getLoggedInUsername() {
+    this.loggedInUserId = localStorage.getItem('id');
+    this.userService.getUsername(this.loggedInUserId).subscribe(
+      res => {
+        this.loggedInUsername = res;
+        if (this.loggedInUsername === this.username) {
+          this.isOwnProfile = true;
+        }
+        this.isLoaded = true;
+      },
+      err => console.log(err)
+    )
+  }
+
+  deleteProfilePicture() {
+    if (this.imageSource === this.defaultImageSource) {
+      alert('You do not have a profile picture set.');
+      return;
+    }
+
+    let confirmDelete = confirm('Are you sure you want to delete your profile picture?');
+    if (!confirmDelete) return;
+    
+    this.userService.deleteProfilePicture(this.username).subscribe(
+      res => {
+        console.log(res);
+        this.imageSource = 'assets/images/default.png';
+      },
+      err => console.log(err)
+    )
   }
 
 }
