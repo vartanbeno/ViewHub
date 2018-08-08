@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SubtidderService } from '../services/subtidder.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-subtidder',
@@ -7,7 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SubtidderComponent implements OnInit {
 
-  constructor() { }
+  subtidder: string;
+
+  constructor(
+    private subtidderService: SubtidderService,
+    private route: ActivatedRoute
+  ) {
+    this.subtidder = this.route.snapshot.paramMap.get('subtidder');
+  }
 
   ngOnInit() {
   }

@@ -15,6 +15,7 @@ export class ListOfPostsComponent implements OnInit {
 
   @Input() componentName: string;
   @Input() username?: string;
+  @Input() subtidder?: string;
 
   posts: Array<any> = [];
   pages: Array<number> = [];
@@ -61,6 +62,15 @@ export class ListOfPostsComponent implements OnInit {
         })
         break;
 
+      case 'SubtidderComponent':
+        this.getSubtidderPostsCount();
+        this.getSubtidderPosts();
+
+        this.postService.postDelete_Observable.subscribe(res => {
+          this.getSubtidderPostsCount();
+          this.getSubtidderPosts();
+        })
+
       default:
         console.log("There's something wrong...");
 
@@ -68,20 +78,7 @@ export class ListOfPostsComponent implements OnInit {
   }
 
   navigateToPage(pageNumber: number) {
-    switch(this.componentName) {
-
-      case 'HomeComponent':
-        this.router.navigate([''], { queryParams: { page: pageNumber } });
-        break;
-
-      case 'UserProfileComponent':
-        this.router.navigate([this.router.url.split('?')[0]], { queryParams: { page: pageNumber } });
-        break;
-
-      default:
-        console.log("There's something wrong...");
-
-    }
+    this.router.navigate([this.router.url.split('?')[0]], { queryParams: { page: pageNumber } });
   }
 
   setPostToDelete(post: Post) {
@@ -162,7 +159,40 @@ export class ListOfPostsComponent implements OnInit {
       res => {
         let numberOfPages = Math.ceil(res / 10);
         this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
-      }
+      },
+      err => console.log(err)
+    )
+  }
+
+  getSubtidderPosts() {
+    if (this.currentPage < 1 || !Number.isInteger(Number(this.currentPage))) {
+      this.currentPage = 1;
+      this.router.navigate([''], { queryParams: { page: this.currentPage } });
+      return;
+    }
+    let pageOffset = (this.currentPage - 1).toString()
+    this.postService.getPostsFromSubtidder(this.subtidder, pageOffset).subscribe(
+      res => {
+        this.posts = res;
+        this.postService.allPosts = this.posts;
+        this.postService.homeLoaded = true;
+        if (!this.posts.length && this.currentPage != 1) {
+          let maxPage = this.pages[this.pages.length - 1];
+          this.currentPage = (this.currentPage > maxPage) ? maxPage : 1;
+          this.router.navigate([`t/${this.subtidder}`], { queryParams: { page: this.currentPage } });
+        }
+      },
+      err => console.log(err)
+    )
+  }
+
+  getSubtidderPostsCount() {
+    this.postService.countPostsFromSubtidder(this.subtidder).subscribe(
+      res => {
+        let numberOfPages = Math.ceil(res / 10);
+        this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
+      },
+      err => console.log(err)
     )
   }
 

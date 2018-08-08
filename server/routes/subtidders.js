@@ -73,4 +73,22 @@ t.get('/:subtidder', (req, res) => {
     })
 })
 
+t.get('/:subtidder/count', (req, res) => {
+    let { subtidder } = req.params;
+
+    db.query(`
+    SELECT COUNT(*) FROM
+    posts INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
+    WHERE subtidders.name = $1;
+    `, [subtidder], (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+        else {
+            return res.status(200).send(result.rows[0].count);
+        }
+    })
+})
+
 module.exports = t;
