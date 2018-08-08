@@ -37,11 +37,16 @@
         </div>
         <div class="content extra">
             read more...
-            <span *ngIf="authService.loggedIn() && post.author_id == authService.getId()" class="right floated">
+            <span *ngIf="isOwnProfile" class="right floated">
                 <i class="large black edit alternate outline icon" (click)="setPostToEdit(post)"></i>
                 <i class="large black trash alternate outline icon" (click)="setPostToDelete(post)"></i>
             </span>
         </div>
+    </div>
+
+    <div *ngIf="isOwnProfile">
+        <app-edit-post></app-edit-post>
+        <app-delete-post></app-delete-post>
     </div>
 
     <app-error-message *ngIf="!posts.length && isOwnProfile"

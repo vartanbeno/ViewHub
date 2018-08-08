@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { PostService } from '../services/post.service';
+import { Post } from '../models/post';
+declare var $: any;
 
 @Component({
   selector: 'app-user-profile',
@@ -27,7 +29,7 @@ export class UserProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private authService: AuthService,
+    private postService: PostService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -37,6 +39,9 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit() {
     this.getUserInfo();
+    this.postService.postDelete_Observable.subscribe(res => {
+      this.getUserPosts();
+    })
   }
 
   getUserInfo() {
@@ -121,6 +126,25 @@ export class UserProfileComponent implements OnInit {
       },
       err => console.log(err)
     )
+  }
+
+  setPostToDelete(post: Post) {
+    this.postService.setPostToDelete(post);
+    $('#deletepost')
+      .modal({
+        transition: 'vertical flip'
+      })
+      .modal('show');
+  }
+
+  setPostToEdit(post: Post) {
+    this.postService.setPostToEdit(post);
+    $('#editpost')
+      .modal({
+        transition: 'slide down',
+        autofocus: false
+      })
+      .modal('show');
   }
 
 }
