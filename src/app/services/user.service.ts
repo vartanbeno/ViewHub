@@ -39,8 +39,12 @@ export class UserService {
     return this.http.delete<any>(`${this.userUrl}${username}/pic`);
   }
 
-  getUserPosts(username: string) {
-    return this.http.get<any>(`${this.userUrl}${username}/posts`);
+  getUserPosts(username: string, offset: string) {
+    return this.http.get<any>(`${this.userUrl}${username}/posts`, { params: { offset: offset } });
+  }
+
+  getUserPostCount(username: string) {
+    return this.http.get<any>(`${this.userUrl}${username}/posts/count`);
   }
 
 }

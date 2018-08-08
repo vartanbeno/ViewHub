@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/cor
 import { AuthService } from '../services/auth.service';
 import { PostService } from '../services/post.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Post } from '../models/post';
 declare var $: any;
 
 @Component({
@@ -87,29 +86,6 @@ export class HomeComponent implements OnInit {
       },
       err => console.log(err)
     )
-  }
-
-  navigateToPage(pageNumber: number) {
-    this.router.navigate([''], { queryParams: { page: pageNumber } })
-  }
-
-  setPostToDelete(post: Post) {
-    this.postService.setPostToDelete(post);
-    $('#deletepost')
-        .modal({
-          transition: 'vertical flip'
-        })
-        .modal('show');
-  }
-
-  setPostToEdit(post: Post) {
-    this.postService.setPostToEdit(post);
-    $('#editpost')
-        .modal({
-          transition: 'slide down',
-          autofocus: false
-        })
-        .modal('show');
   }
 
 }

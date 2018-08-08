@@ -1,0 +1,32 @@
+<div *ngIf="authService.loggedIn()">
+  <app-add-post></app-add-post>
+  <app-edit-post></app-edit-post>
+  <app-delete-post></app-delete-post>
+</div>
+
+<div class="ui fluid black card" *ngFor="let post of posts; let i = index">
+  <div class="content">
+    <div class="header">
+      {{ post.title }}
+    </div>
+    <div class="meta">
+      {{ post.pub_date }} by
+      <span class="link to user profile" routerLink="/u/{{ post.author }}">{{ post.author }}</span>
+      <span class="ui right floated subtidder">{{ post.subtidder }}</span>
+    </div>
+  </div>
+  <div class="content">
+    <p>{{ post.content }}</p>
+  </div>
+  <div class="content extra">
+    read more...
+    <span *ngIf="authService.loggedIn() && post.author_id == authService.getId()" class="right floated">
+      <i class="large black edit alternate outline icon" (click)="setPostToEdit(post)"></i>
+      <i class="large black trash alternate outline icon" (click)="setPostToDelete(post)"></i>
+    </span>
+  </div>
+</div>
+
+<div class="ui right floated pagination menu" *ngIf="posts.length">
+  <a class="item" *ngFor="let page of pages" (click)="navigateToPage($event.target.innerText)" [class.active]="page == currentPage">{{ page }}</a>
+</div>

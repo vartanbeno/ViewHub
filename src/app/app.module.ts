@@ -22,6 +22,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ErrorMessageComponent } from './error-message/error-message.component';
+import { ListOfPostsComponent } from './list-of-posts/list-of-posts.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { ErrorMessageComponent } from './error-message/error-message.component';
     FooterComponent,
     UserProfileComponent,
     ErrorMessageComponent,
+    ListOfPostsComponent,
   ],
   imports: [
     BrowserModule,

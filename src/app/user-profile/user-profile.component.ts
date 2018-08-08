@@ -22,6 +22,8 @@ export class UserProfileComponent implements OnInit {
   defaultImageSource: string = 'assets/images/default.png';
 
   posts: Array<any> = [];
+  pages: Array<number> = [];
+  currentPage: number;
 
   userDoesNotExist: boolean = false;
   isLoaded: boolean = false;
@@ -34,12 +36,17 @@ export class UserProfileComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.username = this.route.snapshot.paramMap.get('username');
+    this.route.queryParams.subscribe(params => this.currentPage = params.page);
+    this.currentPage = (!this.currentPage) ? 1 : this.currentPage;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit() {
+    this.getUserPostCount();
     this.getUserInfo();
+    
     this.postService.postDelete_Observable.subscribe(res => {
+      this.getUserPostCount();
       this.getUserPosts();
     })
   }
@@ -119,12 +126,32 @@ export class UserProfileComponent implements OnInit {
   }
 
   getUserPosts() {
-    this.userService.getUserPosts(this.username).subscribe(
+    if (this.currentPage < 1 || !Number.isInteger(Number(this.currentPage))) {
+      this.currentPage = 1;
+      this.router.navigate([`u/${this.username}`], { queryParams: { page: this.currentPage } });
+      return;
+    }
+    let pageOffset = (this.currentPage - 1).toString();
+    this.userService.getUserPosts(this.username, pageOffset).subscribe(
       res => {
         this.posts = res;
         this.isLoaded = true;
+        if (!this.posts.length && this.currentPage != 1) {
+          let maxPage = this.pages[this.pages.length - 1];
+          this.currentPage = (this.currentPage > maxPage) ? maxPage : 1;
+          this.router.navigate([`u/${this.username}`], { queryParams: { page: this.currentPage } });
+        }
       },
       err => console.log(err)
+    )
+  }
+
+  getUserPostCount() {
+    this.userService.getUserPostCount(this.username).subscribe(
+      res => {
+        let numberOfPages = Math.ceil(res / 10);
+        this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
+      }
     )
   }
 
