@@ -26,7 +26,10 @@ export class PostService {
   public postEdit_Observable = new Subject();
 
   public allPosts: Array<any>;
+  public subtidderPosts: Array<any>;
+
   public homeLoaded = false;
+  public subtidderLoaded = false;
 
   constructor(private http: HttpClient) { }
 

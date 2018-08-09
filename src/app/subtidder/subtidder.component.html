@@ -1,2 +1,10 @@
-<h1>{{ subtidder }}</h1>
+<div *ngIf="postService.subtidderLoaded">
+    <h1>{{ subtidder }}</h1>
+</div>
+
 <app-list-of-posts [componentName]="this.constructor.name" [subtidder]="subtidder"></app-list-of-posts>
+
+<app-error-message *ngIf="postService.subtidderLoaded && !postService.subtidderPosts?.length"
+     header="There doesn't seem to be any posts on /t/{{ subtidder }} at the moment."
+     message="You can change that!">
+</app-error-message>

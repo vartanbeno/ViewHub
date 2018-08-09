@@ -70,6 +70,7 @@ export class ListOfPostsComponent implements OnInit {
           this.getSubtidderPostsCount();
           this.getSubtidderPosts();
         })
+        break;
 
       default:
         console.log("There's something wrong...");
@@ -174,8 +175,8 @@ export class ListOfPostsComponent implements OnInit {
     this.postService.getPostsFromSubtidder(this.subtidder, pageOffset).subscribe(
       res => {
         this.posts = res;
-        this.postService.allPosts = this.posts;
-        this.postService.homeLoaded = true;
+        this.postService.subtidderPosts = this.posts;
+        this.postService.subtidderLoaded = true;
         if (!this.posts.length && this.currentPage != 1) {
           let maxPage = this.pages[this.pages.length - 1];
           this.currentPage = (this.currentPage > maxPage) ? maxPage : 1;
