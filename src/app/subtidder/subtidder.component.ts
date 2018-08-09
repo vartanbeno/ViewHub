@@ -12,7 +12,7 @@ declare var $: any;
 export class SubtidderComponent implements OnInit {
 
   subtidder: string;
-  @ViewChild('addPostSubtidderButton') addPostSubtidderButton: ElementRef;
+  @ViewChild('addPostToSubtidderButton') addPostToSubtidderButton: ElementRef;
 
   constructor(
     private postService: PostService,
@@ -29,8 +29,8 @@ export class SubtidderComponent implements OnInit {
 
   ngAfterViewInit() {
     if (this.authService.loggedIn()) {
-      this.renderer.listen(this.addPostSubtidderButton.nativeElement, 'click', (event) => {
-        $('#addpost')
+      this.renderer.listen(this.addPostToSubtidderButton.nativeElement, 'click', (event) => {
+        $('#addposttosubtidder')
           .modal({
             transition: 'slide down',
             autofocus: false

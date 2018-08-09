@@ -1,6 +1,7 @@
 <h2  *ngIf="authService.loggedIn()" [hidden]="!postService.homeLoaded">
     Hello, {{ authService.getName() }}.
     <button class="ui positive right floated right labeled icon button" #addPostButton>Add Post<i class="plus icon"></i></button>
+    <app-add-post></app-add-post>
 </h2>
 
 <app-list-of-posts [componentName]="this.constructor.name"></app-list-of-posts>

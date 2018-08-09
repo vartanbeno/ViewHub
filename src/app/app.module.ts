@@ -25,6 +25,7 @@ import { ErrorMessageComponent } from './error-message/error-message.component';
 import { ListOfPostsComponent } from './list-of-posts/list-of-posts.component';
 import { SubtidderComponent } from './subtidder/subtidder.component';
 import { LoaderComponent } from './loader/loader.component';
+import { AddPostToSubtidderComponent } from './add-post-to-subtidder/add-post-to-subtidder.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { LoaderComponent } from './loader/loader.component';
     ListOfPostsComponent,
     SubtidderComponent,
     LoaderComponent,
+    AddPostToSubtidderComponent,
   ],
   imports: [
     BrowserModule,
