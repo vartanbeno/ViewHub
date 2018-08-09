@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 
@@ -13,9 +13,13 @@ export class UsersComponent implements OnInit {
   users: Array<any> = [];
   defaultImageSource: string = 'assets/images/default.png';
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
+    this.userService.listOfUsersLoaded = false;
     this.getAllUsers();
   }
 
@@ -26,6 +30,7 @@ export class UsersComponent implements OnInit {
         this.users.forEach((user) => {
           user.image = (user.image) ? 'data:image/png;base64,' + user.image : this.defaultImageSource;
         })
+        this.userService.listOfUsersLoaded = true;
       },
       err => {
         if (err instanceof HttpErrorResponse) {

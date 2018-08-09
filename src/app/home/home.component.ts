@@ -19,14 +19,14 @@ export class HomeComponent implements OnInit {
     private postService: PostService,
     private renderer: Renderer,
   ) {
-    this.postService.homeLoaded = false;
   }
 
   ngOnInit() {
+    this.postService.homeLoaded = false;
   }
 
   ngAfterViewInit() {
-    if (this.authService.loggedIn()) {
+    if (this.authService.loggedIn() && this.postService.homeLoaded) {
       this.renderer.listen(this.addPostButton.nativeElement, 'click', (event) => {
         $('#addpost')
             .modal({

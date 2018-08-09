@@ -30,10 +30,10 @@ export class UserProfileComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.username = this.route.snapshot.paramMap.get('username');
-    this.userService.profileLoaded = false;
   }
 
   ngOnInit() {
+    this.userService.profileLoaded = false;
     this.getUserInfo();
   }
 
