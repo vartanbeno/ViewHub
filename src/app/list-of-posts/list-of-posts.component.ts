@@ -66,6 +66,11 @@ export class ListOfPostsComponent implements OnInit {
         this.getSubtidderPostsCount();
         this.getSubtidderPosts();
 
+        this.postService.postAdded_Observable.subscribe(res => {
+          this.getSubtidderPostsCount();
+          this.getSubtidderPosts();
+        })
+
         this.postService.postDelete_Observable.subscribe(res => {
           this.getSubtidderPostsCount();
           this.getSubtidderPosts();
