@@ -35,6 +35,7 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
     this.userService.profileLoaded = false;
     this.getUserInfo();
+    this.getLoggedInUsername();
   }
 
   getUserInfo() {
@@ -42,7 +43,6 @@ export class UserProfileComponent implements OnInit {
       res => {
         this.user = res.user;
         this.imageSource = (this.user['base64']) ? 'data:image/png;base64,' + this.user['base64'] : this.defaultImageSource;
-        this.getLoggedInUsername();
       },
       err => {
         console.log(err);

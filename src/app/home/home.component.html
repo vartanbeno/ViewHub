@@ -1,4 +1,4 @@
-<h2  *ngIf="postService.homeLoaded && authService.loggedIn()">
+<h2  *ngIf="authService.loggedIn()" [hidden]="!postService.homeLoaded">
     Hello, {{ authService.getName() }}.
     <button class="ui positive right floated right labeled icon button" #addPostButton>Add Post<i class="plus icon"></i></button>
 </h2>

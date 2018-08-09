@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PostService } from '../services/post.service';
+import { AuthService } from '../services/auth.service';
+declare var $: any;
 
 @Component({
   selector: 'app-subtidder',
@@ -10,9 +12,12 @@ import { PostService } from '../services/post.service';
 export class SubtidderComponent implements OnInit {
 
   subtidder: string;
+  @ViewChild('addPostSubtidderButton') addPostSubtidderButton: ElementRef;
 
   constructor(
     private postService: PostService,
+    private authService: AuthService,
+    private renderer: Renderer,
     private route: ActivatedRoute
   ) {
     this.subtidder = this.route.snapshot.paramMap.get('subtidder');
@@ -20,6 +25,23 @@ export class SubtidderComponent implements OnInit {
 
   ngOnInit() {
     this.postService.subtidderLoaded = false;
+  }
+
+  ngAfterViewInit() {
+    if (this.authService.loggedIn()) {
+      this.renderer.listen(this.addPostSubtidderButton.nativeElement, 'click', (event) => {
+        $('#addpost')
+          .modal({
+            transition: 'slide down',
+            autofocus: false
+          })
+          .modal('show');
+      })
+    }
+  }
+
+  ngOnDestroy() {
+    this.subtidder = void 0;
   }
 
 }
