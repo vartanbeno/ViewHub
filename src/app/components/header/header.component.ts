@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { SubtidderService } from '../services/subtidder.service';
-import { UserService } from '../services/user.service';
+import { UserService } from '../../services/user.service';
 declare var $: any;
 
 @Component({

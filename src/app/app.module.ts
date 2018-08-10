@@ -5,27 +5,27 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { RegisterComponent } from './register/register.component';
+import { RegisterComponent } from './components/register/register.component';
 import { AuthService } from './services/auth.service';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
 import { PostService } from './services/post.service';
 import { SubtidderService } from './services/subtidder.service';
 import { AuthGuard } from './auth.guard';
 import { TokenInterceptorService } from './services/token-interceptor.service';
-import { UsersComponent } from './users/users.component';
-import { AddPostComponent } from './add-post/add-post.component';
-import { SearchComponent } from './search/search.component';
-import { DeletePostComponent } from './delete-post/delete-post.component';
-import { EditPostComponent } from './edit-post/edit-post.component';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
-import { ErrorMessageComponent } from './error-message/error-message.component';
-import { ListOfPostsComponent } from './list-of-posts/list-of-posts.component';
-import { SubtidderComponent } from './subtidder/subtidder.component';
-import { LoaderComponent } from './loader/loader.component';
-import { AddPostToSubtidderComponent } from './add-post-to-subtidder/add-post-to-subtidder.component';
+import { UsersComponent } from './components/users/users.component';
+import { AddPostComponent } from './components/add-post/add-post.component';
+import { SearchComponent } from './components/search/search.component';
+import { DeletePostComponent } from './components/delete-post/delete-post.component';
+import { EditPostComponent } from './components/edit-post/edit-post.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { ErrorMessageComponent } from './components/error-message/error-message.component';
+import { ListOfPostsComponent } from './components/list-of-posts/list-of-posts.component';
+import { SubtidderComponent } from './components/subtidder/subtidder.component';
+import { LoaderComponent } from './components/loader/loader.component';
+import { AddPostToSubtidderComponent } from './components/add-post-to-subtidder/add-post-to-subtidder.component';
 
 @NgModule({
   declarations: [

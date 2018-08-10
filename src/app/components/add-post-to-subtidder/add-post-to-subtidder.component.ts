@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Post } from '../models/post';
-import { PostService } from '../services/post.service';
+import { Post } from '../../models/post';
+import { PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-add-post-to-subtidder',
