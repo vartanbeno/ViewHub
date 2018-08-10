@@ -30,7 +30,7 @@ export class SubtidderComponent implements OnInit {
   ngAfterViewInit() {
     if (this.authService.loggedIn()) {
       this.renderer.listen(this.addPostToSubtidderButton.nativeElement, 'click', (event) => {
-        $('#addposttosubtidder')
+        $('#addpost')
           .modal({
             transition: 'slide down',
             autofocus: false

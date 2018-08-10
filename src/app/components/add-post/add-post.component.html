@@ -1,5 +1,7 @@
 <div class="ui medium modal" id="addpost">
-    <div class="header">Add Post</div>
+    <div class="header">
+        Add Post<span *ngIf="subtidder"> to <span class="subtidder">/t/</span>{{ postData.subtidder }}</span>
+    </div>
 
     <div class="content">
         <div class="ui form">
@@ -7,7 +9,7 @@
 
             <form #postForm="ngForm" autocomplete="off" (ngSubmit)="submitPost()">
 
-                <div class="field">
+                <div class="field" *ngIf="!subtidder">
                     <label>Subtidder</label>
                     <select class="ui search dropdown"
                             [(ngModel)]="postData.subtidder"
@@ -39,7 +41,7 @@
 
                 <div class="actions">
                     <div class="ui buttons">
-                        <button type="reset" class="ui red cancel button">Cancel</button>
+                        <button type="button" class="ui red cancel button" (click)="makeNewPost()">Cancel</button>
                         <div class="or"></div>
                         <button type="submit" class="ui green ok button" [disabled]="postForm.form.invalid">Submit</button>
                     </div>

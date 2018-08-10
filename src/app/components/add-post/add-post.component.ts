@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Post } from '../../models/post';
 import { PostService } from '../../services/post.service';
 import { SubtidderService } from '../../services/subtidder.service';
@@ -11,13 +11,15 @@ declare var $: any;
 })
 export class AddPostComponent implements OnInit {
 
+  @Input() subtidder: string;
+
   postData: Post;
   subtidders: Array<any> = [];
 
   constructor(private postService: PostService, private subtidderService: SubtidderService) { }
 
   ngOnInit() {
-    this.postData = new Post();
+    this.makeNewPost();
     this.getAllSubtidders();
     $('.ui.dropdown').dropdown();
   }
@@ -27,7 +29,7 @@ export class AddPostComponent implements OnInit {
     this.postService.submitPost(this.postData).subscribe(
       res => {
         this.postService.notifyPostAddition();
-        this.postData = new Post();
+        this.makeNewPost();
       },
       err => console.log(err)
     )
@@ -38,6 +40,11 @@ export class AddPostComponent implements OnInit {
       res => this.subtidders = res,
       err => console.log(err)
     )
+  }
+
+  makeNewPost() {
+    this.postData = new Post();
+    if (this.subtidder) this.postData.subtidder = this.subtidder;
   }
 
 }

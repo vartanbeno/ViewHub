@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div class="ui container main">
-  <router-outlet></router-outlet>
+  <router-outlet (activate)="killModals()"></router-outlet>
 </div>
 
 <app-footer></app-footer>
