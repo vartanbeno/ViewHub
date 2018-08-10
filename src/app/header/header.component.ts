@@ -19,7 +19,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   username: string;
 
   constructor(
-    private subtidderService: SubtidderService,
     private userService: UserService,
     private authService: AuthService,
     private router: Router
@@ -44,7 +43,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   getSubscriptions() {
     this.id = localStorage.getItem('id');
-    this.subtidderService.getSubscriptions(this.id).subscribe(
+    this.userService.getSubscriptions(this.id).subscribe(
       res => {
         this.subscriptions = res;
         this.activateDropdowns();

@@ -54,6 +54,17 @@ t.get('/all/count', (req, res) => {
     })
 })
 
+t.get('/all/countSubtidders', (req, res) => {
+    db.query(`SELECT COUNT(*) FROM subtidders`, (error, result) => {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            return res.status(200).send(result.rows[0].count);
+        }
+    })
+})
+
 t.get('/:subtidder', (req, res) => {
     let { subtidder } = req.params;
 

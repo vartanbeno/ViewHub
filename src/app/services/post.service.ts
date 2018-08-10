@@ -12,9 +12,9 @@ export class PostService {
   private subtidderUrl = 'http://localhost:3000/t';
 
   private allPostsUrl = 'http://localhost:3000/t/all';
-  private countAllPostsUrl = 'http://localhost:3000/t/all/count/';
+  private countAllPostsUrl = 'http://localhost:3000/t/all/count';
 
-  private searchPostsUrl = 'http://localhost:3000/search/posts/';
+  private searchPostsUrl = 'http://localhost:3000/search/posts';
 
   public postToBeDeleted: Post;
   public postToBeEdited: Post;
