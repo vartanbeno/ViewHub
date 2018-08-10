@@ -43,6 +43,28 @@ t.get('/all', (req, res) => {
     })
 })
 
+t.get('/all/count', (req, res) => {
+    db.query(`SELECT COUNT(*) FROM posts`, (error, result) => {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            return res.status(200).send(result.rows[0].count);
+        }
+    })
+})
+
+t.get('/all/countSubtidders', (req, res) => {
+    db.query(`SELECT COUNT(*) FROM subtidders`, (error, result) => {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            return res.status(200).send(result.rows[0].count);
+        }
+    })
+})
+
 t.get('/:subtidder', (req, res) => {
     let { subtidder } = req.params;
 
@@ -87,6 +109,88 @@ t.get('/:subtidder/count', (req, res) => {
         }
         else {
             return res.status(200).send(result.rows[0].count);
+        }
+    })
+})
+
+t.post('/:subtidder/add', (req, res) => {
+    let { title, content, userId } = req.body;
+    title = title.replace(/'/g, "''");
+    content = content.replace(/'/g, "''");
+
+    let { subtidder } = req.params;
+
+    db.query(`
+    INSERT INTO posts (title, content, author_id, subtidder_id)
+    SELECT $1, $2, $3, s.id
+    FROM (SELECT id FROM subtidders WHERE name = $4) s;`,
+    [title, content, userId, subtidder],
+    (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+        else {
+            return res.status(200).json('OK');
+        }
+    })
+})
+
+t.post('/:subtidder/:id/edit', (req, res) => {
+    let { content } = req.body;
+    let { subtidder, id } = req.params;
+
+    /**
+     * We could very well just do:
+     * UPDATE posts SET content = 'test' WHERE id = 43
+     * But I felt like going the more complicated route.
+     */
+    db.query(`
+    UPDATE posts
+    SET content = $1
+    WHERE id = $2
+    AND id IN
+        (SELECT posts.id
+        FROM posts INNER JOIN subtidders
+        ON posts.subtidder_id = subtidders.id
+        WHERE subtidders.name = $3)
+    `, [content, id, subtidder], (error, result) => {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            if (!result.rowCount) {
+                return res.status(404).json('Post not found.');
+            }
+            else {
+                return res.status(200).json('Post edited.');
+            }
+        }
+    })
+})
+
+t.delete('/:subtidder/:id/delete', (req, res) => {
+    let { subtidder, id } = req.params;
+    
+    db.query(`
+    DELETE FROM posts
+    WHERE id = $1
+    AND id IN
+        (SELECT posts.id AS id
+        FROM posts INNER JOIN subtidders
+        ON posts.subtidder_id = subtidders.id
+        WHERE subtidders.name = $2)
+    `, [id, subtidder], (error, result) => {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            if (!result.rowCount) {
+                return res.status(404).json('Post not found.');
+            }
+            else {
+                return res.status(200).json('Post deleted.');
+            }
         }
     })
 })

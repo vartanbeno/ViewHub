@@ -9,8 +9,7 @@ search.get('/subtidders', (req, res) => {
 
     db.query(`
     SELECT name, description, creation_date FROM subtidders
-    WHERE to_tsvector('english', name || ' ' || description)
-    @@ to_tsquery('english', $1);
+    WHERE tokens @@ to_tsquery('english', $1);
     `, [s], (error, result) => {
         if (error) {
             console.log(error);
@@ -32,8 +31,7 @@ search.get('/posts', (req, res) => {
 
     db.query(`
     SELECT title, content, pub_date FROM posts
-    WHERE to_tsvector('english', title || ' ' || content)
-    @@ to_tsquery('english', $1);
+    WHERE tokens @@ to_tsquery('english', $1);
     `, [s], (error, result) => {
         if (error) {
             console.log(error);

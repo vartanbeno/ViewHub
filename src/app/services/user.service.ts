@@ -8,8 +8,10 @@ import { Subject } from 'rxjs';
 export class UserService {
 
   private allUsersUrl = 'http://localhost:3000/users/all';
-  private userUrl = 'http://localhost:3000/users/u/';
-  private usernameUrl = 'http://localhost:3000/users/u/id/';
+  private userUrl = 'http://localhost:3000/users/u';
+  private usernameUrl = 'http://localhost:3000/users/u/id';
+
+  private subscriptionsUrl = 'http://localhost:3000/subscriptions';
 
   public authentication_Observable = new Subject();
 
@@ -25,27 +27,31 @@ export class UserService {
   }
 
   getUser(username: string) {
-    return this.http.get<any>(`${this.userUrl}${username}`);
+    return this.http.get<any>(`${this.userUrl}/${username}`);
+  }
+
+  getSubscriptions(id: string) {
+    return this.http.get<any>(`${this.subscriptionsUrl}/${id}`);
   }
 
   getUsername(id: string) {
-    return this.http.get<any>(`${this.usernameUrl}${id}`);
+    return this.http.get<any>(`${this.usernameUrl}/${id}`);
   }
 
   updateProfilePicture(username: string, base64String: string) {
-    return this.http.post<any>(`${this.userUrl}${username}/pic`, { base64: base64String });
+    return this.http.post<any>(`${this.userUrl}/${username}/pic`, { base64: base64String });
   }
 
   deleteProfilePicture(username: string) {
-    return this.http.delete<any>(`${this.userUrl}${username}/pic`);
+    return this.http.delete<any>(`${this.userUrl}/${username}/pic`);
   }
 
   getUserPosts(username: string, offset: string) {
-    return this.http.get<any>(`${this.userUrl}${username}/posts`, { params: { offset: offset } });
+    return this.http.get<any>(`${this.userUrl}/${username}/posts`, { params: { offset: offset } });
   }
 
   getUserPostCount(username: string) {
-    return this.http.get<any>(`${this.userUrl}${username}/posts/count`);
+    return this.http.get<any>(`${this.userUrl}/${username}/posts/count`);
   }
 
   notifyLoginOrSignup() {

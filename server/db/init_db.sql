@@ -80,9 +80,9 @@ INSERT INTO subscriptions (user_id, subtidder_id) VALUES
     (5, 1), (5, 2), (5, 5);
 
 UPDATE subtidders s1
-    SET tokens = to_tsvector(CONCAT(s1.name, ' ', s1.description))
+    SET tokens = to_tsvector('english', s1.name || ' ' || s1.description)
     FROM subtidders s2;
 
 UPDATE posts p1
-    SET tokens = to_tsvector(CONCAT(p1.title, ' ', p1.content))
+    SET tokens = to_tsvector('english', p1.title || ' ' || p1.content)
     FROM posts p2;
