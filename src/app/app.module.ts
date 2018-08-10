@@ -44,7 +44,6 @@ import { LoaderComponent } from './components/loader/loader.component';
     ListOfPostsComponent,
     SubtidderComponent,
     LoaderComponent,
-    AddPostToSubtidderComponent,
   ],
   imports: [
     BrowserModule,
