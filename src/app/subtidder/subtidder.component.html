@@ -1,6 +1,6 @@
 <h2 [hidden]="!postService.subtidderLoaded">
     <span class="subtidder">/t/</span>{{ subtidder }}
-    <button class="ui positive right floated right labeled icon button" #addPostToSubtidderButton>Add Post<i class="plus icon"></i></button>
+    <button *ngIf="authService.loggedIn()" class="ui positive right floated right labeled icon button" #addPostToSubtidderButton>Add Post<i class="plus icon"></i></button>
     <app-add-post-to-subtidder [subtidder]="subtidder"></app-add-post-to-subtidder>
 </h2>
 
