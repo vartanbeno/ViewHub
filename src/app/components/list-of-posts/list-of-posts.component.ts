@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PostService } from '../services/post.service';
-import { AuthService } from '../services/auth.service';
+import { PostService } from '../../services/post.service';
+import { AuthService } from '../../services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Post } from '../models/post';
-import { UserService } from '../services/user.service';
+import { Post } from '../../models/post';
+import { UserService } from '../../services/user.service';
 declare var $: any;
 
 @Component({
