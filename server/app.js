@@ -21,7 +21,7 @@ app.use('/subscriptions', require('./routes/subscriptions'));
 
 db.query(sql, (err, res) => {
     if (err) {
-        console.log('The tables already exist.');
+        console.log(err);
     }
     else {
         console.log('Tables created.');

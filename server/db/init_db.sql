@@ -44,6 +44,32 @@ CREATE TABLE IF NOT EXISTS subscriptions(
     PRIMARY KEY (user_id, subtidder_id)
 );
 
+CREATE OR REPLACE FUNCTION set_subtidder_tokens() RETURNS TRIGGER AS
+$$
+BEGIN
+    NEW.tokens := to_tsvector('english', NEW.name || ' ' || NEW.description);
+    RETURN NEW;
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION set_post_tokens() RETURNS TRIGGER AS
+$$
+BEGIN
+    NEW.tokens := to_tsvector('english', NEW.title || ' ' || NEW.content);
+    RETURN NEW;
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER set_subtidder_tokens
+BEFORE INSERT OR UPDATE ON subtidders
+    FOR EACH ROW EXECUTE PROCEDURE set_subtidder_tokens();
+
+CREATE TRIGGER set_post_tokens
+BEFORE INSERT OR UPDATE ON posts
+    FOR EACH ROW EXECUTE PROCEDURE set_post_tokens();
+
 INSERT INTO users (first_name, last_name, email, username, password) VALUES
     ('Vartan', 'Benohanian', 'vartabeno@gmail.com', 'vartanbeno', '1234'),
     ('Hello', 'World', 'hello@world.com', 'helloworld', 'hello'),
@@ -78,11 +104,3 @@ INSERT INTO subscriptions (user_id, subtidder_id) VALUES
     (3, 4), (3, 5),
     (4, 2), (4, 3), (4, 4), (4, 5),
     (5, 1), (5, 2), (5, 5);
-
-UPDATE subtidders s1
-    SET tokens = to_tsvector('english', s1.name || ' ' || s1.description)
-    FROM subtidders s2;
-
-UPDATE posts p1
-    SET tokens = to_tsvector('english', p1.title || ' ' || p1.content)
-    FROM posts p2;
