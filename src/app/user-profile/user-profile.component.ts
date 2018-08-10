@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { PostService } from '../services/post.service';
-import { Post } from '../models/post';
+import { ActivatedRoute } from '@angular/router';
 declare var $: any;
 
 @Component({
@@ -21,27 +19,23 @@ export class UserProfileComponent implements OnInit {
   imageSource: string;
   defaultImageSource: string = 'assets/images/default.png';
 
-  posts: Array<any> = [];
+  pages: Array<number> = [];
+  currentPage: number;
 
   userDoesNotExist: boolean = false;
-  isLoaded: boolean = false;
   isOwnProfile = false;
 
   constructor(
     private userService: UserService,
-    private postService: PostService,
-    private router: Router,
     private route: ActivatedRoute
   ) {
     this.username = this.route.snapshot.paramMap.get('username');
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit() {
+    this.userService.profileLoaded = false;
     this.getUserInfo();
-    this.postService.postDelete_Observable.subscribe(res => {
-      this.getUserPosts();
-    })
+    this.getLoggedInUsername();
   }
 
   getUserInfo() {
@@ -49,14 +43,12 @@ export class UserProfileComponent implements OnInit {
       res => {
         this.user = res.user;
         this.imageSource = (this.user['base64']) ? 'data:image/png;base64,' + this.user['base64'] : this.defaultImageSource;
-        this.getLoggedInUsername();
-        this.getUserPosts();
       },
       err => {
         console.log(err);
         if (err.status === 404) {
           this.userDoesNotExist = true;
-          this.isLoaded = true;
+          this.userService.profileLoaded = true;
         }
       }
     )
@@ -116,35 +108,6 @@ export class UserProfileComponent implements OnInit {
       },
       err => console.log(err)
     )
-  }
-
-  getUserPosts() {
-    this.userService.getUserPosts(this.username).subscribe(
-      res => {
-        this.posts = res;
-        this.isLoaded = true;
-      },
-      err => console.log(err)
-    )
-  }
-
-  setPostToDelete(post: Post) {
-    this.postService.setPostToDelete(post);
-    $('#deletepost')
-      .modal({
-        transition: 'vertical flip'
-      })
-      .modal('show');
-  }
-
-  setPostToEdit(post: Post) {
-    this.postService.setPostToEdit(post);
-    $('#editpost')
-      .modal({
-        transition: 'slide down',
-        autofocus: false
-      })
-      .modal('show');
   }
 
 }

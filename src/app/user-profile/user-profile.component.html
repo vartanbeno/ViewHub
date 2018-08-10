@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded && !userDoesNotExist">
+<div *ngIf="userService.profileLoaded && !userDoesNotExist">
     <div class="ui items">
         <div class="item">
             <div class="image">
@@ -20,47 +20,23 @@
         </div>
     </div>
 
-    <h1 class="ui dividing header" *ngIf="posts.length">Posts</h1>
-    <div class="ui fluid black card" *ngFor="let post of posts; let i = index">
-        <div class="content">
-            <div class="header">
-                {{ post.title }}
-                <span class="subtidder"> - {{ post.subtidder }}</span>
-            </div>
-            <div class="meta">
-                {{ post.pub_date }} by
-                <span class="link to user profile" routerLink="/u/{{ post.author }}">{{ post.author }}</span>
-            </div>
-        </div>
-        <div class="content">
-            <p>{{ post.content }}</p>
-        </div>
-        <div class="content extra">
-            read more...
-            <span *ngIf="isOwnProfile" class="right floated">
-                <i class="large black edit alternate outline icon" (click)="setPostToEdit(post)"></i>
-                <i class="large black trash alternate outline icon" (click)="setPostToDelete(post)"></i>
-            </span>
-        </div>
-    </div>
+    <h1 class="ui dividing header">Posts</h1>
 
-    <div *ngIf="isOwnProfile">
-        <app-edit-post></app-edit-post>
-        <app-delete-post></app-delete-post>
-    </div>
-
-    <app-error-message *ngIf="!posts.length && isOwnProfile"
+    <app-error-message *ngIf="!userService.userPosts?.length && isOwnProfile"
         header="You haven't posted anything yet."
         message="Submit a post!">
     </app-error-message>
 
-    <app-error-message *ngIf="!posts.length && !isOwnProfile"
+    <app-error-message *ngIf="!userService.userPosts?.length && !isOwnProfile"
         header="{{ username }} hasn't posted anything yet."
         message="Any day now...">
     </app-error-message>
 </div>
 
-<app-error-message *ngIf="isLoaded && userDoesNotExist"
+<app-list-of-posts [componentName]="this.constructor.name" [username]="username"></app-list-of-posts>
+<app-loader *ngIf="!userService.profileLoaded"></app-loader>
+
+<app-error-message *ngIf="userService.profileLoaded && userDoesNotExist"
     header="This user does not exist."
     message="Try searching for another one!">
 </app-error-message>

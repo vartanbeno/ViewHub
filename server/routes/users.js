@@ -112,6 +112,9 @@ users.delete('/u/:username/pic', (req, res) => {
 })
 
 users.get('/u/:username/posts', (req, res) => {
+    let offset = Number(req.query.offset);
+    offset = (offset) ? offset : 0;
+
     let { username } = req.params;
     db.query(`
     SELECT posts.id, title, content, author_id, username AS author, subtidders.name AS subtidder, pub_date
@@ -120,7 +123,9 @@ users.get('/u/:username/posts', (req, res) => {
     INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
     WHERE username = $1
     ORDER BY pub_date DESC
-    `, [username], (error, result) => {
+    LIMIT 10
+    OFFSET 10 * $2;
+    `, [username, offset], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
@@ -133,6 +138,26 @@ users.get('/u/:username/posts', (req, res) => {
             res.status(200).send(posts);
         }
     })
+})
+
+users.get('/u/:username/posts/count', (req, res) => {
+    let { username } = req.params;
+    db.query(`
+    SELECT COUNT(*)
+    FROM posts
+    LEFT OUTER JOIN users ON (posts.author_id = users.id)
+    INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
+    WHERE username = $1;
+    `, [username], (error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send({ error: 'Something went wrong.' });
+            }
+            else {
+                let numberOfPosts = result.rows[0].count;
+                res.status(200).send(numberOfPosts);
+            }
+        })
 })
 
 module.exports = users;

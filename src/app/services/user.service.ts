@@ -11,7 +11,12 @@ export class UserService {
   private userUrl = 'http://localhost:3000/users/u/';
   private usernameUrl = 'http://localhost:3000/users/u/id/';
 
-  public username_Observable = new Subject();
+  public authentication_Observable = new Subject();
+
+  public userPosts: Array<any>;
+  
+  public profileLoaded: boolean = false;
+  public listOfUsersLoaded: boolean = false;
 
   constructor(private http: HttpClient) { }
 
@@ -27,10 +32,6 @@ export class UserService {
     return this.http.get<any>(`${this.usernameUrl}${id}`);
   }
 
-  updateUsername() {
-    this.username_Observable.next();
-  }
-
   updateProfilePicture(username: string, base64String: string) {
     return this.http.post<any>(`${this.userUrl}${username}/pic`, { base64: base64String });
   }
@@ -39,8 +40,16 @@ export class UserService {
     return this.http.delete<any>(`${this.userUrl}${username}/pic`);
   }
 
-  getUserPosts(username: string) {
-    return this.http.get<any>(`${this.userUrl}${username}/posts`);
+  getUserPosts(username: string, offset: string) {
+    return this.http.get<any>(`${this.userUrl}${username}/posts`, { params: { offset: offset } });
+  }
+
+  getUserPostCount(username: string) {
+    return this.http.get<any>(`${this.userUrl}${username}/posts/count`);
+  }
+
+  notifyLoginOrSignup() {
+    this.authentication_Observable.next();
   }
 
 }

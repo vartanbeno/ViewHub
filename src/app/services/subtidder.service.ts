@@ -11,8 +11,6 @@ export class SubtidderService {
   private allSubtiddersUrl = 'http://localhost:3000/t/';
   private searchSubtiddersUrl = 'http://localhost:3000/search/subtidders';
 
-  public subscriptions_Observable = new Subject();
-
   constructor(private http: HttpClient) { }
 
   getSubscriptions(id: string) {
@@ -21,10 +19,6 @@ export class SubtidderService {
 
   getAllSubtidders() {
     return this.http.get<any>(this.allSubtiddersUrl);
-  }
-
-  updateSubscriptions() {
-    this.subscriptions_Observable.next();
   }
 
   searchSubtidders(searchTerm: string) {

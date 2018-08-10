@@ -14,7 +14,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   id: string;
   subscriptions: Array<any> = [];
-  subscribedToSubtidders: boolean = false;
   @ViewChild('searchBox') searchBox: ElementRef;
 
   username: string;
@@ -32,10 +31,14 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     if (this.authService.loggedIn()) {
       this.getSubscriptions();
-      this.subtidderService.subscriptions_Observable.subscribe(res => this.getSubscriptions());
       this.getUsername();
-      this.userService.username_Observable.subscribe(res => this.getUsername());
     }
+
+    this.userService.authentication_Observable.subscribe(res => {
+      this.getSubscriptions();
+      this.getUsername();
+    });
+    
     this.focusOnSearch();
   }
 
@@ -44,8 +47,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.subtidderService.getSubscriptions(this.id).subscribe(
       res => {
         this.subscriptions = res;
-        if (this.subscriptions.length) this.subscribedToSubtidders = true;
-        $('.ui.dropdown').dropdown();
+        this.activateDropdowns();
       },
       err => console.log(err)
     )
@@ -57,6 +59,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       res => this.username = res,
       err => console.log(err)
     )
+  }
+
+  activateDropdowns() {
+    $('.ui.dropdown').dropdown();
   }
 
   focusOnSearch() {

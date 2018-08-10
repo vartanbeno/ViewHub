@@ -7,6 +7,7 @@ import { UsersComponent } from './users/users.component';
 import { AuthGuard } from './auth.guard';
 import { SearchComponent } from './search/search.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { SubtidderComponent } from './subtidder/subtidder.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'u', component: UsersComponent, canActivate: [AuthGuard] },
   { path: 'u/:username', component: UserProfileComponent, canActivate: [AuthGuard] },
+  { path: 't/:subtidder', component: SubtidderComponent },
   { path: 'search', component: SearchComponent },
 ];
 
