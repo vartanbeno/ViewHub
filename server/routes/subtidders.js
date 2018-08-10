@@ -137,18 +137,23 @@ t.post('/:subtidder/:id/edit', (req, res) => {
     db.query(`
     UPDATE posts
     SET content = $1
-    FROM
-        (SELECT posts.id AS post_id, title, content
+    WHERE id = $2
+    AND id IN
+        (SELECT posts.id
         FROM posts INNER JOIN subtidders
         ON posts.subtidder_id = subtidders.id
-        WHERE subtidders.name = $2) as subtidder_posts
-    WHERE posts.id = $3
-    `, [content, subtidder, id], (error, result) => {
+        WHERE subtidders.name = $3)
+    `, [content, id, subtidder], (error, result) => {
         if (error) {
             console.log(error);
         }
         else {
-            return res.status(200).json('Post edited.');
+            if (!result.rowCount) {
+                return res.status(404).json('Post not found.');
+            }
+            else {
+                return res.status(200).json('Post edited.');
+            }
         }
     })
 })
@@ -169,7 +174,12 @@ t.delete('/:subtidder/:id/delete', (req, res) => {
             console.log(error);
         }
         else {
-            return res.status(200).json('Post deleted.');
+            if (!result.rowCount) {
+                return res.status(404).json('Post not found.');
+            }
+            else {
+                return res.status(200).json('Post deleted.');
+            }
         }
     })
 })
