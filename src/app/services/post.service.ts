@@ -8,13 +8,11 @@ import { Subject } from 'rxjs';
 })
 export class PostService {
   
-  private addPostUrl = 'http://localhost:3000/posts/add/';
-  private deletePostUrl = 'http://localhost:3000/posts/delete/';
-  private editPostUrl = 'http://localhost:3000/posts/edit/';
-  private countPostsUrl = 'http://localhost:3000/posts/count/';
+  // used for adding/editing/deleting posts, and looking at a subtidder
+  private subtidderUrl = 'http://localhost:3000/t';
 
-  private allSubtiddersUrl = 'http://localhost:3000/t/all';
-  private subtidderUrl = 'http://localhost:3000/t/';
+  private allPostsUrl = 'http://localhost:3000/t/all';
+  private countAllPostsUrl = 'http://localhost:3000/t/all/count/';
 
   private searchPostsUrl = 'http://localhost:3000/search/posts/';
 
@@ -34,11 +32,11 @@ export class PostService {
   constructor(private http: HttpClient) { }
 
   getPosts(offset: string) {
-    return this.http.get<any>(this.allSubtiddersUrl, { params: { offset: offset } });
+    return this.http.get<any>(this.allPostsUrl, { params: { offset: offset } });
   }
 
   submitPost(post: Post) {
-    return this.http.post<any>(this.addPostUrl, post);
+    return this.http.post<any>(`${this.subtidderUrl}/${post.subtidder}/add`, post);
   }
 
   notifyPostAddition() {
@@ -46,11 +44,11 @@ export class PostService {
   }
 
   countPosts() {
-    return this.http.get<any>(this.countPostsUrl);
+    return this.http.get<any>(this.countAllPostsUrl);
   }
 
   deletePost() {
-    return this.http.delete<any>(`${this.deletePostUrl}${this.postToBeDeleted.id}`);
+    return this.http.delete<any>(`${this.subtidderUrl}/${this.postToBeDeleted.subtidder}/${this.postToBeDeleted.id}/delete`);
   }
 
   setPostToDelete(post: Post) {
@@ -62,7 +60,7 @@ export class PostService {
   }
 
   editPost(post: Post) {
-    return this.http.post<any>(this.editPostUrl, post);
+    return this.http.post<any>(`${this.subtidderUrl}/${this.postToBeEdited.subtidder}/${this.postToBeEdited.id}/edit`, post);
   }
 
   notifyPostEdition() {
@@ -79,11 +77,11 @@ export class PostService {
   }
 
   getPostsFromSubtidder(subtidder: string, offset: string) {
-    return this.http.get<any>(`${this.subtidderUrl}${subtidder}`, { params: { offset: offset } });
+    return this.http.get<any>(`${this.subtidderUrl}/${subtidder}`, { params: { offset: offset } });
   }
 
   countPostsFromSubtidder(subtidder: string) {
-    return this.http.get<any>(`${this.subtidderUrl}${subtidder}/count`);
+    return this.http.get<any>(`${this.subtidderUrl}/${subtidder}/count`);
   }
 
 }
