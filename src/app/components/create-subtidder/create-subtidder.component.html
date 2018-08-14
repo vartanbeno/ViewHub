@@ -2,17 +2,35 @@
   <div class="column">
     <h2>Create a Subtidder</h2>
 
-    <form class="ui form" #subtidderForm (ngSubmit)="createSubtidder()" autocomplete="off">
+    <form class="ui form" #subtidderForm="ngForm" (ngSubmit)="createSubtidder()" autocomplete="off">
     
       <div class="field">
         <label>Name</label>
-        <input type="text" placeholder="Name" required>
+        <input [(ngModel)]="subtidderData.name"
+                #subtidderNameInput
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Name"
+                pattern=".{3,20}"
+                (input)="nameIsAll = false"
+                required>
+        <div class="ui red pointing label" *ngIf="nameIsAll">
+          This name is not valid.
+        </div>
       </div>
     
       <div class="field">
         <label>Description</label>
-        <textarea placeholder="Description" required></textarea>
+        <textarea [(ngModel)]="subtidderData.description"
+                  name="description"
+                  id="description"
+                  placeholder="Description"
+                  maxlength="500"
+                  required></textarea>
       </div>
+
+      <button class="ui black button" type="submit" [disabled]="subtidderForm.form.invalid">Create</button>
 
     </form>
 
