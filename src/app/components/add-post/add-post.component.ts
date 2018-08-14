@@ -21,7 +21,6 @@ export class AddPostComponent implements OnInit {
   ngOnInit() {
     this.makeNewPost();
     this.getAllSubtidders();
-    $('.ui.dropdown').dropdown();
   }
 
   submitPost() {
@@ -37,7 +36,10 @@ export class AddPostComponent implements OnInit {
 
   getAllSubtidders() {
     this.subtidderService.getAllSubtidders().subscribe(
-      res => this.subtidders = res,
+      res => {
+        this.subtidders = res;
+        $('#select-subtidder').dropdown();
+      },
       err => console.log(err)
     )
   }
