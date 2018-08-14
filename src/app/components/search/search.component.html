@@ -3,7 +3,7 @@
 <div class="ui divided items" *ngIf="subtidders.length">
   <div class="item" *ngFor="let subtidder of subtidders">
     <div class="content">
-      <div class="header">{{ subtidder.name }}</div>
+      <div class="header"><span class="link to subtidder" routerLink="/t/{{ subtidder.name }}">{{ subtidder.name }}</span></div>
       <div class="meta">Created {{ subtidder.creation_date }}</div>
       <div class="description">
         <p>{{ subtidder.description }}</p>
