@@ -16,6 +16,22 @@ t.get('/', (req, res) => {
     })
 })
 
+t.post('/subtidders/create', (req, res) => {
+    let { name, description, creator_id } = req.body;
+
+    db.query(
+    `INSERT INTO subtidders (name, description, creator_id) VALUES ($1, $2, $3);`,
+    [name, description, creator_id], (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+        else {
+            return res.status(200).json('Subtidder created.');
+        }
+    })
+})
+
 t.get('/all', (req, res) => {
     let offset = Number(req.query.offset);
     offset = (offset) ? offset : 0;
@@ -112,6 +128,12 @@ t.get('/:subtidder/count', (req, res) => {
         }
     })
 })
+
+
+
+/**
+ * Adding, editing, and deleting posts below.
+ */
 
 t.post('/:subtidder/add', (req, res) => {
     let { title, content, userId } = req.body;

@@ -8,15 +8,21 @@ import { AuthGuard } from './auth.guard';
 import { SearchComponent } from './components/search/search.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { SubtidderComponent } from './components/subtidder/subtidder.component';
+import { CreateSubtidderComponent } from './components/create-subtidder/create-subtidder.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', redirectTo: '', pathMatch: 'full' },
+
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
+
   { path: 'u', component: UsersComponent, canActivate: [AuthGuard] },
   { path: 'u/:username', component: UserProfileComponent, canActivate: [AuthGuard] },
+
   { path: 't/:subtidder', component: SubtidderComponent },
+  { path: 'subtidders/create', component: CreateSubtidderComponent, canActivate: [AuthGuard] },
+
   { path: 'search', component: SearchComponent },
 ];
 
