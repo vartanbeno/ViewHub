@@ -1,7 +1,7 @@
 <div class="ui top fixed inverted sidebar menu visible">
   <div class="ui container">
     <a class="header item" routerLink="/">Tidder</a>
-    <a class="item">All</a>
+    <a class="item" routerLink="/t/all" routerLinkActive="active">All</a>
     <a class="item" routerLink="/u" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Members</a>
     <div class="ui scrolling dropdown item" *ngIf="authService.loggedIn()">
       My Subtidders
