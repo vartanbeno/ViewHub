@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS subtidders(
     name CITEXT UNIQUE NOT NULL
         CHECK (char_length(name) >= 3 AND char_length(name) <= 20),
     description VARCHAR(500) NOT NULL,
+    creator_id INTEGER REFERENCES users(id)
+        ON DELETE SET NULL,
     creation_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     tokens TSVECTOR
 );
@@ -77,12 +79,12 @@ INSERT INTO users (first_name, last_name, email, username, password) VALUES
     ('Postgres', 'Root', 'postgres@root.com', 'postgres', 'root'),
     ('Test', 'Object', 'test@object.com', 'test', 'test');
 
-INSERT INTO subtidders (name, description) VALUES
-    ('nba', 'Discuss everything NBA related here. Game threads, trades, offseason news, and memes!'),
-    ('AskTidder', 'A place to ask insightful questions.'),
-    ('CSCareerQuestions', 'We encourage good questions breeding discussion about careers in computer science and software engineering.'),
-    ('programming', 'Discuss anything coding-related. If you ask for help, be sure to include some code in your post.'),
-    ('EngineeringStudents', 'A common place for all engineering students to ask questions and give advice.');
+INSERT INTO subtidders (name, description, creator_id) VALUES
+    ('nba', 'Discuss everything NBA related here. Game threads, trades, offseason news, and memes!', 1),
+    ('AskTidder', 'A place to ask insightful questions.', 3),
+    ('CSCareerQuestions', 'We encourage good questions breeding discussion about careers in computer science and software engineering.', 1),
+    ('programming', 'Discuss anything coding-related. If you ask for help, be sure to include some code in your post.', 4),
+    ('EngineeringStudents', 'A common place for all engineering students to ask questions and give advice.', 1);
 
 INSERT INTO posts (title, content, author_id, subtidder_id) VALUES
     ('Test', 'This is a test.', 4, 2),

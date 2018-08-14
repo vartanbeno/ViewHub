@@ -17,11 +17,11 @@ t.get('/', (req, res) => {
 })
 
 t.post('/subtidders/create', (req, res) => {
-    let { name, description } = req.body;
+    let { name, description, creator_id } = req.body;
 
     db.query(
-    `INSERT INTO subtidders (name, description) VALUES ($1, $2);`,
-    [name, description], (error, result) => {
+    `INSERT INTO subtidders (name, description, creator_id) VALUES ($1, $2, $3);`,
+    [name, description, creator_id], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
