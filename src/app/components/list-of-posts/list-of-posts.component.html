@@ -6,7 +6,15 @@
 <div class="ui fluid black card" *ngFor="let post of posts; let i = index">
   <div class="content">
     <div class="header">
-      {{ post.title }}
+      <div class="ui grid">
+        <div class="column fourteen wide">
+          {{ post.title }}
+        </div>
+        <div class="column two wide right aligned" *ngIf="authService.loggedIn() && post.author_id == authService.getId()">
+          <i class="black edit alternate outline icon" (click)="setPostToEdit(post)"></i>
+          <i class="black trash alternate outline icon" (click)="setPostToDelete(post)"></i>
+        </div>
+      </div>
     </div>
     <div class="meta">
       {{ post.pub_date }} by
@@ -16,13 +24,6 @@
   </div>
   <div class="content">
     <p>{{ post.content }}</p>
-  </div>
-  <div class="content extra">
-    read more...
-    <span *ngIf="authService.loggedIn() && post.author_id == authService.getId()" class="right floated">
-      <i class="large black edit alternate outline icon" (click)="setPostToEdit(post)"></i>
-      <i class="large black trash alternate outline icon" (click)="setPostToDelete(post)"></i>
-    </span>
   </div>
 </div>
 
