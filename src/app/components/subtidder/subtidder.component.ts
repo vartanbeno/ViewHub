@@ -2,6 +2,7 @@ import { Component, OnInit, Renderer, ViewChild, ElementRef } from '@angular/cor
 import { ActivatedRoute } from '@angular/router';
 import { PostService } from '../../services/post.service';
 import { AuthService } from '../../services/auth.service';
+import { SubtidderService } from '../../services/subtidder.service';
 declare var $: any;
 
 @Component({
@@ -12,10 +13,12 @@ declare var $: any;
 export class SubtidderComponent implements OnInit {
 
   subtidder: string;
+  subtidderData: Object = {};
   @ViewChild('addPostToSubtidderButton') addPostToSubtidderButton: ElementRef;
 
   constructor(
     private postService: PostService,
+    private subtidderService: SubtidderService,
     private authService: AuthService,
     private renderer: Renderer,
     private route: ActivatedRoute
@@ -24,6 +27,9 @@ export class SubtidderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.subtidderService.subtidderInfo_Observable.subscribe(res => {
+      if (this.subtidder && this.subtidder !== 'all') this.getSubtidderInfo();
+    })
     this.postService.subtidderLoaded = false;
     this.postService.subtidderDoesNotExist = false;
   }
@@ -43,6 +49,13 @@ export class SubtidderComponent implements OnInit {
 
   ngOnDestroy() {
     this.subtidder = void 0;
+  }
+
+  getSubtidderInfo() {
+    this.subtidderService.getSubtidderInfo(this.subtidder).subscribe(
+      res => this.subtidderData = res,
+      err => console.log(err)
+    )
   }
 
 }

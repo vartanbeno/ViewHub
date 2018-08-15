@@ -10,7 +10,7 @@ t.get('/', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            all = result.rows.map(sub => sub.name);
+            let all = result.rows.map(sub => sub.name);
             return res.status(200).send(all);
         }
     })
@@ -138,6 +138,28 @@ t.get('/:subtidder/count', (req, res) => {
         }
         else {
             return res.status(200).send(result.rows[0].count);
+        }
+    })
+})
+
+t.get('/:subtidder/info', (req, res) => {
+    let { subtidder } = req.params;
+
+    db.query(`
+    SELECT name, description, users.username as creator, creation_date
+    FROM subtidders LEFT OUTER JOIN users ON
+    (subtidders.creator_id = users.id)
+    WHERE name = $1
+    `, [subtidder], (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+        else {
+            let subtidderInfo = result.rows[0];
+            subtidderInfo.creator = subtidderInfo.creator || '[deleted]';
+            subtidderInfo.creation_date = moment(subtidderInfo.creation_date, 'MMMM DD YYYY').fromNow();
+            return res.status(200).send(subtidderInfo);
         }
     })
 })
