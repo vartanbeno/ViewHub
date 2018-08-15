@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PostService } from '../../services/post.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-delete-post',
@@ -9,8 +10,12 @@ import { PostService } from '../../services/post.service';
 export class DeletePostComponent implements OnInit {
 
   postId: number;
+  @Input() navigateBackHome?: boolean;
 
-  constructor(private postService: PostService) { }
+  constructor(
+    private postService: PostService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
   }
@@ -19,7 +24,7 @@ export class DeletePostComponent implements OnInit {
     this.postService.deletePost().subscribe(
       res => {
         this.postService.notifyPostDeletion();
-        console.log(res);
+        if (this.navigateBackHome) this.router.navigate(['']);
       },
       err => console.log(err)
     )

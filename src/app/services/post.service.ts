@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Post } from '../models/post';
 import { Subject } from 'rxjs';
+declare var $: any;
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,8 @@ export class PostService {
   private countAllPostsUrl = 'http://localhost:3000/t/all/count';
 
   private searchPostsUrl = 'http://localhost:3000/search/posts';
+
+  private getPostUrl = 'http://localhost:3000/posts';
 
   public postToBeDeleted: Post;
   public postToBeEdited: Post;
@@ -54,6 +57,11 @@ export class PostService {
 
   setPostToDelete(post: Post) {
     this.postToBeDeleted = post;
+    $('#deletepost')
+      .modal({
+        transition: 'vertical flip'
+      })
+      .modal('show');
   }
 
   notifyPostDeletion() {
@@ -70,6 +78,12 @@ export class PostService {
 
   setPostToEdit(post: Post) {
     this.postToBeEdited = post;
+    $('#editpost')
+      .modal({
+        transition: 'slide down',
+        autofocus: false
+      })
+      .modal('show');
     this.notifyPostEdition();
   }
 
@@ -83,6 +97,10 @@ export class PostService {
 
   countPostsFromSubtidder(subtidder: string) {
     return this.http.get<any>(`${this.subtidderUrl}/${subtidder}/count`);
+  }
+
+  getPost(id: string) {
+    return this.http.get<any>(`${this.getPostUrl}/${id}`);
   }
 
 }

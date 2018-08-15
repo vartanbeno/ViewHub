@@ -2,10 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PostService } from '../../services/post.service';
 import { AuthService } from '../../services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Post } from '../../models/post';
 import { UserService } from '../../services/user.service';
 import { SubtidderService } from '../../services/subtidder.service';
-declare var $: any;
 
 @Component({
   selector: 'app-list-of-posts',
@@ -89,25 +87,6 @@ export class ListOfPostsComponent implements OnInit {
     this.router.navigate([this.router.url.split('?')[0]], { queryParams: { page: pageNumber } });
   }
 
-  setPostToDelete(post: Post) {
-    this.postService.setPostToDelete(post);
-    $('#deletepost')
-      .modal({
-        transition: 'vertical flip'
-      })
-      .modal('show');
-  }
-
-  setPostToEdit(post: Post) {
-    this.postService.setPostToEdit(post);
-    $('#editpost')
-      .modal({
-        transition: 'slide down',
-        autofocus: false
-      })
-      .modal('show');
-  }
-
   getPosts() {
     if (this.currentPage < 1 || !Number.isInteger(Number(this.currentPage))) {
       this.currentPage = 1;
@@ -183,7 +162,6 @@ export class ListOfPostsComponent implements OnInit {
       res => {
         this.posts = res;
         this.postService.subtidderPosts = this.posts;
-        this.postService.subtidderLoaded = true;
         this.subtidderService.notifySubtidderInfo();
         if (!this.posts.length && this.currentPage != 1) {
           let maxPage = this.pages[this.pages.length - 1];

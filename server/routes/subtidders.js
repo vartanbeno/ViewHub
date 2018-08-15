@@ -37,7 +37,9 @@ t.get('/all', (req, res) => {
     offset = (offset) ? offset : 0;
 
     db.query(`
-    SELECT posts.id, title, content, username AS author, author_id, subtidders.name AS subtidder, pub_date FROM posts
+    SELECT posts.id, title, content,
+    CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
+    author_id, subtidders.name AS subtidder, pub_date FROM posts
     LEFT OUTER JOIN users ON (posts.author_id = users.id)
     INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
     ORDER BY pub_date DESC
@@ -51,7 +53,6 @@ t.get('/all', (req, res) => {
         else {
             let posts = result.rows;
             posts.forEach((post) => {
-                post.author = post.author || '[deleted]';
                 post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
             })
             return res.status(200).send(posts);
@@ -99,7 +100,9 @@ t.get('/:subtidder', (req, res) => {
         }
         else {
             db.query(`
-            SELECT posts.id, title, content, username AS author, author_id, subtidders.name AS subtidder, pub_date FROM posts
+            SELECT posts.id, title, content,
+            CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
+            author_id, subtidders.name AS subtidder, pub_date FROM posts
             LEFT OUTER JOIN users ON (posts.author_id = users.id)
             INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
             WHERE subtidders.name = $1
@@ -114,7 +117,6 @@ t.get('/:subtidder', (req, res) => {
                     else {
                         let posts = result.rows;
                         posts.forEach((post) => {
-                            post.author = post.author || '[deleted]';
                             post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
                         })
                         return res.status(200).send(posts);
@@ -146,7 +148,9 @@ t.get('/:subtidder/info', (req, res) => {
     let { subtidder } = req.params;
 
     db.query(`
-    SELECT name, description, users.username as creator, creation_date
+    SELECT name, description,
+    CASE WHEN users.username IS NULL THEN '[deleted]' ELSE users.username END AS creator,
+    creation_date
     FROM subtidders LEFT OUTER JOIN users ON
     (subtidders.creator_id = users.id)
     WHERE name = $1
@@ -157,7 +161,6 @@ t.get('/:subtidder/info', (req, res) => {
         }
         else {
             let subtidderInfo = result.rows[0];
-            subtidderInfo.creator = subtidderInfo.creator || '[deleted]';
             subtidderInfo.creation_date = moment(subtidderInfo.creation_date, 'MMMM DD YYYY').fromNow();
             return res.status(200).send(subtidderInfo);
         }
@@ -172,9 +175,6 @@ t.get('/:subtidder/info', (req, res) => {
 
 t.post('/:subtidder/add', (req, res) => {
     let { title, content, userId } = req.body;
-    title = title.replace(/'/g, "''");
-    content = content.replace(/'/g, "''");
-
     let { subtidder } = req.params;
 
     db.query(`

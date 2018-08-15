@@ -28,6 +28,10 @@ export class SubtidderComponent implements OnInit {
 
   ngOnInit() {
     this.subtidderService.subtidderInfo_Observable.subscribe(res => {
+      if (this.subtidder === 'all') {
+        this.subtidderData['name'] = 'all';
+        this.postService.subtidderLoaded = true;
+      };
       if (this.subtidder && this.subtidder !== 'all') this.getSubtidderInfo();
     })
     this.postService.subtidderLoaded = false;
@@ -53,7 +57,10 @@ export class SubtidderComponent implements OnInit {
 
   getSubtidderInfo() {
     this.subtidderService.getSubtidderInfo(this.subtidder).subscribe(
-      res => this.subtidderData = res,
+      res => {
+        this.subtidderData = res;
+        this.postService.subtidderLoaded = true;
+      },
       err => console.log(err)
     )
   }

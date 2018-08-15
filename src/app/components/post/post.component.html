@@ -1,0 +1,27 @@
+<div class="ui main text container" *ngIf="postLoaded">
+
+    <h2 class="ui dividing header">{{ postData.title }}</h2>
+    <p class="post content">{{ postData.content }}</p>
+    <div class="ui grid small text">
+        <div class="column eight wide left aligned">
+            <span class="grey text">posted {{ postData.pub_date }} by <span class="link to user profile" routerLink="/u/{{ postData.author }}">{{ postData.author }}</span></span>
+        </div>
+        <div class="column eight wide right aligned">
+            <span class="link to subtidder" routerLink="/t/{{ postData.subtidder }}">{{ postData.subtidder }}</span>
+        </div>
+    </div>
+
+    <div class="ui grid" *ngIf="authService.loggedIn() && postData.author_id == authService.getId()">
+        <div class="column eight wide">
+            <button class="ui grey button fluid" (click)="postService.setPostToEdit(postData)"><i class="edit alternate outline icon"></i>Edit</button>
+        </div>
+        <div class="column eight wide">
+            <button class="ui negative button fluid" (click)="postService.setPostToDelete(postData)"><i class="trash alternate outline icon"></i>Delete</button>
+        </div>
+        <app-edit-post></app-edit-post>
+        <app-delete-post [navigateBackHome]="true"></app-delete-post>
+    </div>
+
+</div>
+
+<app-loader *ngIf="!postLoaded"></app-loader>

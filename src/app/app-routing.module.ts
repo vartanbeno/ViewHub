@@ -9,6 +9,7 @@ import { SearchComponent } from './components/search/search.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { SubtidderComponent } from './components/subtidder/subtidder.component';
 import { CreateSubtidderComponent } from './components/create-subtidder/create-subtidder.component';
+import { PostComponent } from './components/post/post.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -21,6 +22,8 @@ const routes: Routes = [
   { path: 'u/:username', component: UserProfileComponent, canActivate: [AuthGuard] },
 
   { path: 't/:subtidder', component: SubtidderComponent },
+  { path: 't/comments/:id', component: PostComponent },
+  // { path: 't/:subtidder/comments/:id/', component: PostComponent },
   { path: 'subtidders/create', component: CreateSubtidderComponent, canActivate: [AuthGuard] },
 
   { path: 'search', component: SearchComponent },

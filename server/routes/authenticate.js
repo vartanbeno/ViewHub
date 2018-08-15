@@ -5,8 +5,6 @@ const express = require('express'),
 
 auth.post('/register/', (req, res) => {
     let { firstName, lastName, email, username, password } = req.body;
-    firstName = firstName.replace(/'/g, "''");
-    lastName = lastName.replace(/'/g, "''");
     
     db.query(`
     SELECT username FROM users WHERE username = $1;`,
