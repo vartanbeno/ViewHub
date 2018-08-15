@@ -1,10 +1,5 @@
-<!-- <p>{{ postData.title }}</p>
-<p>{{ postData.content }}</p>
-<p>{{ postData.author }}</p>
-<p>{{ postData.subtidder }}</p>
-<p>{{ postData.pub_date }}</p>
- -->
-<div class="ui main text container">
+<div class="ui main text container" *ngIf="postLoaded">
+
     <h2 class="ui dividing header">{{ postData.title }}</h2>
     <p class="post content">{{ postData.content }}</p>
     <div class="ui grid small text">
@@ -15,14 +10,18 @@
             <span class="link to subtidder" routerLink="/t/{{ postData.subtidder }}">{{ postData.subtidder }}</span>
         </div>
     </div>
-    <div class="ui grid" *ngIf="postData.author_id == authService.getId()">
+
+    <div class="ui grid" *ngIf="authService.loggedIn() && postData.author_id == authService.getId()">
         <div class="column eight wide">
-            <button class="ui grey button fluid"><i class="edit alternate outline icon"></i>Edit</button>
+            <button class="ui grey button fluid" (click)="postService.setPostToEdit(postData)"><i class="edit alternate outline icon"></i>Edit</button>
         </div>
         <div class="column eight wide">
-            <button class="ui negative button fluid"><i class="trash alternate outline icon"></i>Delete</button>
+            <button class="ui negative button fluid" (click)="postService.setPostToDelete(postData)"><i class="trash alternate outline icon"></i>Delete</button>
         </div>
         <app-edit-post></app-edit-post>
-        <app-delete-post></app-delete-post>
+        <app-delete-post [navigateBackHome]="true"></app-delete-post>
     </div>
+
 </div>
+
+<app-loader *ngIf="!postLoaded"></app-loader>

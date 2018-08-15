@@ -7,7 +7,7 @@ posts.get('/:id', (req, res) => {
     let { id } = req.params;
 
     db.query(`
-    SELECT title, content,
+    SELECT posts.id, title, content,
     CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
     author_id, subtidders.name AS subtidder, pub_date
     FROM posts

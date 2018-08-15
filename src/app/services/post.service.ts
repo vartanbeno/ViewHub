@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Post } from '../models/post';
 import { Subject } from 'rxjs';
+declare var $: any;
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +57,11 @@ export class PostService {
 
   setPostToDelete(post: Post) {
     this.postToBeDeleted = post;
+    $('#deletepost')
+      .modal({
+        transition: 'vertical flip'
+      })
+      .modal('show');
   }
 
   notifyPostDeletion() {
@@ -72,6 +78,12 @@ export class PostService {
 
   setPostToEdit(post: Post) {
     this.postToBeEdited = post;
+    $('#editpost')
+      .modal({
+        transition: 'slide down',
+        autofocus: false
+      })
+      .modal('show');
     this.notifyPostEdition();
   }
 

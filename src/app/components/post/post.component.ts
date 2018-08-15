@@ -12,6 +12,7 @@ export class PostComponent implements OnInit {
 
   id: string;
   postData: Object = {};
+  postLoaded: boolean = false;
 
   constructor(
     private postService: PostService,
@@ -30,6 +31,7 @@ export class PostComponent implements OnInit {
     this.postService.getPost(this.id).subscribe(
       res => {
         this.postData = res;
+        this.postLoaded = true;
       },
       err => {
         console.log(err);
