@@ -9,7 +9,7 @@ posts.get('/:id', (req, res) => {
     db.query(`
     SELECT title, content,
     CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
-    subtidders.name AS subtidder, pub_date
+    author_id, subtidders.name AS subtidder, pub_date
     FROM posts
     LEFT OUTER JOIN users ON (posts.author_id = users.id)
     INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)

@@ -15,4 +15,14 @@
             <span class="link to subtidder" routerLink="/t/{{ postData.subtidder }}">{{ postData.subtidder }}</span>
         </div>
     </div>
+    <div class="ui grid" *ngIf="postData.author_id == authService.getId()">
+        <div class="column eight wide">
+            <button class="ui grey button fluid"><i class="edit alternate outline icon"></i>Edit</button>
+        </div>
+        <div class="column eight wide">
+            <button class="ui negative button fluid"><i class="trash alternate outline icon"></i>Delete</button>
+        </div>
+        <app-edit-post></app-edit-post>
+        <app-delete-post></app-delete-post>
+    </div>
 </div>
