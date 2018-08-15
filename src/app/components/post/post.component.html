@@ -1,0 +1,18 @@
+<!-- <p>{{ postData.title }}</p>
+<p>{{ postData.content }}</p>
+<p>{{ postData.author }}</p>
+<p>{{ postData.subtidder }}</p>
+<p>{{ postData.pub_date }}</p>
+ -->
+<div class="ui main text container">
+    <h2 class="ui dividing header">{{ postData.title }}</h2>
+    <p class="post content">{{ postData.content }}</p>
+    <div class="ui grid small text">
+        <div class="column eight wide left aligned">
+            <span class="grey text">posted {{ postData.pub_date }} by <span class="link to user profile" routerLink="/u/{{ postData.author }}">{{ postData.author }}</span></span>
+        </div>
+        <div class="column eight wide right aligned">
+            <span class="link to subtidder" routerLink="/t/{{ postData.subtidder }}">{{ postData.subtidder }}</span>
+        </div>
+    </div>
+</div>

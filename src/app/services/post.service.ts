@@ -16,6 +16,8 @@ export class PostService {
 
   private searchPostsUrl = 'http://localhost:3000/search/posts';
 
+  private getPostUrl = 'http://localhost:3000/posts';
+
   public postToBeDeleted: Post;
   public postToBeEdited: Post;
 
@@ -83,6 +85,10 @@ export class PostService {
 
   countPostsFromSubtidder(subtidder: string) {
     return this.http.get<any>(`${this.subtidderUrl}/${subtidder}/count`);
+  }
+
+  getPost(id: string) {
+    return this.http.get<any>(`${this.getPostUrl}/${id}`);
   }
 
 }

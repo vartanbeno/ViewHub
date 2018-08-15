@@ -26,6 +26,7 @@ import { ListOfPostsComponent } from './components/list-of-posts/list-of-posts.c
 import { SubtidderComponent } from './components/subtidder/subtidder.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { CreateSubtidderComponent } from './components/create-subtidder/create-subtidder.component';
+import { PostComponent } from './components/post/post.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { CreateSubtidderComponent } from './components/create-subtidder/create-s
     SubtidderComponent,
     LoaderComponent,
     CreateSubtidderComponent,
+    PostComponent,
   ],
   imports: [
     BrowserModule,

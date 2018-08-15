@@ -8,7 +8,7 @@
     <div class="header">
       <div class="ui grid">
         <div class="column fourteen wide">
-          {{ post.title }}
+          <span class="link to post" routerLink="/t/comments/{{ post.id }}">{{ post.title }}</span>
         </div>
         <div class="column two wide right aligned" *ngIf="authService.loggedIn() && post.author_id == authService.getId()">
           <i class="black edit alternate outline icon" (click)="setPostToEdit(post)"></i>
@@ -23,7 +23,7 @@
     </div>
   </div>
   <div class="content">
-    <p>{{ post.content }}</p>
+    <p class="post content">{{ post.content }}</p>
   </div>
 </div>
 

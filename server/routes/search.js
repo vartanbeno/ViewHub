@@ -30,7 +30,7 @@ search.get('/posts', (req, res) => {
     s = s.split(' ').join(' & ').replace(/'/g, "''");
 
     db.query(`
-    SELECT title, content, pub_date FROM posts
+    SELECT id, title, content, pub_date FROM posts
     WHERE tokens @@ to_tsquery('english', $1);
     `, [s], (error, result) => {
         if (error) {

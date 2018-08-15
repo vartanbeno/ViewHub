@@ -11,6 +11,12 @@ html, body {
     position: relative;
 }
 
+.post.content {
+    white-space: pre-line;
+    text-align: justify;
+}
+
+.link.to.post,
 .link.to.user.profile,
 .link.to.subtidder {
     color: #2284d1;
@@ -18,9 +24,17 @@ html, body {
     outline: none;
 }
 
+.link.to.post {
+    color: black;
+}
+
 .link.to.user.profile:hover,
 .link.to.user.profile:active {
     text-decoration: underline;
+}
+
+.small.text {
+    font-size: 1rem;
 }
 
 .grey.text {
