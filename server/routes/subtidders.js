@@ -175,9 +175,6 @@ t.get('/:subtidder/info', (req, res) => {
 
 t.post('/:subtidder/add', (req, res) => {
     let { title, content, userId } = req.body;
-    title = title.replace(/'/g, "''");
-    content = content.replace(/'/g, "''");
-
     let { subtidder } = req.params;
 
     db.query(`

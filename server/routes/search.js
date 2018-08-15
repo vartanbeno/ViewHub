@@ -5,7 +5,7 @@ const express = require('express'),
 
 search.get('/subtidders', (req, res) => {
     let s = req.query.s;
-    s = s.split(' ').join(' & ').replace(/'/g, "''");
+    s = s.split(' ').join(' & ');
 
     db.query(`
     SELECT name, description, creation_date FROM subtidders
@@ -27,7 +27,7 @@ search.get('/subtidders', (req, res) => {
 
 search.get('/posts', (req, res) => {
     let s = req.query.s;
-    s = s.split(' ').join(' & ').replace(/'/g, "''");
+    s = s.split(' ').join(' & ');
 
     db.query(`
     SELECT id, title, content, pub_date FROM posts
