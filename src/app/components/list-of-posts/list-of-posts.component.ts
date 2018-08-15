@@ -183,7 +183,6 @@ export class ListOfPostsComponent implements OnInit {
       res => {
         this.posts = res;
         this.postService.subtidderPosts = this.posts;
-        this.postService.subtidderLoaded = true;
         this.subtidderService.notifySubtidderInfo();
         if (!this.posts.length && this.currentPage != 1) {
           let maxPage = this.pages[this.pages.length - 1];
