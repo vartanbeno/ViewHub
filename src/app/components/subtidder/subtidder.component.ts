@@ -25,10 +25,11 @@ export class SubtidderComponent implements OnInit {
 
   ngOnInit() {
     this.postService.subtidderLoaded = false;
+    this.postService.subtidderDoesNotExist = false;
   }
 
   ngAfterViewInit() {
-    if (this.authService.loggedIn()) {
+    if (this.authService.loggedIn() && this.subtidder !== 'all') {
       this.renderer.listen(this.addPostToSubtidderButton.nativeElement, 'click', (event) => {
         $('#addpost')
           .modal({

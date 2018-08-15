@@ -26,8 +26,9 @@ export class PostService {
   public allPosts: Array<any>;
   public subtidderPosts: Array<any>;
 
-  public homeLoaded = false;
-  public subtidderLoaded = false;
+  public homeLoaded: boolean = false;
+  public subtidderLoaded: boolean = false;
+  public subtidderDoesNotExist: boolean = false;
 
   constructor(private http: HttpClient) { }
 

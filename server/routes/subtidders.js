@@ -88,25 +88,38 @@ t.get('/:subtidder', (req, res) => {
     offset = (offset) ? offset : 0;
 
     db.query(`
-    SELECT posts.id, title, content, username AS author, author_id, subtidders.name AS subtidder, pub_date FROM posts
-    LEFT OUTER JOIN users ON (posts.author_id = users.id)
-    INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
-    WHERE subtidders.name = $1
-    ORDER BY pub_date DESC
-    LIMIT 10
-    OFFSET 10 * $2;
-    `, [subtidder, offset], (error, result) => {
+    SELECT COUNT(1) FROM subtidders WHERE name = $1
+    `, [subtidder], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
         }
+        else if (result.rows[0].count === '0') {
+            return res.status(404).send({ error: 'Subtidder not found.' });
+        }
         else {
-            let posts = result.rows;
-            posts.forEach((post) => {
-                post.author = post.author || '[deleted]';
-                post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
-            })
-            return res.status(200).send(posts);
+            db.query(`
+            SELECT posts.id, title, content, username AS author, author_id, subtidders.name AS subtidder, pub_date FROM posts
+            LEFT OUTER JOIN users ON (posts.author_id = users.id)
+            INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
+            WHERE subtidders.name = $1
+            ORDER BY pub_date DESC
+            LIMIT 10
+            OFFSET 10 * $2;
+            `, [subtidder, offset], (error, result) => {
+                    if (error) {
+                        console.log(error);
+                        return res.status(500).send({ error: 'Something went wrong.' });
+                    }
+                    else {
+                        let posts = result.rows;
+                        posts.forEach((post) => {
+                            post.author = post.author || '[deleted]';
+                            post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
+                        })
+                        return res.status(200).send(posts);
+                    }
+                })
         }
     })
 })
