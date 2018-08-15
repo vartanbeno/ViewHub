@@ -188,7 +188,12 @@ export class ListOfPostsComponent implements OnInit {
           this.router.navigate([`t/${this.subtidder}`], { queryParams: { page: this.currentPage } });
         }
       },
-      err => console.log(err)
+      err => {
+        if (err.status === 404) {
+          this.postService.subtidderLoaded = true;
+          this.postService.subtidderDoesNotExist = true;
+        }
+      }
     )
   }
 
