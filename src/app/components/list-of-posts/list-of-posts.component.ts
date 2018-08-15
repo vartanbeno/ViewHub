@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Post } from '../../models/post';
 import { UserService } from '../../services/user.service';
+import { SubtidderService } from '../../services/subtidder.service';
 declare var $: any;
 
 @Component({
@@ -23,6 +24,7 @@ export class ListOfPostsComponent implements OnInit {
 
   constructor(
     private postService: PostService,
+    private subtidderService: SubtidderService,
     private userService: UserService,
     private authService: AuthService,
     private router: Router,
@@ -182,6 +184,7 @@ export class ListOfPostsComponent implements OnInit {
         this.posts = res;
         this.postService.subtidderPosts = this.posts;
         this.postService.subtidderLoaded = true;
+        this.subtidderService.notifySubtidderInfo();
         if (!this.posts.length && this.currentPage != 1) {
           let maxPage = this.pages[this.pages.length - 1];
           this.currentPage = (this.currentPage > maxPage) ? maxPage : 1;

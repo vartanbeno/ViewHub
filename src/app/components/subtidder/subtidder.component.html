@@ -1,8 +1,17 @@
-<h2 [hidden]="!postService.subtidderLoaded">
-    <span class="subtidder">/t/</span>{{ subtidder }}
-    <button *ngIf="authService.loggedIn() && subtidder !== 'all' && !postService.subtidderDoesNotExist" class="ui positive right floated right labeled icon button" #addPostToSubtidderButton>Add Post<i class="plus icon"></i></button>
-    <app-add-post [subtidder]="subtidder"></app-add-post>
-</h2>
+<div class="subtidder header" [hidden]="!postService.subtidderLoaded" *ngIf="!postService.subtidderDoesNotExist">
+    <h2>
+        <span class="grey text">/t/</span>{{ subtidder }}
+        <button *ngIf="authService.loggedIn() && subtidder !== 'all'" class="ui positive right floated right labeled icon button" #addPostToSubtidderButton>Add Post<i class="plus icon"></i></button>
+        <app-add-post [subtidder]="subtidder"></app-add-post>
+    </h2>
+    <h5>
+        {{ subtidderData.description }}
+        <span class="grey text">
+            - created {{ subtidderData.creation_date }} by
+            <span class="link to user profile" routerLink="/u/{{ subtidderData.creator }}">{{ subtidderData.creator }}</span>
+        </span>
+    </h5>
+</div>
 
 <app-list-of-posts [componentName]="this.constructor.name" [subtidder]="subtidder"></app-list-of-posts>
 <app-loader *ngIf="!postService.subtidderLoaded"></app-loader>
@@ -15,6 +24,6 @@
 
     <app-error-message *ngIf="postService.subtidderDoesNotExist"
         header="There's no subtidder with the name &quot;{{ subtidder }}&quot;."
-        message="You can change that!">
+        message="Go on and create it!">
     </app-error-message>
 </div>
