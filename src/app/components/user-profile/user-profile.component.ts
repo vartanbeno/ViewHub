@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 declare var $: any;
 
 @Component({
@@ -27,6 +28,7 @@ export class UserProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private authService: AuthService,
     private route: ActivatedRoute
   ) {
     this.username = this.route.snapshot.paramMap.get('username');
@@ -80,7 +82,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   getLoggedInUsername() {
-    this.loggedInUserId = localStorage.getItem('id');
+    this.loggedInUserId = this.authService.getId();
     this.userService.getUsername(this.loggedInUserId).subscribe(
       res => {
         this.loggedInUsername = res;

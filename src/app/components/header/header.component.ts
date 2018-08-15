@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   getSubscriptions() {
-    this.id = localStorage.getItem('id');
+    this.id = this.authService.getId();
     this.userService.getSubscriptions(this.id).subscribe(
       res => {
         this.subscriptions = res;
@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   getUsername() {
-    this.id = localStorage.getItem('id');
+    this.id = this.authService.getId();
     this.userService.getUsername(this.id).subscribe(
       res => this.username = res,
       err => console.log(err)

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subtidder } from '../../models/subtidder';
 import { SubtidderService } from '../../services/subtidder.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-create-subtidder',
@@ -16,6 +17,7 @@ export class CreateSubtidderComponent implements OnInit {
 
   constructor(
     private subtidderService: SubtidderService,
+    private authService: AuthService,
     private router: Router
   ) { }
 
@@ -25,13 +27,13 @@ export class CreateSubtidderComponent implements OnInit {
   }
 
   createSubtidder() {
-    this.subtidderData.creator_id = localStorage.getItem('id');
-
     if (this.subtidderData.name === 'all') {
       this.nameIsAll = true;
       return;
     }
 
+    this.subtidderData.creator_id = this.authService.getId();
+    
     this.subtidderService.createSubtidder(this.subtidderData).subscribe(
       res => this.router.navigate([`t/${this.subtidderData.name}`]),
       err => console.log(err)

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Post } from '../../models/post';
 import { PostService } from '../../services/post.service';
 import { SubtidderService } from '../../services/subtidder.service';
+import { AuthService } from '../../services/auth.service';
 declare var $: any;
 
 @Component({
@@ -16,7 +17,11 @@ export class AddPostComponent implements OnInit {
   postData: Post;
   subtidders: Array<any> = [];
 
-  constructor(private postService: PostService, private subtidderService: SubtidderService) { }
+  constructor(
+    private postService: PostService,
+    private subtidderService: SubtidderService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
     this.makeNewPost();
@@ -24,7 +29,7 @@ export class AddPostComponent implements OnInit {
   }
 
   submitPost() {
-    this.postData.userId = localStorage.getItem('id');
+    this.postData.userId = this.authService.getId();
     this.postService.submitPost(this.postData).subscribe(
       res => {
         this.postService.notifyPostAddition();
