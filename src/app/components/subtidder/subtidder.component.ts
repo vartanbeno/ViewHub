@@ -32,6 +32,7 @@ export class SubtidderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.id = this.authService.getId();
     this.subtidderService.subtidderInfo_Observable.subscribe(res => {
       if (this.subtidder === 'all') {
         this.subtidderData['name'] = 'all';
@@ -75,12 +76,25 @@ export class SubtidderComponent implements OnInit {
   }
 
   checkIfSubscribed() {
-    this.id = this.authService.getId();
     this.userService.checkIfSubscribed(this.id, this.subtidderData['name']).subscribe(
       res => {
         this.isSubscribed = (Number(res.count)) ? true : false;
         this.postService.subtidderLoaded = true;
       },
+      err => console.log(err)
+    )
+  }
+
+  subscribe() {
+    this.userService.subscribe(this.id, this.subtidderData['name']).subscribe(
+      res => this.isSubscribed = true,
+      err => console.log(err)
+    )
+  }
+
+  unsubscribe() {
+    this.userService.unsubscribe(this.id, this.subtidderData['name']).subscribe(
+      res => this.isSubscribed = false,
       err => console.log(err)
     )
   }

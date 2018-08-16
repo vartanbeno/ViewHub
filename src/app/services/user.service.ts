@@ -62,4 +62,12 @@ export class UserService {
     return this.http.get<any>(`${this.subscriptionsUrl}/${id}/${subtidder}`);
   }
 
+  subscribe(id: string, subtidder: string) {
+    return this.http.post<any>(`${this.subscriptionsUrl}/${id}/${subtidder}`, null);
+  }
+
+  unsubscribe(id: string, subtidder: string) {
+    return this.http.delete<any>(`${this.subscriptionsUrl}/${id}/${subtidder}`);
+  }
+
 }
