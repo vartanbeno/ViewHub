@@ -58,4 +58,8 @@ export class UserService {
     this.authentication_Observable.next();
   }
 
+  checkIfSubscribed(id: string, subtidder: string) {
+    return this.http.get<any>(`${this.subscriptionsUrl}/${id}/${subtidder}`);
+  }
+
 }
