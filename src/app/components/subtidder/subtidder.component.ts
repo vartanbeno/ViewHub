@@ -87,14 +87,20 @@ export class SubtidderComponent implements OnInit {
 
   subscribe() {
     this.userService.subscribe(this.id, this.subtidderData['name']).subscribe(
-      res => this.isSubscribed = true,
+      res => {
+        this.isSubscribed = true;
+        this.userService.refreshSubscriptions();
+      },
       err => console.log(err)
     )
   }
 
   unsubscribe() {
     this.userService.unsubscribe(this.id, this.subtidderData['name']).subscribe(
-      res => this.isSubscribed = false,
+      res => {
+        this.isSubscribed = false;
+        this.userService.refreshSubscriptions();
+      },
       err => console.log(err)
     )
   }
