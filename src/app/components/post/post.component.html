@@ -4,7 +4,7 @@
     <p class="post content">{{ postData.content }}</p>
     <div class="ui grid small text">
         <div class="column eight wide left aligned">
-            <span class="grey text">posted {{ postData.pub_date }} by <span class="link to user profile" routerLink="/u/{{ postData.author }}">{{ postData.author }}</span></span>
+            <span class="grey text">{{ postData.pub_date }} by <span class="link to user profile" routerLink="/u/{{ postData.author }}">{{ postData.author }}</span></span>
         </div>
         <div class="column eight wide right aligned">
             <span class="link to subtidder" routerLink="/t/{{ postData.subtidder }}">{{ postData.subtidder }}</span>
