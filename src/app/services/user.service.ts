@@ -24,7 +24,8 @@ export class UserService {
   
   public profileLoaded: boolean = false;
   public listOfUsersLoaded: boolean = false;
-  public homeLoaded = false;
+  public homeLoaded: boolean = false;
+  public noSubscriptions: boolean;
 
   constructor(private http: HttpClient) { }
 

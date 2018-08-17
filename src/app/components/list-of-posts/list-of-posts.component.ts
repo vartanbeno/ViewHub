@@ -19,7 +19,6 @@ export class ListOfPostsComponent implements OnInit {
   posts: Array<any> = [];
   pages: Array<number> = [];
   currentPage: number;
-  noSubscriptions: boolean;
 
   constructor(
     private postService: PostService,
@@ -44,12 +43,12 @@ export class ListOfPostsComponent implements OnInit {
           this.getPostsFromSubscriptions();
         }
         else if (!this.userService.subscriptions.length) {
-          this.noSubscriptions = true;
+          this.userService.noSubscriptions = true;
         }
 
         this.userService.subscriptionsFetch_Observable.subscribe(res => {
           if (!this.userService.subscriptions.length) {
-            this.noSubscriptions = true;
+            this.userService.noSubscriptions = true;
             this.userService.homeLoaded = true;
             return;
           }
