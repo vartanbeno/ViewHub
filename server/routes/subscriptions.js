@@ -3,18 +3,14 @@ const express = require('express'),
     moment = require('moment'),
     subscriptions = express.Router();
 
-// get posts from subscribed subtidders
-subscriptions.get('/', (req, res) => {
-    let { subscriptions, offset } = req.query;
+// get posts from subscriptions
+subscriptions.get('/:id/posts', (req, res) => {
+    let { id } = req.params;
+    let { offset } = req.query;
+
     offset = Number(offset);
     offset = (offset) ? offset : 0;
     
-    // if you only have 1 subscription it parses it as a string for some reason
-    if (typeof(subscriptions) === 'string') subscriptions = subscriptions.split(' ');
-    let placeholders = subscriptions.map((sub, i) => `$${i + 1}`).join(',');
-
-    subscriptions.push(offset);
-
     db.query(`
     SELECT posts.id, title, content,
     CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
@@ -22,11 +18,17 @@ subscriptions.get('/', (req, res) => {
     FROM posts
     LEFT OUTER JOIN users ON (posts.author_id = users.id)
     INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
-    WHERE subtidders.name IN (${placeholders})
+    WHERE subtidders.name IN (
+        SELECT subtidders.name
+	    FROM users
+	    INNER JOIN subscriptions ON users.id = subscriptions.user_id
+	    INNER JOIN subtidders ON subscriptions.subtidder_id = subtidders.id
+	    WHERE users.id = $1
+    )
     ORDER BY pub_date DESC
     LIMIT 10
-    OFFSET 10 * $${subscriptions.length};
-    `, subscriptions, (error, result) => {
+    OFFSET 10 * $2;
+    `, [id, offset], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
@@ -41,19 +43,23 @@ subscriptions.get('/', (req, res) => {
     })
 })
 
-subscriptions.get('/count', (req, res) => {
-    let { subscriptions } = req.query;
-
-    if (typeof (subscriptions) === 'string') subscriptions = subscriptions.split(' ');
-    let placeholders = subscriptions.map((sub, i) => `$${i + 1}`).join(',');
+// count posts from subscriptions
+subscriptions.get(':id/count', (req, res) => {
+    let { id } = req.query;
 
     db.query(`
     SELECT COUNT(*)
     FROM posts
     LEFT OUTER JOIN users ON (posts.author_id = users.id)
     INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
-    WHERE subtidders.name IN (${placeholders})
-    `, subscriptions, (error, result) => {
+    WHERE subtidders.name IN (
+        SELECT subtidders.name
+	    FROM users
+	    INNER JOIN subscriptions ON users.id = subscriptions.user_id
+	    INNER JOIN subtidders ON subscriptions.subtidder_id = subtidders.id
+	    WHERE users.id = $1
+    );
+    `, [id], (error, result) => {
             if (error) {
                 console.log(error);
             }

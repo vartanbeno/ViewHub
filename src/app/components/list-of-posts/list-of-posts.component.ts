@@ -19,6 +19,7 @@ export class ListOfPostsComponent implements OnInit {
   posts: Array<any> = [];
   pages: Array<number> = [];
   currentPage: number;
+  id: string;
 
   constructor(
     private postService: PostService,
@@ -35,39 +36,26 @@ export class ListOfPostsComponent implements OnInit {
 
   ngOnInit() {
 
+    this.id = this.authService.getId();
+
     switch(this.componentName) {
 
       case 'HomeComponent':
-        if (this.authService.loggedIn() && this.userService.subscriptions.length) {
+        if (this.authService.loggedIn()) {
+          this.userService.refreshSubscriptions();
           this.countPostsFromSubscriptions();
           this.getPostsFromSubscriptions();
+
+          this.postService.postAdded_Observable.subscribe(res => {
+            this.countPostsFromSubscriptions();
+            this.getPostsFromSubscriptions();
+          })
+
+          this.postService.postDelete_Observable.subscribe(res => {
+            this.countPostsFromSubscriptions();
+            this.getPostsFromSubscriptions();
+          })
         }
-        else if (!this.userService.subscriptions.length) {
-          this.userService.noSubscriptions = true;
-          this.userService.homeLoaded = true;
-        }
-
-        this.userService.subscriptionsFetch_Observable.subscribe(res => {
-          if (!this.userService.subscriptions.length) {
-            this.userService.noSubscriptions = true;
-            this.userService.homeLoaded = true;
-            return;
-          }
-          this.userService.noSubscriptions = false;
-          this.countPostsFromSubscriptions();
-          this.getPostsFromSubscriptions();
-        })
-
-        this.postService.postAdded_Observable.subscribe(res => {
-          if (!this.userService.subscriptions.length) return;
-          this.countPostsFromSubscriptions();
-          this.getPostsFromSubscriptions();
-        })
-
-        this.postService.postDelete_Observable.subscribe(res => {
-          this.countPostsFromSubscriptions();
-          this.getPostsFromSubscriptions();
-        })
         break;
 
       case 'UserProfileComponent':
@@ -112,7 +100,7 @@ export class ListOfPostsComponent implements OnInit {
       return;
     }
     let pageOffset = (this.currentPage - 1).toString()
-    this.userService.getPostsFromSubscriptions(this.userService.subscriptions, pageOffset).subscribe(
+    this.userService.getPostsFromSubscriptions(this.id, pageOffset).subscribe(
       res => {
         this.posts = res;
         this.userService.subscriptionsPosts = this.posts;
@@ -128,7 +116,7 @@ export class ListOfPostsComponent implements OnInit {
   }
 
   countPostsFromSubscriptions() {
-    this.userService.countPostsFromSubscriptions(this.userService.subscriptions).subscribe(
+    this.userService.countPostsFromSubscriptions(this.id).subscribe(
       res => {
         let numberOfPages = Math.ceil(res / 10);
         this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
