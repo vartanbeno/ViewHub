@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { PostService } from '../../services/post.service';
+import { UserService } from '../../services/user.service';
 declare var $: any;
 
 @Component({
@@ -16,13 +16,13 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private postService: PostService,
+    private userService: UserService,
     private renderer: Renderer,
   ) {
   }
 
   ngOnInit() {
-    this.postService.homeLoaded = false;
+    this.userService.homeLoaded = false;
   }
 
   ngAfterViewInit() {

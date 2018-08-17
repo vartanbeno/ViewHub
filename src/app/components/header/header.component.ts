@@ -12,7 +12,6 @@ declare var $: any;
 export class HeaderComponent implements OnInit, AfterViewInit {
 
   id: string;
-  subscriptions: Array<any> = [];
   @ViewChild('searchBox') searchBox: ElementRef;
 
   username: string;
@@ -37,7 +36,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.getUsername();
     });
 
-    this.userService.subscriptions_Observable.subscribe(res => this.getSubscriptions());
+    this.userService.subscriptionsList_Observable.subscribe(res => this.getSubscriptions());
     
     this.focusOnSearch();
   }
@@ -46,7 +45,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.id = this.authService.getId();
     this.userService.getSubscriptions(this.id).subscribe(
       res => {
-        this.subscriptions = res;
+        this.userService.subscriptions = res;
+        this.userService.notifyFetchedSubscriptions();
         this.activateDropdowns();
       },
       err => console.log(err)

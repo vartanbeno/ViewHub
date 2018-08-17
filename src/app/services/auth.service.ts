@@ -53,7 +53,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('id');
     localStorage.removeItem('name');
-    this.router.navigate(['']);
+    this.router.navigate(['/t/all']);
   }
   
 }
