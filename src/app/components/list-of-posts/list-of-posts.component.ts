@@ -19,6 +19,7 @@ export class ListOfPostsComponent implements OnInit {
   posts: Array<any> = [];
   pages: Array<number> = [];
   currentPage: number;
+  id: string;
 
   constructor(
     private postService: PostService,
@@ -35,28 +36,28 @@ export class ListOfPostsComponent implements OnInit {
 
   ngOnInit() {
 
+    this.id = this.authService.getId();
+
     switch(this.componentName) {
 
       case 'HomeComponent':
-        this.countPosts();
-        this.getPosts();
+        if (this.authService.loggedIn()) {
+          this.userService.refreshSubscriptions();
+          this.countPostsFromSubscriptions();
+          this.getPostsFromSubscriptions();
 
-        this.postService.postAdded_Observable.subscribe(res => {
-          this.countPosts();
-          this.getPosts();
-        })
-
-        this.postService.postDelete_Observable.subscribe(res => {
-          this.countPosts();
-          this.getPosts();
-        })
+          this.postService.postAdded_Or_Deleted_Observable.subscribe(res => {
+            this.countPostsFromSubscriptions();
+            this.getPostsFromSubscriptions();
+          })
+        }
         break;
 
       case 'UserProfileComponent':
         this.getUserPostCount();
         this.getUserPosts();
 
-        this.postService.postDelete_Observable.subscribe(res => {
+        this.postService.postAdded_Or_Deleted_Observable.subscribe(res => {
           this.getUserPostCount();
           this.getUserPosts();
         })
@@ -66,12 +67,7 @@ export class ListOfPostsComponent implements OnInit {
         this.getSubtidderPostsCount();
         this.getSubtidderPosts();
 
-        this.postService.postAdded_Observable.subscribe(res => {
-          this.getSubtidderPostsCount();
-          this.getSubtidderPosts();
-        })
-
-        this.postService.postDelete_Observable.subscribe(res => {
+        this.postService.postAdded_Or_Deleted_Observable.subscribe(res => {
           this.getSubtidderPostsCount();
           this.getSubtidderPosts();
         })
@@ -87,18 +83,18 @@ export class ListOfPostsComponent implements OnInit {
     this.router.navigate([this.router.url.split('?')[0]], { queryParams: { page: pageNumber } });
   }
 
-  getPosts() {
+  getPostsFromSubscriptions() {
     if (this.currentPage < 1 || !Number.isInteger(Number(this.currentPage))) {
       this.currentPage = 1;
       this.router.navigate([''], { queryParams: { page: this.currentPage } });
       return;
     }
     let pageOffset = (this.currentPage - 1).toString()
-    this.postService.getPosts(pageOffset).subscribe(
+    this.userService.getPostsFromSubscriptions(this.id, pageOffset).subscribe(
       res => {
         this.posts = res;
-        this.postService.allPosts = this.posts;
-        this.postService.homeLoaded = true;
+        this.userService.subscriptionsPosts = this.posts;
+        this.userService.homeLoaded = true;
         if (!this.posts.length && this.currentPage != 1) {
           let maxPage = this.pages[this.pages.length - 1];
           this.currentPage = (this.currentPage > maxPage) ? maxPage : 1;
@@ -109,8 +105,8 @@ export class ListOfPostsComponent implements OnInit {
     )
   }
 
-  countPosts() {
-    this.postService.countPosts().subscribe(
+  countPostsFromSubscriptions() {
+    this.userService.countPostsFromSubscriptions(this.id).subscribe(
       res => {
         let numberOfPages = Math.ceil(res / 10);
         this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);

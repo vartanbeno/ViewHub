@@ -32,7 +32,7 @@ export class AddPostComponent implements OnInit {
     this.postData.userId = this.authService.getId();
     this.postService.submitPost(this.postData).subscribe(
       res => {
-        this.postService.notifyPostAddition();
+        this.postService.notifyPostAdditionOrDeletion();
         this.makeNewPost();
       },
       err => console.log(err)

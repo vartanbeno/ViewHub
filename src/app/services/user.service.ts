@@ -14,14 +14,26 @@ export class UserService {
   private subscriptionsUrl = 'http://localhost:3000/subscriptions';
 
   public authentication_Observable = new Subject();
-  public subscriptions_Observable = new Subject();
+  public subscriptionsList_Observable = new Subject();
+  public subscriptionsFetch_Observable = new Subject();
 
   public userPosts: Array<any>;
+  public subscriptionsPosts: Array<any>;
   
   public profileLoaded: boolean = false;
   public listOfUsersLoaded: boolean = false;
+  public homeLoaded: boolean = false;
+  public noSubscriptions: boolean;
 
   constructor(private http: HttpClient) { }
+
+  getPostsFromSubscriptions(id: string, offset: string) {
+    return this.http.get<any>(`${this.subscriptionsUrl}/${id}/posts`, { params: { offset: offset } });
+  }
+
+  countPostsFromSubscriptions(id: string) {
+    return this.http.get<any>(`${this.subscriptionsUrl}/${id}/count`);
+  }
 
   getAllUsers() {
     return this.http.get<any>(this.allUsersUrl);
@@ -36,7 +48,11 @@ export class UserService {
   }
 
   refreshSubscriptions() {
-    this.subscriptions_Observable.next();
+    this.subscriptionsList_Observable.next();
+  }
+
+  notifyFetchedSubscriptions() {
+    this.subscriptionsFetch_Observable.next();
   }
 
   getUsername(id: string) {

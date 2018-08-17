@@ -12,9 +12,6 @@ export class PostService {
   // used for adding/editing/deleting posts, and looking at a subtidder
   private subtidderUrl = 'http://localhost:3000/t';
 
-  private allPostsUrl = 'http://localhost:3000/t/all';
-  private countAllPostsUrl = 'http://localhost:3000/t/all/count';
-
   private searchPostsUrl = 'http://localhost:3000/search/posts';
 
   private getPostUrl = 'http://localhost:3000/posts';
@@ -22,33 +19,22 @@ export class PostService {
   public postToBeDeleted: Post;
   public postToBeEdited: Post;
 
-  public postAdded_Observable = new Subject();
-  public postDelete_Observable = new Subject();
+  public postAdded_Or_Deleted_Observable = new Subject();
   public postEdit_Observable = new Subject();
 
-  public allPosts: Array<any>;
   public subtidderPosts: Array<any>;
 
-  public homeLoaded: boolean = false;
   public subtidderLoaded: boolean = false;
   public subtidderDoesNotExist: boolean = false;
 
   constructor(private http: HttpClient) { }
 
-  getPosts(offset: string) {
-    return this.http.get<any>(this.allPostsUrl, { params: { offset: offset } });
-  }
-
   submitPost(post: Post) {
     return this.http.post<any>(`${this.subtidderUrl}/${post.subtidder}/add`, post);
   }
 
-  notifyPostAddition() {
-    this.postAdded_Observable.next();
-  }
-
-  countPosts() {
-    return this.http.get<any>(this.countAllPostsUrl);
+  notifyPostAdditionOrDeletion() {
+    this.postAdded_Or_Deleted_Observable.next();
   }
 
   deletePost() {
@@ -62,10 +48,6 @@ export class PostService {
         transition: 'vertical flip'
       })
       .modal('show');
-  }
-
-  notifyPostDeletion() {
-    this.postDelete_Observable.next();
   }
 
   editPost(post: Post) {

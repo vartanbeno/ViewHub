@@ -10,7 +10,6 @@
         </button>
         <button *ngIf="authService.loggedIn() && subtidder !== 'all'"
                 class="ui positive right floated right labeled icon button"
-                (click)="isSubscribed ? unsubscribe() : subscribe()"
                 #addPostToSubtidderButton>
             Add Post<i class="plus icon"></i>
         </button>

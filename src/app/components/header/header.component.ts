@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.getUsername();
     });
 
-    this.userService.subscriptions_Observable.subscribe(res => this.getSubscriptions());
+    this.userService.subscriptionsList_Observable.subscribe(res => this.getSubscriptions());
     
     this.focusOnSearch();
   }
@@ -47,6 +47,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.userService.getSubscriptions(this.id).subscribe(
       res => {
         this.subscriptions = res;
+        if (!this.subscriptions.length) this.userService.noSubscriptions = true;
         this.activateDropdowns();
       },
       err => console.log(err)

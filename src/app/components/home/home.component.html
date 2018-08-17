@@ -1,13 +1,37 @@
-<h2 *ngIf="authService.loggedIn()" [hidden]="!postService.homeLoaded">
-    Hello, {{ authService.getName() }}.
-    <button class="ui positive right floated right labeled icon button" #addPostButton>Add Post<i class="plus icon"></i></button>
-    <app-add-post></app-add-post>
-</h2>
+<div *ngIf="authService.loggedIn()">
 
-<app-list-of-posts [componentName]="this.constructor.name"></app-list-of-posts>
-<app-loader *ngIf="!postService.homeLoaded"></app-loader>
+    <h2 [hidden]="!userService.homeLoaded">
+        Hello, {{ authService.getName() }}.
+        <button class="ui positive right floated right labeled icon button" #addPostButton>Add Post<i class="plus icon"></i></button>
+        <app-add-post></app-add-post>
+    </h2>
 
-<app-error-message *ngIf="postService.homeLoaded && !postService.allPosts?.length"
-    header="There doesn't seem to be any posts at the moment."
-    message="Is the website dead?">
-</app-error-message>
+    <app-list-of-posts [componentName]="this.constructor.name"></app-list-of-posts>
+    <app-loader *ngIf="!userService.homeLoaded"></app-loader>
+
+    <app-error-message *ngIf="userService.homeLoaded && !userService.subscriptionsPosts?.length && !userService.noSubscriptions"
+        header="There doesn't seem to be any posts from your subscribed subtidders at the moment."
+        message="Subscribe to others to populate your feed!">
+    </app-error-message>
+
+    <app-error-message *ngIf="userService.homeLoaded && userService.noSubscriptions"
+        header="You aren't subscribed to any subtidders, so there are no posts."
+        message="Subscribe to some to populate your feed!">
+    </app-error-message>
+
+</div>
+
+<div *ngIf="!authService.loggedIn()">
+    <div class="ui main text container">
+        <div class="ui warning message">
+            <div class="content">
+                <div class="header">Welcome to Tidder!</div>
+                <p>
+                    <a routerLink="/login">Click here</a> to log in.<br>
+                    <a routerLink="/register">Click here</a> to register.<br>
+                    <a routerLink="/t/all">Click here</a> to visit /t/all.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
