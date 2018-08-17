@@ -23,7 +23,7 @@ export class DeletePostComponent implements OnInit {
   deletePost() {
     this.postService.deletePost().subscribe(
       res => {
-        this.postService.notifyPostDeletion();
+        this.postService.notifyPostAdditionOrDeletion();
         if (this.navigateBackHome) this.router.navigate(['']);
       },
       err => console.log(err)

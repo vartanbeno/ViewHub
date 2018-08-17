@@ -19,8 +19,7 @@ export class PostService {
   public postToBeDeleted: Post;
   public postToBeEdited: Post;
 
-  public postAdded_Observable = new Subject();
-  public postDelete_Observable = new Subject();
+  public postAdded_Or_Deleted_Observable = new Subject();
   public postEdit_Observable = new Subject();
 
   public subtidderPosts: Array<any>;
@@ -34,8 +33,8 @@ export class PostService {
     return this.http.post<any>(`${this.subtidderUrl}/${post.subtidder}/add`, post);
   }
 
-  notifyPostAddition() {
-    this.postAdded_Observable.next();
+  notifyPostAdditionOrDeletion() {
+    this.postAdded_Or_Deleted_Observable.next();
   }
 
   deletePost() {
@@ -49,10 +48,6 @@ export class PostService {
         transition: 'vertical flip'
       })
       .modal('show');
-  }
-
-  notifyPostDeletion() {
-    this.postDelete_Observable.next();
   }
 
   editPost(post: Post) {

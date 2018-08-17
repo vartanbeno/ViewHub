@@ -46,12 +46,7 @@ export class ListOfPostsComponent implements OnInit {
           this.countPostsFromSubscriptions();
           this.getPostsFromSubscriptions();
 
-          this.postService.postAdded_Observable.subscribe(res => {
-            this.countPostsFromSubscriptions();
-            this.getPostsFromSubscriptions();
-          })
-
-          this.postService.postDelete_Observable.subscribe(res => {
+          this.postService.postAdded_Or_Deleted_Observable.subscribe(res => {
             this.countPostsFromSubscriptions();
             this.getPostsFromSubscriptions();
           })
@@ -62,7 +57,7 @@ export class ListOfPostsComponent implements OnInit {
         this.getUserPostCount();
         this.getUserPosts();
 
-        this.postService.postDelete_Observable.subscribe(res => {
+        this.postService.postAdded_Or_Deleted_Observable.subscribe(res => {
           this.getUserPostCount();
           this.getUserPosts();
         })
@@ -72,12 +67,7 @@ export class ListOfPostsComponent implements OnInit {
         this.getSubtidderPostsCount();
         this.getSubtidderPosts();
 
-        this.postService.postAdded_Observable.subscribe(res => {
-          this.getSubtidderPostsCount();
-          this.getSubtidderPosts();
-        })
-
-        this.postService.postDelete_Observable.subscribe(res => {
+        this.postService.postAdded_Or_Deleted_Observable.subscribe(res => {
           this.getSubtidderPostsCount();
           this.getSubtidderPosts();
         })
