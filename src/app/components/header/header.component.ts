@@ -36,6 +36,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.getSubscriptions();
       this.getUsername();
     });
+
+    this.userService.subscriptions_Observable.subscribe(res => this.getSubscriptions());
     
     this.focusOnSearch();
   }

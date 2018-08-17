@@ -89,7 +89,7 @@ t.get('/:subtidder', (req, res) => {
     offset = (offset) ? offset : 0;
 
     db.query(`
-    SELECT COUNT(1) FROM subtidders WHERE name = $1
+    SELECT COUNT(1) FROM subtidders WHERE name = $1;
     `, [subtidder], (error, result) => {
         if (error) {
             console.log(error);

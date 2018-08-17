@@ -21,10 +21,11 @@ export class PostComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.id = this.route.snapshot.paramMap.get('id');
-    this.getPost();
   }
 
   ngOnInit() {
+    this.getPost();
+    this.postService.postEdit_Observable.subscribe(res => this.getPost);
   }
 
   getPost() {

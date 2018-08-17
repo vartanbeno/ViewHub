@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PostService } from '../../services/post.service';
 import { AuthService } from '../../services/auth.service';
 import { SubtidderService } from '../../services/subtidder.service';
+import { UserService } from '../../services/user.service';
 declare var $: any;
 
 @Component({
@@ -16,9 +17,13 @@ export class SubtidderComponent implements OnInit {
   subtidderData: Object = {};
   @ViewChild('addPostToSubtidderButton') addPostToSubtidderButton: ElementRef;
 
+  id: string;
+  isSubscribed: boolean;
+
   constructor(
     private postService: PostService,
     private subtidderService: SubtidderService,
+    private userService: UserService,
     private authService: AuthService,
     private renderer: Renderer,
     private route: ActivatedRoute
@@ -27,6 +32,7 @@ export class SubtidderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.id = this.authService.getId();
     this.subtidderService.subtidderInfo_Observable.subscribe(res => {
       if (this.subtidder === 'all') {
         this.subtidderData['name'] = 'all';
@@ -59,7 +65,41 @@ export class SubtidderComponent implements OnInit {
     this.subtidderService.getSubtidderInfo(this.subtidder).subscribe(
       res => {
         this.subtidderData = res;
+        if (this.authService.loggedIn() && this.subtidder !== 'all') {
+          this.checkIfSubscribed();
+          return;
+        };
         this.postService.subtidderLoaded = true;
+      },
+      err => console.log(err)
+    )
+  }
+
+  checkIfSubscribed() {
+    this.userService.checkIfSubscribed(this.id, this.subtidderData['name']).subscribe(
+      res => {
+        this.isSubscribed = (Number(res.count)) ? true : false;
+        this.postService.subtidderLoaded = true;
+      },
+      err => console.log(err)
+    )
+  }
+
+  subscribe() {
+    this.userService.subscribe(this.id, this.subtidderData['name']).subscribe(
+      res => {
+        this.isSubscribed = true;
+        this.userService.refreshSubscriptions();
+      },
+      err => console.log(err)
+    )
+  }
+
+  unsubscribe() {
+    this.userService.unsubscribe(this.id, this.subtidderData['name']).subscribe(
+      res => {
+        this.isSubscribed = false;
+        this.userService.refreshSubscriptions();
       },
       err => console.log(err)
     )

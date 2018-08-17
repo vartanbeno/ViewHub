@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS subscriptions(
         ON DELETE CASCADE,
     subtidder_id INTEGER REFERENCES subtidders(id)
         ON DELETE CASCADE,
+    subscription_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id, subtidder_id)
 );
 

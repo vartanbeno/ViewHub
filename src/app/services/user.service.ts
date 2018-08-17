@@ -14,6 +14,7 @@ export class UserService {
   private subscriptionsUrl = 'http://localhost:3000/subscriptions';
 
   public authentication_Observable = new Subject();
+  public subscriptions_Observable = new Subject();
 
   public userPosts: Array<any>;
   
@@ -32,6 +33,10 @@ export class UserService {
 
   getSubscriptions(id: string) {
     return this.http.get<any>(`${this.subscriptionsUrl}/${id}`);
+  }
+
+  refreshSubscriptions() {
+    this.subscriptions_Observable.next();
   }
 
   getUsername(id: string) {
@@ -56,6 +61,18 @@ export class UserService {
 
   notifyLoginOrSignup() {
     this.authentication_Observable.next();
+  }
+
+  checkIfSubscribed(id: string, subtidder: string) {
+    return this.http.get<any>(`${this.subscriptionsUrl}/${id}/${subtidder}`);
+  }
+
+  subscribe(id: string, subtidder: string) {
+    return this.http.post<any>(`${this.subscriptionsUrl}/${id}/${subtidder}`, null);
+  }
+
+  unsubscribe(id: string, subtidder: string) {
+    return this.http.delete<any>(`${this.subscriptionsUrl}/${id}/${subtidder}`);
   }
 
 }

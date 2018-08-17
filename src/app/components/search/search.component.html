@@ -4,7 +4,7 @@
   <div class="item" *ngFor="let subtidder of subtidders">
     <div class="content">
       <div class="header"><span class="link to subtidder" routerLink="/t/{{ subtidder.name }}">{{ subtidder.name }}</span></div>
-      <div class="meta">Created {{ subtidder.creation_date }}</div>
+      <div class="meta">Created {{ subtidder.creation_date }} by <span class="link to user profile" routerLink="/u/{{ subtidder.creator }}">{{ subtidder.creator }}</span></div>
       <div class="description">
         <p>{{ subtidder.description }}</p>
       </div>
@@ -18,7 +18,10 @@
   <div class="item" *ngFor="let post of posts">
     <div class="content">
       <div class="header link to post" routerLink="/t/comments/{{ post.id }}">{{ post.title }}</div>
-      <div class="meta">{{ post.pub_date }}</div>
+      <div class="meta">
+        {{ post.pub_date }} by <span class="link to user profile" routerLink="/u/{{ post.author }}">{{ post.author }}</span>
+        <span class="right floated link to subtidder" routerLink="/t/{{ post.subtidder }}">{{ post.subtidder }}</span>
+      </div>
       <div class="description">
         <p class="post content">{{ (post.content.length > 200) ? (post.content | slice:0:200) + '...' : (post.content) }}</p>
       </div>
