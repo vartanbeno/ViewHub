@@ -8,8 +8,11 @@ search.get('/subtidders', (req, res) => {
     s = s.split(' ').join(' & ');
 
     db.query(`
-    SELECT name, description, creation_date FROM subtidders
-    WHERE tokens @@ to_tsquery('english', $1);
+    SELECT name, description,
+    CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS creator,
+    creation_date FROM subtidders
+    LEFT OUTER JOIN users ON (subtidders.creator_id = users.id)
+    WHERE subtidders.tokens @@ to_tsquery('english', $1);
     `, [s], (error, result) => {
         if (error) {
             console.log(error);
@@ -30,8 +33,12 @@ search.get('/posts', (req, res) => {
     s = s.split(' ').join(' & ');
 
     db.query(`
-    SELECT id, title, content, pub_date FROM posts
-    WHERE tokens @@ to_tsquery('english', $1);
+    SELECT posts.id,
+    CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
+    title, content, subtidders.name as subtidder, pub_date FROM posts
+    LEFT OUTER JOIN users ON (posts.author_id = users.id)
+    INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
+    WHERE posts.tokens @@ to_tsquery('english', $1);
     `, [s], (error, result) => {
         if (error) {
             console.log(error);
