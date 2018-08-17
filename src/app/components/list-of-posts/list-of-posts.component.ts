@@ -59,6 +59,7 @@ export class ListOfPostsComponent implements OnInit {
         })
 
         this.postService.postAdded_Observable.subscribe(res => {
+          if (!this.userService.subscriptions.length) return;
           this.countPostsFromSubscriptions();
           this.getPostsFromSubscriptions();
         })
