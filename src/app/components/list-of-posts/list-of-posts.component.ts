@@ -44,6 +44,7 @@ export class ListOfPostsComponent implements OnInit {
         }
         else if (!this.userService.subscriptions.length) {
           this.userService.noSubscriptions = true;
+          this.userService.homeLoaded = true;
         }
 
         this.userService.subscriptionsFetch_Observable.subscribe(res => {
@@ -52,6 +53,7 @@ export class ListOfPostsComponent implements OnInit {
             this.userService.homeLoaded = true;
             return;
           }
+          this.userService.noSubscriptions = false;
           this.countPostsFromSubscriptions();
           this.getPostsFromSubscriptions();
         })

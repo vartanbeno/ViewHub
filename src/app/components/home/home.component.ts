@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.userService.homeLoaded = false;
+    this.userService.noSubscriptions = false;
   }
 
   ngAfterViewInit() {
