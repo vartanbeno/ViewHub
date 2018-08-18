@@ -12,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
 export class CreateSubtidderComponent implements OnInit {
 
   subtidderData: Subtidder;
-  nameIsAll: boolean = false;
+  nameInvalid: boolean = false;
   @ViewChild('subtidderNameInput') subtidderNameInput: ElementRef;
 
   constructor(
@@ -22,21 +22,14 @@ export class CreateSubtidderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.subtidderData = new Subtidder();
+    this.subtidderData = new Subtidder('', '', this.authService.getId());
     this.subtidderNameInput.nativeElement.focus();
   }
 
   createSubtidder() {
-    if (this.subtidderData.name === 'all') {
-      this.nameIsAll = true;
-      return;
-    }
-
-    this.subtidderData.creator_id = this.authService.getId();
-    
     this.subtidderService.createSubtidder(this.subtidderData).subscribe(
       res => this.router.navigate([`t/${this.subtidderData.name}`]),
-      err => console.log(err)
+      err => this.nameInvalid = (err.status === 400) ? true : false
     )
   }
 
