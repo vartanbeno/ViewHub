@@ -13,10 +13,10 @@
                 id="name"
                 placeholder="Name"
                 pattern=".{3,20}"
-                (input)="nameIsAll = false"
+                (input)="nameInvalid = false"
                 required>
-        <div class="ui red pointing label" *ngIf="nameIsAll">
-          This name is not valid.
+        <div class="ui red pointing label" *ngIf="nameInvalid">
+          Subtidder with this name already exists.
         </div>
       </div>
     

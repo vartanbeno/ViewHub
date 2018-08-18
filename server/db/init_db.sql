@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS users(
 CREATE TABLE IF NOT EXISTS subtidders(
     id SERIAL PRIMARY KEY,
     name CITEXT UNIQUE NOT NULL
-        CHECK (char_length(name) >= 3 AND char_length(name) <= 20),
+        CONSTRAINT check_name_length CHECK (char_length(name) >= 3 AND char_length(name) <= 20)
+        CONSTRAINT check_not_all CHECK (name != 'all'),
     description VARCHAR(500) NOT NULL,
     creator_id INTEGER REFERENCES users(id)
         ON DELETE SET NULL,

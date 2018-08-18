@@ -24,7 +24,12 @@ t.post('/subtidders/create', (req, res) => {
     [name, description, creator_id], (error, result) => {
         if (error) {
             console.log(error);
-            return res.status(500).send({ error: 'Something went wrong.' });
+            if (error.detail.includes('already exists') || error.constraint === 'check_not_all') {
+                return res.status(400).send({ error: 'Subtidder with this name already exists.' });
+            }
+            else {
+                return res.status(500).send({ error: 'Something went wrong.' });
+            }
         }
         else {
             return res.status(200).json('Subtidder created.');
