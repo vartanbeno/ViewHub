@@ -32,7 +32,7 @@ export class UserService {
   }
 
   countPostsFromSubscriptions(id: string) {
-    return this.http.get<any>(`${this.subscriptionsUrl}/${id}/count`);
+    return this.http.get<any>(`${this.subscriptionsUrl}/${id}/posts/count`);
   }
 
   getAllUsers() {

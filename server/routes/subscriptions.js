@@ -44,13 +44,12 @@ subscriptions.get('/:id/posts', (req, res) => {
 })
 
 // count posts from subscriptions
-subscriptions.get(':id/count', (req, res) => {
-    let { id } = req.query;
+subscriptions.get('/:id/posts/count', (req, res) => {
+    let { id } = req.params;
 
     db.query(`
     SELECT COUNT(*)
     FROM posts
-    LEFT OUTER JOIN users ON (posts.author_id = users.id)
     INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
     WHERE subtidders.name IN (
         SELECT subtidders.name
@@ -60,13 +59,14 @@ subscriptions.get(':id/count', (req, res) => {
 	    WHERE users.id = $1
     );
     `, [id], (error, result) => {
-            if (error) {
-                console.log(error);
-            }
-            else {
-                return res.status(200).send(result.rows[0].count);
-            }
-        })
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+        else {
+            return res.status(200).send(result.rows[0].count);
+        }
+    })
 })
 
 subscriptions.get('/:id', (req, res) => {
