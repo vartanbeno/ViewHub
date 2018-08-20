@@ -20,6 +20,7 @@ comments.get('/:id', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else if (comments.length) {
+            comments.forEach((comment) => comment.pub_date = moment(comment.pub_date, 'MMMM DD YYYY').fromNow());
             return res.status(200).send(comments);
         }
         else {
