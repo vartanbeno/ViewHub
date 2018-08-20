@@ -22,6 +22,9 @@
         <app-delete-post [navigateBackHome]="true"></app-delete-post>
     </div>
 
+    <h3 class="ui dividing header">Comments</h3>
+    <app-list-of-comments postId="{{ postData.id }}"></app-list-of-comments>
+
 </div>
 
 <app-loader *ngIf="!postLoaded"></app-loader>

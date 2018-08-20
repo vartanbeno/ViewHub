@@ -1,3 +1,15 @@
-<p>
-  list-of-comments works!
-</p>
+<div class="ui comments" *ngIf="!noComments">
+	<div class="comment" *ngFor="let comment of comments">
+		<div class="content">
+			<a class="author link to user profile" routerLink="/u/{{ comment.author }}">{{ comment.author }}</a>
+			<div class="metadata">
+				<span class="date">{{ comment.pub_date }}</span>
+			</div>
+			<div class="text">{{ comment.body }}</div>
+		</div>
+	</div>
+</div>
+
+<div class="no comments" *ngIf="noComments">
+	<span class="grey text">There seems to be nothing here...</span>
+</div>
