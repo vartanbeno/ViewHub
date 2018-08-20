@@ -11,7 +11,7 @@ export class CommentService {
   constructor(private http: HttpClient) { }
 
   getPostComments(id: string) {
-    this.http.get<any>(`${this.commentsUrl}/${id}`);
+    return this.http.get<any>(`${this.commentsUrl}/${id}`);
   }
 
 }

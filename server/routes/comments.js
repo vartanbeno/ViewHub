@@ -19,12 +19,9 @@ comments.get('/:id', (req, res) => {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
         }
-        else if (comments.length) {
+        else {
             comments.forEach((comment) => comment.pub_date = moment(comment.pub_date, 'MMMM DD YYYY').fromNow());
             return res.status(200).send(comments);
-        }
-        else {
-            return res.status(204).send({ message: 'There are no comments on this post.' });
         }
     })
 })
