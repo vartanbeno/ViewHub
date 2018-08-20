@@ -48,6 +48,17 @@ CREATE TABLE IF NOT EXISTS subscriptions(
     PRIMARY KEY (user_id, subtidder_id)
 );
 
+CREATE TABLE IF NOT EXISTS comments(
+    id SERIAL PRIMARY KEY,
+    body VARCHAR(10000) NOT NULL
+        CHECK(char_length(body) >= 1),
+    author_id INTEGER REFERENCES users(id)
+        ON DELETE SET NULL,
+    post_id INTEGER REFERENCES posts(id)
+        ON DELETE CASCADE,
+    pub_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE OR REPLACE FUNCTION set_subtidder_tokens() RETURNS TRIGGER AS
 $$
 BEGIN
