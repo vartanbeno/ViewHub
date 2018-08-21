@@ -16,7 +16,7 @@
         <app-add-post [subtidder]="subtidder"></app-add-post>
     </h2>
     <h5 *ngIf="subtidder !== 'all'">
-        <span class="subtidder description post content">{{ subtidderData.description }}</span>
+        <span class="preline">{{ subtidderData.description }}</span>
         <span class="grey text">
             - created {{ subtidderData.creation_date }} by
             <span class="link to user profile" routerLink="/u/{{ subtidderData.creator }}">{{ subtidderData.creator }}</span>
