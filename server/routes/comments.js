@@ -26,4 +26,22 @@ comments.get('/:id', (req, res) => {
     })
 })
 
+// add comment
+comments.put('/', (req, res) => {
+    let { body, author_id, post_id } = req.body;
+
+    db.query(`
+    INSERT INTO comments (body, author_id, post_id)
+    VALUES ($1, $2, $3);
+    `, [body, author_id, post_id], (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+        else {
+            return res.status(200).send({ message: 'Comment successfully posted.' });
+        }
+    })
+})
+
 module.exports = comments;

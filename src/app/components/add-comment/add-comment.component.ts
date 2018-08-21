@@ -19,11 +19,21 @@ export class AddCommentComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.comment = new Comment('', this.authService.getId(), this.post_id);
+    this.makeNewComment();
   }
 
   addComment() {
-    console.log(this.comment);
+    this.commentService.addComment(this.comment).subscribe(
+      res => {
+        this.commentService.notifyCommentAddition();
+        this.makeNewComment();
+      },
+      err => console.log(err)
+    )
+  }
+
+  makeNewComment() {
+    this.comment = new Comment('', this.authService.getId(), this.post_id);
   }
 
 }

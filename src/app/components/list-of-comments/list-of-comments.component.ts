@@ -16,6 +16,7 @@ export class ListOfCommentsComponent implements OnInit {
 
   ngOnInit() {
     this.getComments();
+    this.commentService.commentAdded_Observable.subscribe(res => this.getComments());
   }
 
   getComments() {
