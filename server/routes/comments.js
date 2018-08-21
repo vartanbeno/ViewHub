@@ -38,12 +38,8 @@ comments.put('/', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            if (result.rowCount) {
-                return res.status(200).send({ message: 'Comment successfully edited.' });
-            }
-            else {
-                return res.status(404).send({ error: 'Comment not found.' });
-            }        }
+            return res.status(200).send({ message: 'Comment successfully posted.' });
+        }
     })
 })
 
@@ -59,7 +55,12 @@ comments.post('/:comment_id', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            return res.status(200).send(result);
+            if (result.rowCount) {
+                return res.status(200).send({ message: 'Comment successfully edited.' });
+            }
+            else {
+                return res.status(404).send({ error: 'Comment not found.' });
+            }
         }
     })
 })
