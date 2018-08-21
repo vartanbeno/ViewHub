@@ -3,9 +3,8 @@ const express = require('express'),
     moment = require('moment'),
     comments = express.Router();
 
-comments.get('/:id', (req, res) => {
-    // post id
-    let { id } = req.params;
+comments.get('/:post_id', (req, res) => {
+    let { post_id } = req.params;
 
     db.query(`
     SELECT comments.id, body, CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author, author_id, post_id, pub_date
@@ -13,7 +12,7 @@ comments.get('/:id', (req, res) => {
     LEFT OUTER JOIN users ON (comments.author_id = users.id)
     WHERE post_id = $1
     ORDER BY pub_date DESC;
-    `, [id], (error, result) => {
+    `, [post_id], (error, result) => {
         let comments = result.rows;
         if (error) {
             console.log(error);
@@ -40,6 +39,27 @@ comments.put('/', (req, res) => {
         }
         else {
             return res.status(200).send({ message: 'Comment successfully posted.' });
+        }
+    })
+})
+
+comments.delete('/:comment_id', (req, res) => {
+    let { comment_id } = req.params;
+
+    db.query(`
+    DELETE FROM comments WHERE id = $1;
+    `, [comment_id], (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+        else {
+            if (result.rowCount) {
+                return res.status(200).send({ message: 'Comment successfully deleted.' });
+            }
+            else {
+                return res.status(404).send({ error: 'Comment not found.' });
+            }
         }
     })
 })

@@ -20,7 +20,7 @@ export class ListOfCommentsComponent implements OnInit {
 
   ngOnInit() {
     this.getComments();
-    this.commentService.commentAdded_Observable.subscribe(res => this.getComments());
+    this.commentService.commentAdded_or_Deleted_Observable.subscribe(res => this.getComments());
   }
 
   getComments() {
@@ -31,6 +31,18 @@ export class ListOfCommentsComponent implements OnInit {
       },
       err => console.log(err)
     )
+  }
+
+  deleteComment(comment_id: string) {
+    let confirmDelete = confirm('Click OK to delete the comment.');
+
+    if (confirmDelete) {
+      this.commentService.deleteComment(comment_id).subscribe(
+        res => this.commentService.notifyCommentAdditionOrDeletion(),
+        err => console.log(err)
+      )
+    }
+    
   }
 
 }
