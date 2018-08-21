@@ -6,6 +6,10 @@
 				<span class="date">{{ comment.pub_date }}</span>
 			</div>
 			<div class="text preline">{{ comment.body }}</div>
+			<div class="actions" *ngIf="authService.loggedIn() && comment.author_id == authService.getId()">
+				<a>Edit</a>
+				<a>Delete</a>
+			</div>
 		</div>
 	</div>
 </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CommentService } from '../../services/comment.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-list-of-comments',
@@ -12,7 +13,10 @@ export class ListOfCommentsComponent implements OnInit {
   comments: Array<any> = [];
   noComments: boolean = false;
 
-  constructor(private commentService: CommentService) { }
+  constructor(
+    private commentService: CommentService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
     this.getComments();

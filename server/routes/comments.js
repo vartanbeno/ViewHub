@@ -8,7 +8,7 @@ comments.get('/:id', (req, res) => {
     let { id } = req.params;
 
     db.query(`
-    SELECT comments.id, body, CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author, post_id, pub_date
+    SELECT comments.id, body, CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author, author_id, post_id, pub_date
     FROM comments
     LEFT OUTER JOIN users ON (comments.author_id = users.id)
     WHERE post_id = $1

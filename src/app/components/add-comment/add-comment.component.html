@@ -2,7 +2,7 @@
 	<div class="field">
 		<textarea [(ngModel)]="comment.body" name="body" placeholder="Write a comment..." maxlength="10000" rows="3" required></textarea>
 	</div>
-	<button type="submit" class="ui blue labeled submit icon mini button" [disabled]="commentForm.form.invalid">
-		<i class="icon edit"></i> Add Reply
+	<button type="submit" class="ui blue mini button" [disabled]="commentForm.form.invalid">
+		Add Comment
 	</button>
 </form>
