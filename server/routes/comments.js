@@ -38,7 +38,28 @@ comments.put('/', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            return res.status(200).send({ message: 'Comment successfully posted.' });
+            if (result.rowCount) {
+                return res.status(200).send({ message: 'Comment successfully edited.' });
+            }
+            else {
+                return res.status(404).send({ error: 'Comment not found.' });
+            }        }
+    })
+})
+
+comments.post('/:comment_id', (req, res) => {
+    let { comment_id } = req.params;
+    let { body } = req.body;
+
+    db.query(`
+    UPDATE comments SET body = $1 WHERE id = $2;
+    `, [body, comment_id], (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+        else {
+            return res.status(200).send(result);
         }
     })
 })
