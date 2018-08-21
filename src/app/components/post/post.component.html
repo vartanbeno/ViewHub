@@ -4,10 +4,10 @@
     <p class="post content preline">{{ postData.content }}</p>
     <div class="ui grid small text">
         <div class="column eight wide left aligned">
-            <span class="grey text">{{ postData.pub_date }} by <span class="link to user profile" routerLink="/u/{{ postData.author }}">{{ postData.author }}</span></span>
+            <span class="grey text">{{ postData.pub_date }} by <a class="link to user profile" routerLink="/u/{{ postData.author }}">{{ postData.author }}</a></span>
         </div>
         <div class="column eight wide right aligned">
-            <span class="link to subtidder" routerLink="/t/{{ postData.subtidder }}">{{ postData.subtidder }}</span>
+            <a class="link to subtidder" routerLink="/t/{{ postData.subtidder }}">{{ postData.subtidder }}</a>
         </div>
     </div>
 
