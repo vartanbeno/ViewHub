@@ -23,7 +23,11 @@
     </div>
 
     <h3 class="ui dividing header">Comments</h3>
-    <app-list-of-comments postId="{{ postData.id }}"></app-list-of-comments>
+    <div *ngIf="authService.loggedIn()">
+        <app-add-comment post_id="{{ postData.id }}" *ngIf="authService.loggedIn()"></app-add-comment>
+        <br/>
+    </div>
+    <app-list-of-comments post_id="{{ postData.id }}"></app-list-of-comments>
 
 </div>
 

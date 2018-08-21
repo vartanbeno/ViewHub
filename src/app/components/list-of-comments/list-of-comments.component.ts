@@ -8,7 +8,7 @@ import { CommentService } from '../../services/comment.service';
 })
 export class ListOfCommentsComponent implements OnInit {
 
-  @Input() postId: string;
+  @Input() post_id: string;
   comments: Array<any> = [];
   noComments: boolean = false;
 
@@ -19,7 +19,7 @@ export class ListOfCommentsComponent implements OnInit {
   }
 
   getComments() {
-    this.commentService.getPostComments(this.postId).subscribe(
+    this.commentService.getPostComments(this.post_id).subscribe(
       res => {
         this.comments = res;
         this.noComments = (this.comments.length) ? false : true;

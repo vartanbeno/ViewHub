@@ -28,6 +28,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { CreateSubtidderComponent } from './components/create-subtidder/create-subtidder.component';
 import { PostComponent } from './components/post/post.component';
 import { ListOfCommentsComponent } from './components/list-of-comments/list-of-comments.component';
+import { AddCommentComponent } from './components/add-comment/add-comment.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { ListOfCommentsComponent } from './components/list-of-comments/list-of-c
     CreateSubtidderComponent,
     PostComponent,
     ListOfCommentsComponent,
+    AddCommentComponent,
   ],
   imports: [
     BrowserModule,
