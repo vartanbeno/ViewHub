@@ -4,11 +4,14 @@
     overflow: visible !important;
 }
 
+div.item {
+    outline: none;
+}
+
 .subscription {
     font-size: 1rem;
 }
 
 .subscription.empty {
     color: #2185d0;
-    cursor: pointer;
 }

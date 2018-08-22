@@ -5,3 +5,8 @@
 div.card {
     outline: none;
 }
+
+.profile.picture {
+    cursor: pointer;
+    outline: none;
+}
