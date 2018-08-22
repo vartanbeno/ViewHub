@@ -31,10 +31,6 @@ export class UserService {
     return this.http.get<any>(`${this.subscriptionsUrl}/${id}/posts`, { params: { page } });
   }
 
-  countPostsFromSubscriptions(id: string) {
-    return this.http.get<any>(`${this.subscriptionsUrl}/${id}/posts/count`);
-  }
-
   getAllUsers() {
     return this.http.get<any>(this.allUsersUrl);
   }
@@ -69,10 +65,6 @@ export class UserService {
 
   getUserPosts(username: string, page: string) {
     return this.http.get<any>(`${this.userUrl}/${username}/posts`, { params: { page } });
-  }
-
-  getUserPostCount(username: string) {
-    return this.http.get<any>(`${this.userUrl}/${username}/posts/count`);
   }
 
   notifyLoginOrSignup() {

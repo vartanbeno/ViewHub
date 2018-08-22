@@ -77,10 +77,6 @@ export class PostService {
     return this.http.get<any>(`${this.subtidderUrl}/${subtidder}`, { params: { page } });
   }
 
-  countPostsFromSubtidder(subtidder: string) {
-    return this.http.get<any>(`${this.subtidderUrl}/${subtidder}/count`);
-  }
-
   getPost(id: string) {
     return this.http.get<any>(`${this.getPostUrl}/${id}`);
   }
