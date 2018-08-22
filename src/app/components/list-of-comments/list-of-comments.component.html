@@ -7,7 +7,7 @@
 				<span class="date">{{ comment.pub_date }}</span>
 			</div>
 
-			<div class="text preline">{{ comment.body }}</div>
+			<div class="text preline" *ngIf="!comment.editing">{{ comment.body }}</div>
 			
 			<div class="text" *ngIf="comment.editing">
 				<form #editForm="ngForm" class="ui form" autocomplete="off" (ngSubmit)="editComment">
