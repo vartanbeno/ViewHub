@@ -73,8 +73,8 @@ export class PostService {
     return this.http.get<any>(this.searchPostsUrl, { params: { s: searchTerm } });
   }
 
-  getPostsFromSubtidder(subtidder: string, offset: string) {
-    return this.http.get<any>(`${this.subtidderUrl}/${subtidder}`, { params: { offset: offset } });
+  getPostsFromSubtidder(subtidder: string, page: string) {
+    return this.http.get<any>(`${this.subtidderUrl}/${subtidder}`, { params: { page } });
   }
 
   countPostsFromSubtidder(subtidder: string) {

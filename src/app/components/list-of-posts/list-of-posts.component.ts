@@ -89,8 +89,7 @@ export class ListOfPostsComponent implements OnInit {
       this.router.navigate([''], { queryParams: { page: this.currentPage } });
       return;
     }
-    let pageOffset = (this.currentPage - 1).toString()
-    this.userService.getPostsFromSubscriptions(this.id, pageOffset).subscribe(
+    this.userService.getPostsFromSubscriptions(this.id, this.currentPage.toString()).subscribe(
       res => {
         this.posts = res.posts;
         this.userService.subscriptionsPosts = this.posts;
@@ -121,8 +120,7 @@ export class ListOfPostsComponent implements OnInit {
       this.router.navigate([`u/${this.username}`], { queryParams: { page: this.currentPage } });
       return;
     }
-    let pageOffset = (this.currentPage - 1).toString();
-    this.userService.getUserPosts(this.username, pageOffset).subscribe(
+    this.userService.getUserPosts(this.username, this.currentPage.toString()).subscribe(
       res => {
         this.posts = res.posts;
         this.userService.userPosts = this.posts;
@@ -153,8 +151,7 @@ export class ListOfPostsComponent implements OnInit {
       this.router.navigate([''], { queryParams: { page: this.currentPage } });
       return;
     }
-    let pageOffset = (this.currentPage - 1).toString()
-    this.postService.getPostsFromSubtidder(this.subtidder, pageOffset).subscribe(
+    this.postService.getPostsFromSubtidder(this.subtidder, this.currentPage.toString()).subscribe(
       res => {
         this.posts = res.posts;
         this.postService.subtidderPosts = this.posts;

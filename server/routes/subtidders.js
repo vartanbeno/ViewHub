@@ -19,8 +19,10 @@ t.get('/', (req, res) => {
 t.post('/subtidders/create', (req, res) => {
     let { name, description, creator_id } = req.body;
 
-    db.query(
-    `INSERT INTO subtidders (name, description, creator_id) VALUES ($1, $2, $3);`,
+    db.query(`
+    INSERT INTO subtidders (name, description, creator_id) VALUES ($1, $2, $3)
+    RETURNING name;
+    `,
     [name, description, creator_id], (error, result) => {
         if (error) {
             console.log(error);
@@ -32,15 +34,16 @@ t.post('/subtidders/create', (req, res) => {
             }
         }
         else {
-            return res.status(200).send({ message: 'Subtidder created.' });
+            let subtidder = result.rows[0].name;
+            return res.status(200).send({ message: 'Subtidder ' + subtidder + ' created.' });
         }
     })
 })
 
 t.get('/:subtidder', (req, res) => {
     let { subtidder } = req.params;
-    let offset = Number(req.query.offset);
-    offset = (offset) ? offset : 0;
+    let page = Number(req.query.page);
+    page = (page > 0) ? (page - 1) : 0;
 
     let isAll = (subtidder === 'all');
 
@@ -54,7 +57,7 @@ t.get('/:subtidder', (req, res) => {
         ORDER BY pub_date DESC
         LIMIT 10
         OFFSET 10 * $1;
-        `, [offset], (error, result) => {
+        `, [page], (error, result) => {
             if (error) {
                 console.log(error);
                 return res.status(500).send({ error: 'Something went wrong.' });
@@ -91,7 +94,7 @@ t.get('/:subtidder', (req, res) => {
                 ORDER BY pub_date DESC
                 LIMIT 10
                 OFFSET 10 * $2;
-                `, [subtidder, offset], (error, result) => {
+                `, [subtidder, page], (error, result) => {
                     if (error) {
                         console.log(error);
                         return res.status(500).send({ error: 'Something went wrong.' });

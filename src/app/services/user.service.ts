@@ -27,8 +27,8 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getPostsFromSubscriptions(id: string, offset: string) {
-    return this.http.get<any>(`${this.subscriptionsUrl}/${id}/posts`, { params: { offset: offset } });
+  getPostsFromSubscriptions(id: string, page: string) {
+    return this.http.get<any>(`${this.subscriptionsUrl}/${id}/posts`, { params: { page } });
   }
 
   countPostsFromSubscriptions(id: string) {
@@ -67,8 +67,8 @@ export class UserService {
     return this.http.delete<any>(`${this.userUrl}/${username}/pic`);
   }
 
-  getUserPosts(username: string, offset: string) {
-    return this.http.get<any>(`${this.userUrl}/${username}/posts`, { params: { offset: offset } });
+  getUserPosts(username: string, page: string) {
+    return this.http.get<any>(`${this.userUrl}/${username}/posts`, { params: { page } });
   }
 
   getUserPostCount(username: string) {

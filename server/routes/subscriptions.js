@@ -6,11 +6,9 @@ const express = require('express'),
 // get posts from subscriptions
 subscriptions.get('/:user_id/posts', (req, res) => {
     let { user_id } = req.params;
-    let { offset } = req.query;
+    let page = Number(req.query.page);
+    page = (page > 0) ? (page - 1) : 0;
 
-    offset = Number(offset);
-    offset = (offset) ? offset : 0;
-    
     db.query(`
     SELECT posts.id, title, content,
     CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
@@ -28,7 +26,7 @@ subscriptions.get('/:user_id/posts', (req, res) => {
     ORDER BY pub_date DESC
     LIMIT 10
     OFFSET 10 * $2;
-    `, [user_id, offset], (error, result) => {
+    `, [user_id, page], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });

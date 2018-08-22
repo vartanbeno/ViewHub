@@ -112,8 +112,8 @@ users.delete('/u/:username/pic', (req, res) => {
 })
 
 users.get('/u/:username/posts', (req, res) => {
-    let offset = Number(req.query.offset);
-    offset = (offset) ? offset : 0;
+    let page = Number(req.query.page);
+    page = (page > 0) ? (page - 1) : 0;
 
     let { username } = req.params;
     db.query(`
@@ -125,7 +125,7 @@ users.get('/u/:username/posts', (req, res) => {
     ORDER BY pub_date DESC
     LIMIT 10
     OFFSET 10 * $2;
-    `, [username, offset], (error, result) => {
+    `, [username, page], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
