@@ -14,12 +14,16 @@ export class CommentService {
 
   constructor(private http: HttpClient) { }
 
-  getPostComments(id: string) {
-    return this.http.get<any>(`${this.commentsUrl}/${id}`);
+  getPostComments(post_id: string) {
+    return this.http.get<any>(`${this.commentsUrl}/${post_id}`);
   }
 
   addComment(comment: Comment) {
     return this.http.put<any>(this.commentsUrl, comment);
+  }
+
+  editComment(comment_id: string, body: string) {
+    return this.http.post<any>(`${this.commentsUrl}/${comment_id}`, { body: body });
   }
 
   deleteComment(comment_id: string) {
