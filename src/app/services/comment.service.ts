@@ -19,11 +19,11 @@ export class CommentService {
   }
 
   addComment(comment: Comment) {
-    return this.http.put<any>(this.commentsUrl, comment);
+    return this.http.post<any>(this.commentsUrl, comment);
   }
 
   editComment(comment_id: string, body: string) {
-    return this.http.post<any>(`${this.commentsUrl}/${comment_id}`, { body: body });
+    return this.http.put<any>(`${this.commentsUrl}/${comment_id}`, { body: body });
   }
 
   deleteComment(comment_id: string) {
