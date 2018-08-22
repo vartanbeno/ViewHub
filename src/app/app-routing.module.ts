@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
-import { UsersComponent } from './components/users/users.component';
+import { ListOfUsersComponent } from './components/list-of-users/list-of-users.component';
 import { AuthGuard } from './auth.guard';
 import { SearchComponent } from './components/search/search.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
 
-  { path: 'u', component: UsersComponent, canActivate: [AuthGuard] },
+  { path: 'u', component: ListOfUsersComponent, canActivate: [AuthGuard] },
   { path: 'u/:username', component: UserProfileComponent, canActivate: [AuthGuard] },
 
   { path: 't/:subtidder', component: SubtidderComponent },

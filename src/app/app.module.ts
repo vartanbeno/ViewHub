@@ -13,7 +13,7 @@ import { PostService } from './services/post.service';
 import { SubtidderService } from './services/subtidder.service';
 import { AuthGuard } from './auth.guard';
 import { TokenInterceptorService } from './services/token-interceptor.service';
-import { UsersComponent } from './components/users/users.component';
+import { ListOfUsersComponent } from './components/list-of-users/list-of-users.component';
 import { AddPostComponent } from './components/add-post/add-post.component';
 import { SearchComponent } from './components/search/search.component';
 import { DeletePostComponent } from './components/delete-post/delete-post.component';
@@ -36,7 +36,7 @@ import { AddCommentComponent } from './components/add-comment/add-comment.compon
     RegisterComponent,
     HomeComponent,
     LoginComponent,
-    UsersComponent,
+    ListOfUsersComponent,
     AddPostComponent,
     SearchComponent,
     DeletePostComponent,
