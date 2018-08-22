@@ -37,88 +37,61 @@ t.post('/subtidders/create', (req, res) => {
     })
 })
 
-t.get('/all', (req, res) => {
-    let offset = Number(req.query.offset);
-    offset = (offset) ? offset : 0;
-
-    db.query(`
-    SELECT posts.id, title, content,
-    CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
-    author_id, subtidders.name AS subtidder, pub_date FROM posts
-    LEFT OUTER JOIN users ON (posts.author_id = users.id)
-    INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
-    ORDER BY pub_date DESC
-    LIMIT 10
-    OFFSET 10 * $1;
-    `, [offset], (error, result) => {
-        if (error) {
-            console.log(error);
-            return res.status(500).send({ error: 'Something went wrong.' });
-        }
-        else {
-            let posts = result.rows;
-            posts.forEach((post) => {
-                post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
-            })
-            return res.status(200).send({ posts });
-        }
-    })
-})
-
-t.get('/all/count', (req, res) => {
-    db.query(`SELECT COUNT(*) FROM posts`, (error, result) => {
-        if (error) {
-            console.log(error);
-            return res.status(500).send({ error: 'Something went wrong.' });
-        }
-        else {
-            let numberOfPosts = result.rows[0].count;
-            return res.status(200).send({ numberOfPosts });
-        }
-    })
-})
-
-t.get('/all/countSubtidders', (req, res) => {
-    db.query(`SELECT COUNT(*) FROM subtidders`, (error, result) => {
-        if (error) {
-            console.log(error);
-            return res.status(500).send({ error: 'Something went wrong.' });
-        }
-        else {
-            let numberOfSubtidders = result.rows[0].count;
-            return res.status(200).send({ numberOfSubtidders });
-        }
-    })
-})
-
 t.get('/:subtidder', (req, res) => {
     let { subtidder } = req.params;
-
     let offset = Number(req.query.offset);
     offset = (offset) ? offset : 0;
 
-    db.query(`
-    SELECT COUNT(1) FROM subtidders WHERE name = $1;
-    `, [subtidder], (error, result) => {
-        if (error) {
-            console.log(error);
-            return res.status(500).send({ error: 'Something went wrong.' });
-        }
-        else if (result.rows[0].count === '0') {
-            return res.status(404).send({ error: 'Subtidder not found.' });
-        }
-        else {
-            db.query(`
-            SELECT posts.id, title, content,
-            CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
-            author_id, subtidders.name AS subtidder, pub_date FROM posts
-            LEFT OUTER JOIN users ON (posts.author_id = users.id)
-            INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
-            WHERE subtidders.name = $1
-            ORDER BY pub_date DESC
-            LIMIT 10
-            OFFSET 10 * $2;
-            `, [subtidder, offset], (error, result) => {
+    let isAll = (subtidder === 'all');
+
+    if (isAll) {
+        db.query(`
+        SELECT posts.id, title, content,
+        CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
+        author_id, subtidders.name AS subtidder, pub_date FROM posts
+        LEFT OUTER JOIN users ON (posts.author_id = users.id)
+        INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
+        ORDER BY pub_date DESC
+        LIMIT 10
+        OFFSET 10 * $1;
+        `, [offset], (error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send({ error: 'Something went wrong.' });
+            }
+            else {
+                let posts = result.rows;
+                posts.forEach((post) => {
+                    post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
+                })
+                return res.status(200).send({ posts });
+            }
+        })
+    }
+
+    else {
+        db.query(`
+        SELECT COUNT(1) FROM subtidders WHERE name = $1;
+        `, [subtidder], (error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send({ error: 'Something went wrong.' });
+            }
+            else if (result.rows[0].count === '0') {
+                return res.status(404).send({ error: 'Subtidder not found.' });
+            }
+            else {
+                db.query(`
+                SELECT posts.id, title, content,
+                CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
+                author_id, subtidders.name AS subtidder, pub_date FROM posts
+                LEFT OUTER JOIN users ON (posts.author_id = users.id)
+                INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
+                WHERE subtidders.name = $1
+                ORDER BY pub_date DESC
+                LIMIT 10
+                OFFSET 10 * $2;
+                `, [subtidder, offset], (error, result) => {
                     if (error) {
                         console.log(error);
                         return res.status(500).send({ error: 'Something went wrong.' });
@@ -131,25 +104,55 @@ t.get('/:subtidder', (req, res) => {
                         return res.status(200).send({ posts });
                     }
                 })
-        }
-    })
+            }
+        })
+    }
 })
 
 t.get('/:subtidder/count', (req, res) => {
     let { subtidder } = req.params;
+    let isAll = (subtidder === 'all');
 
-    db.query(`
-    SELECT COUNT(*) FROM posts
-    INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
-    WHERE subtidders.name = $1;
-    `, [subtidder], (error, result) => {
+    if (isAll) {
+        db.query(`SELECT COUNT(*) FROM posts`, (error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send({ error: 'Something went wrong.' });
+            }
+            else {
+                let numberOfPosts = result.rows[0].count;
+                return res.status(200).send({ numberOfPosts });
+            }
+        })
+    }
+
+    else {
+        db.query(`
+        SELECT COUNT(*) FROM posts
+        INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
+        WHERE subtidders.name = $1;
+        `, [subtidder], (error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send({ error: 'Something went wrong.' });
+            }
+            else {
+                let numberOfPosts = result.rows[0].count;
+                return res.status(200).send({ numberOfPosts });
+            }
+        })
+    }
+})
+
+t.get('/all/countSubtidders', (req, res) => {
+    db.query(`SELECT COUNT(*) FROM subtidders`, (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            let numberOfPosts = result.rows[0].count;
-            return res.status(200).send({ numberOfPosts });
+            let numberOfSubtidders = result.rows[0].count;
+            return res.status(200).send({ numberOfSubtidders });
         }
     })
 })
