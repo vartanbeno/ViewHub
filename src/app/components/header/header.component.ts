@@ -46,7 +46,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.id = this.authService.getId();
     this.userService.getSubscriptions(this.id).subscribe(
       res => {
-        this.subscriptions = res;
+        this.subscriptions = res.subscriptions;
         if (!this.subscriptions.length) this.userService.noSubscriptions = true;
         this.activateDropdowns();
       },
@@ -57,7 +57,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   getUsername() {
     this.id = this.authService.getId();
     this.userService.getUsername(this.id).subscribe(
-      res => this.username = res,
+      res => this.username = res.username,
       err => console.log(err)
     )
   }

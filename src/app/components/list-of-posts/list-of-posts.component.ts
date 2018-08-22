@@ -43,32 +43,26 @@ export class ListOfPostsComponent implements OnInit {
       case 'HomeComponent':
         if (this.authService.loggedIn()) {
           this.userService.refreshSubscriptions();
-          this.countPostsFromSubscriptions();
           this.getPostsFromSubscriptions();
 
           this.postService.postAdded_Or_Deleted_Observable.subscribe(res => {
-            this.countPostsFromSubscriptions();
             this.getPostsFromSubscriptions();
           })
         }
         break;
 
       case 'UserProfileComponent':
-        this.getUserPostCount();
         this.getUserPosts();
 
         this.postService.postAdded_Or_Deleted_Observable.subscribe(res => {
-          this.getUserPostCount();
           this.getUserPosts();
         })
         break;
 
       case 'SubtidderComponent':
-        this.getSubtidderPostsCount();
         this.getSubtidderPosts();
 
         this.postService.postAdded_Or_Deleted_Observable.subscribe(res => {
-          this.getSubtidderPostsCount();
           this.getSubtidderPosts();
         })
         break;
@@ -89,11 +83,14 @@ export class ListOfPostsComponent implements OnInit {
       this.router.navigate([''], { queryParams: { page: this.currentPage } });
       return;
     }
-    let pageOffset = (this.currentPage - 1).toString()
-    this.userService.getPostsFromSubscriptions(this.id, pageOffset).subscribe(
+    this.userService.getPostsFromSubscriptions(this.id, this.currentPage.toString()).subscribe(
       res => {
-        this.posts = res;
+        this.posts = res.posts || [];
         this.userService.subscriptionsPosts = this.posts;
+
+        let numberOfPages = Math.ceil((res.numberOfPosts || 0) / 10);
+        this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
+
         this.userService.homeLoaded = true;
         if (!this.posts.length && this.currentPage != 1) {
           let maxPage = this.pages[this.pages.length - 1];
@@ -105,27 +102,20 @@ export class ListOfPostsComponent implements OnInit {
     )
   }
 
-  countPostsFromSubscriptions() {
-    this.userService.countPostsFromSubscriptions(this.id).subscribe(
-      res => {
-        let numberOfPages = Math.ceil(res / 10);
-        this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
-      },
-      err => console.log(err)
-    )
-  }
-
   getUserPosts() {
     if (this.currentPage < 1 || !Number.isInteger(Number(this.currentPage))) {
       this.currentPage = 1;
       this.router.navigate([`u/${this.username}`], { queryParams: { page: this.currentPage } });
       return;
     }
-    let pageOffset = (this.currentPage - 1).toString();
-    this.userService.getUserPosts(this.username, pageOffset).subscribe(
+    this.userService.getUserPosts(this.username, this.currentPage.toString()).subscribe(
       res => {
-        this.posts = res;
+        this.posts = res.posts || [];
         this.userService.userPosts = this.posts;
+
+        let numberOfPages = Math.ceil((res.numberOfPosts || 0) / 10);
+        this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
+
         this.userService.profileLoaded = true;
         if (!this.posts.length && this.currentPage != 1) {
           let maxPage = this.pages[this.pages.length - 1];
@@ -137,28 +127,21 @@ export class ListOfPostsComponent implements OnInit {
     )
   }
 
-  getUserPostCount() {
-    this.userService.getUserPostCount(this.username).subscribe(
-      res => {
-        let numberOfPages = Math.ceil(res / 10);
-        this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
-      },
-      err => console.log(err)
-    )
-  }
-
   getSubtidderPosts() {
     if (this.currentPage < 1 || !Number.isInteger(Number(this.currentPage))) {
       this.currentPage = 1;
       this.router.navigate([''], { queryParams: { page: this.currentPage } });
       return;
     }
-    let pageOffset = (this.currentPage - 1).toString()
-    this.postService.getPostsFromSubtidder(this.subtidder, pageOffset).subscribe(
+    this.postService.getPostsFromSubtidder(this.subtidder, this.currentPage.toString()).subscribe(
       res => {
-        this.posts = res;
+        this.posts = res.posts || [];
         this.postService.subtidderPosts = this.posts;
         this.subtidderService.notifySubtidderInfo();
+
+        let numberOfPages = Math.ceil((res.numberOfPosts || 0) / 10);
+        this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
+
         if (!this.posts.length && this.currentPage != 1) {
           let maxPage = this.pages[this.pages.length - 1];
           this.currentPage = (this.currentPage > maxPage) ? maxPage : 1;
@@ -171,16 +154,6 @@ export class ListOfPostsComponent implements OnInit {
           this.postService.subtidderDoesNotExist = true;
         }
       }
-    )
-  }
-
-  getSubtidderPostsCount() {
-    this.postService.countPostsFromSubtidder(this.subtidder).subscribe(
-      res => {
-        let numberOfPages = Math.ceil(res / 10);
-        this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
-      },
-      err => console.log(err)
     )
   }
 

@@ -20,13 +20,13 @@ comments.get('/:post_id', (req, res) => {
         }
         else {
             comments.forEach((comment) => comment.pub_date = moment(comment.pub_date, 'MMMM DD YYYY').fromNow());
-            return res.status(200).send(comments);
+            return res.status(200).send({ comments });
         }
     })
 })
 
 // add comment
-comments.put('/', (req, res) => {
+comments.post('/', (req, res) => {
     let { body, author_id, post_id } = req.body;
 
     db.query(`
@@ -43,47 +43,49 @@ comments.put('/', (req, res) => {
     })
 })
 
-comments.post('/:comment_id', (req, res) => {
-    let { comment_id } = req.params;
-    let { body } = req.body;
+comments.route('/:comment_id')
 
-    db.query(`
-    UPDATE comments SET body = $1 WHERE id = $2;
-    `, [body, comment_id], (error, result) => {
-        if (error) {
-            console.log(error);
-            return res.status(500).send({ error: 'Something went wrong.' });
-        }
-        else {
-            if (result.rowCount) {
-                return res.status(200).send({ message: 'Comment successfully edited.' });
+    .put((req, res) => {
+        let { comment_id } = req.params;
+        let { body } = req.body;
+
+        db.query(`
+        UPDATE comments SET body = $1 WHERE id = $2;
+        `, [body, comment_id], (error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send({ error: 'Something went wrong.' });
             }
             else {
-                return res.status(404).send({ error: 'Comment not found.' });
+                if (result.rowCount) {
+                    return res.status(200).send({ message: 'Comment successfully edited.' });
+                }
+                else {
+                    return res.status(404).send({ error: 'Comment not found.' });
+                }
             }
-        }
+        })
     })
-})
 
-comments.delete('/:comment_id', (req, res) => {
-    let { comment_id } = req.params;
+    .delete((req, res) => {
+        let { comment_id } = req.params;
 
-    db.query(`
-    DELETE FROM comments WHERE id = $1;
-    `, [comment_id], (error, result) => {
-        if (error) {
-            console.log(error);
-            return res.status(500).send({ error: 'Something went wrong.' });
-        }
-        else {
-            if (result.rowCount) {
-                return res.status(200).send({ message: 'Comment successfully deleted.' });
+        db.query(`
+        DELETE FROM comments WHERE id = $1;
+        `, [comment_id], (error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send({ error: 'Something went wrong.' });
             }
             else {
-                return res.status(404).send({ error: 'Comment not found.' });
+                if (result.rowCount) {
+                    return res.status(200).send({ message: 'Comment successfully deleted.' });
+                }
+                else {
+                    return res.status(404).send({ error: 'Comment not found.' });
+                }
             }
-        }
+        })
     })
-})
 
 module.exports = comments;

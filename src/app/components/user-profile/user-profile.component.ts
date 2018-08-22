@@ -85,7 +85,7 @@ export class UserProfileComponent implements OnInit {
     this.loggedInUserId = this.authService.getId();
     this.userService.getUsername(this.loggedInUserId).subscribe(
       res => {
-        this.loggedInUsername = res;
+        this.loggedInUsername = res.username;
         if (this.loggedInUsername === this.username) {
           this.isOwnProfile = true;
         }

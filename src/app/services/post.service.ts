@@ -38,7 +38,7 @@ export class PostService {
   }
 
   deletePost() {
-    return this.http.delete<any>(`${this.subtidderUrl}/${this.postToBeDeleted.subtidder}/${this.postToBeDeleted.id}/delete`);
+    return this.http.delete<any>(`${this.subtidderUrl}/${this.postToBeDeleted.subtidder}/${this.postToBeDeleted.id}`);
   }
 
   setPostToDelete(post: Post) {
@@ -51,7 +51,7 @@ export class PostService {
   }
 
   editPost(post: Post) {
-    return this.http.post<any>(`${this.subtidderUrl}/${this.postToBeEdited.subtidder}/${this.postToBeEdited.id}/edit`, post);
+    return this.http.put<any>(`${this.subtidderUrl}/${this.postToBeEdited.subtidder}/${this.postToBeEdited.id}`, post);
   }
 
   notifyPostEdition() {
@@ -73,12 +73,8 @@ export class PostService {
     return this.http.get<any>(this.searchPostsUrl, { params: { s: searchTerm } });
   }
 
-  getPostsFromSubtidder(subtidder: string, offset: string) {
-    return this.http.get<any>(`${this.subtidderUrl}/${subtidder}`, { params: { offset: offset } });
-  }
-
-  countPostsFromSubtidder(subtidder: string) {
-    return this.http.get<any>(`${this.subtidderUrl}/${subtidder}/count`);
+  getPostsFromSubtidder(subtidder: string, page: string) {
+    return this.http.get<any>(`${this.subtidderUrl}/${subtidder}`, { params: { page } });
   }
 
   getPost(id: string) {

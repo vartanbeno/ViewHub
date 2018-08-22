@@ -27,12 +27,8 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getPostsFromSubscriptions(id: string, offset: string) {
-    return this.http.get<any>(`${this.subscriptionsUrl}/${id}/posts`, { params: { offset: offset } });
-  }
-
-  countPostsFromSubscriptions(id: string) {
-    return this.http.get<any>(`${this.subscriptionsUrl}/${id}/posts/count`);
+  getPostsFromSubscriptions(id: string, page: string) {
+    return this.http.get<any>(`${this.subscriptionsUrl}/${id}/posts`, { params: { page } });
   }
 
   getAllUsers() {
@@ -60,19 +56,15 @@ export class UserService {
   }
 
   updateProfilePicture(username: string, base64String: string) {
-    return this.http.post<any>(`${this.userUrl}/${username}/pic`, { base64: base64String });
+    return this.http.put<any>(`${this.userUrl}/${username}/pic`, { base64: base64String });
   }
 
   deleteProfilePicture(username: string) {
     return this.http.delete<any>(`${this.userUrl}/${username}/pic`);
   }
 
-  getUserPosts(username: string, offset: string) {
-    return this.http.get<any>(`${this.userUrl}/${username}/posts`, { params: { offset: offset } });
-  }
-
-  getUserPostCount(username: string) {
-    return this.http.get<any>(`${this.userUrl}/${username}/posts/count`);
+  getUserPosts(username: string, page: string) {
+    return this.http.get<any>(`${this.userUrl}/${username}/posts`, { params: { page } });
   }
 
   notifyLoginOrSignup() {

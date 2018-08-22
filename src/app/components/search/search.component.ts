@@ -32,7 +32,7 @@ export class SearchComponent implements OnInit {
 
   searchSubtidders() {
     this.subtidderService.searchSubtidders(this.searchTerm).subscribe(
-      res => this.subtidders = res,
+      res => this.subtidders = res.subtidders,
       err => console.log(err)
     )
   }
@@ -40,7 +40,7 @@ export class SearchComponent implements OnInit {
   searchPosts() {
     this.postService.searchPosts(this.searchTerm).subscribe(
       res => {
-        this.posts = res;
+        this.posts = res.posts;
         this.isLoaded = true;
       },
       err => console.log(err)
