@@ -11,8 +11,11 @@ html, body {
     position: relative;
 }
 
-.post.content {
+.preline {
     white-space: pre-line;
+}
+
+.post.content {
     text-align: justify;
 }
 

@@ -1,13 +1,13 @@
 <div class="ui main text container" *ngIf="postLoaded">
 
-    <h2 class="ui dividing header">{{ postData.title }}</h2>
-    <p class="post content">{{ postData.content }}</p>
+    <h2 class="ui dividing header post content">{{ postData.title }}</h2>
+    <p class="post content preline">{{ postData.content }}</p>
     <div class="ui grid small text">
         <div class="column eight wide left aligned">
-            <span class="grey text">{{ postData.pub_date }} by <span class="link to user profile" routerLink="/u/{{ postData.author }}">{{ postData.author }}</span></span>
+            <span class="grey text">{{ postData.pub_date }} by <a class="link to user profile" routerLink="/u/{{ postData.author }}">{{ postData.author }}</a></span>
         </div>
         <div class="column eight wide right aligned">
-            <span class="link to subtidder" routerLink="/t/{{ postData.subtidder }}">{{ postData.subtidder }}</span>
+            <a class="link to subtidder" routerLink="/t/{{ postData.subtidder }}">{{ postData.subtidder }}</a>
         </div>
     </div>
 
@@ -21,6 +21,13 @@
         <app-edit-post></app-edit-post>
         <app-delete-post [navigateBackHome]="true"></app-delete-post>
     </div>
+
+    <h3 class="ui dividing header">Comments</h3>
+    <div *ngIf="authService.loggedIn()">
+        <app-add-comment post_id="{{ postData.id }}" *ngIf="authService.loggedIn()"></app-add-comment>
+        <br/>
+    </div>
+    <app-list-of-comments post_id="{{ postData.id }}"></app-list-of-comments>
 
 </div>
 

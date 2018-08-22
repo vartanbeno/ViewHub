@@ -17,6 +17,7 @@ app.use('/t', require('./routes/subtidders'));
 app.use('/users', require('./routes/users'));
 app.use('/search', require('./routes/search'));
 app.use('/posts', require('./routes/posts'));
+app.use('/comments', require('./routes/comments'));
 app.use('/subscriptions', require('./routes/subscriptions'));
 
 db.query(sql, (err, res) => {

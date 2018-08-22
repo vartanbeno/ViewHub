@@ -17,7 +17,6 @@ export class PostComponent implements OnInit {
   constructor(
     private postService: PostService,
     private authService: AuthService,
-    private router: Router,
     private route: ActivatedRoute
   ) {
     this.id = this.route.snapshot.paramMap.get('id');

@@ -48,6 +48,17 @@ CREATE TABLE IF NOT EXISTS subscriptions(
     PRIMARY KEY (user_id, subtidder_id)
 );
 
+CREATE TABLE IF NOT EXISTS comments(
+    id SERIAL PRIMARY KEY,
+    body VARCHAR(10000) NOT NULL
+        CHECK(char_length(body) >= 1),
+    author_id INTEGER REFERENCES users(id)
+        ON DELETE SET NULL,
+    post_id INTEGER REFERENCES posts(id)
+        ON DELETE CASCADE,
+    pub_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE OR REPLACE FUNCTION set_subtidder_tokens() RETURNS TRIGGER AS
 $$
 BEGIN
@@ -108,3 +119,10 @@ INSERT INTO subscriptions (user_id, subtidder_id) VALUES
     (3, 4), (3, 5),
     (4, 2), (4, 3), (4, 4), (4, 5),
     (5, 1), (5, 2), (5, 5);
+
+INSERT INTO comments (body, author_id, post_id) VALUES
+    ('This is great news!', 1, 3),
+    ('Fake post comment', 3, 4),
+    ('This is another test.', 5, 1),
+    ('Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptas molestiae fugiat maxime est officia. Reprehenderit excepturi id est, eius maxime aliquid minus modi alias et eaque quod ducimus dignissimos possimus.', 4, 7),
+    ('He plays the Warriors 4 times this season.', 2, 3);

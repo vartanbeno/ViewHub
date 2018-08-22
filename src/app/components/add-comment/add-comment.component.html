@@ -1,0 +1,8 @@
+<form #commentForm="ngForm" class="ui reply form" autocomplete="off" (ngSubmit)="addComment()">
+	<div class="field">
+		<textarea [(ngModel)]="comment.body" name="body" placeholder="Write a comment..." maxlength="10000" rows="3" required></textarea>
+	</div>
+	<button type="submit" class="ui blue mini button" [disabled]="commentForm.form.invalid">
+		Add Comment
+	</button>
+</form>
