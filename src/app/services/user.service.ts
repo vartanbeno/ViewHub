@@ -60,7 +60,7 @@ export class UserService {
   }
 
   updateProfilePicture(username: string, base64String: string) {
-    return this.http.post<any>(`${this.userUrl}/${username}/pic`, { base64: base64String });
+    return this.http.put<any>(`${this.userUrl}/${username}/pic`, { base64: base64String });
   }
 
   deleteProfilePicture(username: string) {

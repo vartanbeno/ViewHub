@@ -64,7 +64,7 @@ export class SubtidderComponent implements OnInit {
   getSubtidderInfo() {
     this.subtidderService.getSubtidderInfo(this.subtidder).subscribe(
       res => {
-        this.subtidderData = res;
+        this.subtidderData = res.subtidderData;
         if (this.authService.loggedIn() && this.subtidder !== 'all') {
           this.checkIfSubscribed();
           return;
@@ -78,7 +78,7 @@ export class SubtidderComponent implements OnInit {
   checkIfSubscribed() {
     this.userService.checkIfSubscribed(this.id, this.subtidderData['name']).subscribe(
       res => {
-        this.isSubscribed = (Number(res.count)) ? true : false;
+        this.isSubscribed = (res.isSubscribed) ? true : false;
         this.postService.subtidderLoaded = true;
       },
       err => console.log(err)

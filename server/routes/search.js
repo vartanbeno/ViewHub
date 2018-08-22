@@ -23,7 +23,7 @@ search.get('/subtidders', (req, res) => {
             subtidders.forEach((subtidder) => {
                 subtidder.creation_date = moment(subtidder.creation_date, 'MMMM DD YYYY').fromNow();
             })
-            return res.status(200).send(subtidders);
+            return res.status(200).send({ subtidders });
         }
     })
 })
@@ -49,7 +49,7 @@ search.get('/posts', (req, res) => {
             posts.forEach((post) => {
                 post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
             })
-            return res.status(200).send(posts);
+            return res.status(200).send({ posts });
         }
     })
 })

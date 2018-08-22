@@ -42,7 +42,7 @@ export class AddPostComponent implements OnInit {
   getAllSubtidders() {
     this.subtidderService.getAllSubtidders().subscribe(
       res => {
-        this.subtidders = res;
+        this.subtidders = res.subtidders;
         $('#select-subtidder').dropdown();
       },
       err => console.log(err)

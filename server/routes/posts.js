@@ -3,8 +3,8 @@ const express = require('express'),
     moment = require('moment'),
     posts = express.Router();
 
-posts.get('/:id', (req, res) => {
-    let { id } = req.params;
+posts.get('/:post_id', (req, res) => {
+    let { post_id } = req.params;
 
     db.query(`
     SELECT posts.id, title, content,
@@ -14,7 +14,7 @@ posts.get('/:id', (req, res) => {
     LEFT OUTER JOIN users ON (posts.author_id = users.id)
     INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
     WHERE posts.id = $1;
-    `, [id], (error, result) => {
+    `, [post_id], (error, result) => {
         let post = result.rows[0];
         if (error) {
             console.log(error);
@@ -22,7 +22,7 @@ posts.get('/:id', (req, res) => {
         }
         else if (post) {
             post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
-            return res.status(200).send(post);
+            return res.status(200).send({ post });
         }
         else {
             return res.status(404).send({ error: "Post not found." });

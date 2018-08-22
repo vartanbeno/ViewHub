@@ -10,8 +10,8 @@ t.get('/', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            let all = result.rows.map(sub => sub.name);
-            return res.status(200).send(all);
+            let subtidders = result.rows.map(subtidder => subtidder.name);
+            return res.status(200).send({ subtidders });
         }
     })
 })
@@ -24,7 +24,7 @@ t.post('/subtidders/create', (req, res) => {
     [name, description, creator_id], (error, result) => {
         if (error) {
             console.log(error);
-            if (error.detail.includes('already exists') || error.constraint === 'check_not_all') {
+            if (error.constraint === 'subtidders_name_key' || error.constraint === 'check_not_all') {
                 return res.status(400).send({ error: 'Subtidder with this name already exists.' });
             }
             else {
@@ -32,7 +32,7 @@ t.post('/subtidders/create', (req, res) => {
             }
         }
         else {
-            return res.status(200).json('Subtidder created.');
+            return res.status(200).send({ message: 'Subtidder created.' });
         }
     })
 })
@@ -60,7 +60,7 @@ t.get('/all', (req, res) => {
             posts.forEach((post) => {
                 post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
             })
-            return res.status(200).send(posts);
+            return res.status(200).send({ posts });
         }
     })
 })
@@ -69,9 +69,11 @@ t.get('/all/count', (req, res) => {
     db.query(`SELECT COUNT(*) FROM posts`, (error, result) => {
         if (error) {
             console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            return res.status(200).send(result.rows[0].count);
+            let numberOfPosts = result.rows[0].count;
+            return res.status(200).send({ numberOfPosts });
         }
     })
 })
@@ -80,9 +82,11 @@ t.get('/all/countSubtidders', (req, res) => {
     db.query(`SELECT COUNT(*) FROM subtidders`, (error, result) => {
         if (error) {
             console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            return res.status(200).send(result.rows[0].count);
+            let numberOfSubtidders = result.rows[0].count;
+            return res.status(200).send({ numberOfSubtidders });
         }
     })
 })
@@ -124,7 +128,7 @@ t.get('/:subtidder', (req, res) => {
                         posts.forEach((post) => {
                             post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
                         })
-                        return res.status(200).send(posts);
+                        return res.status(200).send({ posts });
                     }
                 })
         }
@@ -135,8 +139,8 @@ t.get('/:subtidder/count', (req, res) => {
     let { subtidder } = req.params;
 
     db.query(`
-    SELECT COUNT(*) FROM
-    posts INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
+    SELECT COUNT(*) FROM posts
+    INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
     WHERE subtidders.name = $1;
     `, [subtidder], (error, result) => {
         if (error) {
@@ -144,7 +148,8 @@ t.get('/:subtidder/count', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            return res.status(200).send(result.rows[0].count);
+            let numberOfPosts = result.rows[0].count;
+            return res.status(200).send({ numberOfPosts });
         }
     })
 })
@@ -165,9 +170,9 @@ t.get('/:subtidder/info', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            let subtidderInfo = result.rows[0];
-            subtidderInfo.creation_date = moment(subtidderInfo.creation_date, 'MMMM DD YYYY').fromNow();
-            return res.status(200).send(subtidderInfo);
+            let subtidderData = result.rows[0];
+            subtidderData.creation_date = moment(subtidderData.creation_date, 'MMMM DD YYYY').fromNow();
+            return res.status(200).send({ subtidderData });
         }
     })
 })
@@ -193,68 +198,72 @@ t.post('/:subtidder/add', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            return res.status(200).json('OK');
+            return res.status(200).send({ message: 'Post added to ' + subtidder + '.' });
         }
     })
 })
 
-t.post('/:subtidder/:id/edit', (req, res) => {
-    let { content } = req.body;
-    let { subtidder, id } = req.params;
+t.route('/:subtidder/:post_id')
 
-    /**
-     * We could very well just do:
-     * UPDATE posts SET content = 'test' WHERE id = 43
-     * But I felt like going the more complicated route.
-     */
-    db.query(`
-    UPDATE posts
-    SET content = $1
-    WHERE id = $2
-    AND id IN
-        (SELECT posts.id
-        FROM posts INNER JOIN subtidders
-        ON posts.subtidder_id = subtidders.id
-        WHERE subtidders.name = $3)
-    `, [content, id, subtidder], (error, result) => {
-        if (error) {
-            console.log(error);
-        }
-        else {
-            if (!result.rowCount) {
-                return res.status(404).json('Post not found.');
+    .put((req, res) => {
+        let { content } = req.body;
+        let { subtidder, post_id } = req.params;
+
+        /**
+         * We could very well just do:
+         * UPDATE posts SET content = 'test' WHERE id = 43
+         * But I felt like going the more complicated route.
+         */
+        db.query(`
+        UPDATE posts
+        SET content = $1
+        WHERE id = $2
+        AND id IN
+            (SELECT posts.id
+            FROM posts INNER JOIN subtidders
+            ON posts.subtidder_id = subtidders.id
+            WHERE subtidders.name = $3)
+        `, [content, post_id, subtidder], (error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send({ error: 'Something went wrong.' });
             }
             else {
-                return res.status(200).json('Post edited.');
+                if (!result.rowCount) {
+                    return res.status(404).send({ error: 'Post not found.' });
+                }
+                else {
+                    return res.status(200).send({ message: 'Post edited.' });
+                }
             }
-        }
+        })
     })
-})
 
-t.delete('/:subtidder/:id/delete', (req, res) => {
-    let { subtidder, id } = req.params;
+    .delete((req, res) => {
+        let { subtidder, post_id } = req.params;
     
-    db.query(`
-    DELETE FROM posts
-    WHERE id = $1
-    AND id IN
-        (SELECT posts.id AS id
-        FROM posts INNER JOIN subtidders
-        ON posts.subtidder_id = subtidders.id
-        WHERE subtidders.name = $2)
-    `, [id, subtidder], (error, result) => {
-        if (error) {
-            console.log(error);
-        }
-        else {
-            if (!result.rowCount) {
-                return res.status(404).json('Post not found.');
+        db.query(`
+        DELETE FROM posts
+        WHERE id = $1
+        AND id IN
+            (SELECT posts.id AS id
+            FROM posts INNER JOIN subtidders
+            ON posts.subtidder_id = subtidders.id
+            WHERE subtidders.name = $2)
+        `, [post_id, subtidder], (error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send({ error: 'Something went wrong.' });
             }
             else {
-                return res.status(200).json('Post deleted.');
+                if (!result.rowCount) {
+                    return res.status(404).send({ error: 'Post not found.' });
+                }
+                else {
+                    return res.status(200).send({ message: 'Post deleted.' });
+                }
             }
-        }
+        })
     })
-})
 
 module.exports = t;

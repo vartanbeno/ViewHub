@@ -37,7 +37,7 @@ users.get('/all', verifyToken, (req, res) => {
             users.forEach((user) => {
                 user.join_date = moment(user.join_date, 'MMMM DD YYYY').fromNow();
             })
-            return res.status(200).send(users);
+            return res.status(200).send({ users });
         }
     })
 })
@@ -56,7 +56,7 @@ users.get('/u/:username', (req, res) => {
             let user = result.rows[0];
             if (user) {
                 user.join_date = moment(user.join_date, 'MMMM DD YYYY').fromNow();
-                return res.status(200).send({ user: user });
+                return res.status(200).send({ user });
             }
             else {
                 return res.status(404).send({ error: 'User not found.' });
@@ -65,9 +65,9 @@ users.get('/u/:username', (req, res) => {
     })
 })
 
-users.get('/u/id/:id', (req, res) => {
-    let { id } = req.params;
-    db.query(`SELECT username FROM users WHERE id = $1;`, [id], (error, result) => {
+users.get('/u/id/:user_id', (req, res) => {
+    let { user_id } = req.params;
+    db.query(`SELECT username FROM users WHERE id = $1;`, [user_id], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
@@ -75,7 +75,7 @@ users.get('/u/id/:id', (req, res) => {
         else {
             let user = result.rows[0];
             if (user) {
-                return res.status(200).json(user.username);
+                return res.status(200).send({ username: user.username });
             }
             else {
                 return res.status(404).send({ error: 'User not found.' });
@@ -84,7 +84,7 @@ users.get('/u/id/:id', (req, res) => {
     })
 })
 
-users.post('/u/:username/pic', (req, res) => {
+users.put('/u/:username/pic', (req, res) => {
     let { username } = req.params;
     let { base64 } = req.body;
     db.query(`UPDATE users SET image = $1 WHERE username = $2;`, [base64, username], (error, result) => {
@@ -93,7 +93,7 @@ users.post('/u/:username/pic', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            return res.status(200).send({ success: 'Successfully changed profile picture.' });
+            return res.status(200).send({ message: 'Successfully changed profile picture.' });
         }
     })
 })
@@ -106,7 +106,7 @@ users.delete('/u/:username/pic', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            return res.status(200).send({ success: 'Successfully deleted profile picture.' });
+            return res.status(200).send({ message: 'Successfully deleted profile picture.' });
         }
     })
 })
@@ -135,7 +135,7 @@ users.get('/u/:username/posts', (req, res) => {
             posts.forEach((post) => {
                 post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
             })
-            res.status(200).send(posts);
+            return res.status(200).send({ posts });
         }
     })
 })
@@ -155,7 +155,7 @@ users.get('/u/:username/posts/count', (req, res) => {
             }
             else {
                 let numberOfPosts = result.rows[0].count;
-                res.status(200).send(numberOfPosts);
+                return res.status(200).send({ numberOfPosts });
             }
         })
 })

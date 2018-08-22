@@ -92,7 +92,7 @@ export class ListOfPostsComponent implements OnInit {
     let pageOffset = (this.currentPage - 1).toString()
     this.userService.getPostsFromSubscriptions(this.id, pageOffset).subscribe(
       res => {
-        this.posts = res;
+        this.posts = res.posts;
         this.userService.subscriptionsPosts = this.posts;
         this.userService.homeLoaded = true;
         if (!this.posts.length && this.currentPage != 1) {
@@ -108,7 +108,7 @@ export class ListOfPostsComponent implements OnInit {
   countPostsFromSubscriptions() {
     this.userService.countPostsFromSubscriptions(this.id).subscribe(
       res => {
-        let numberOfPages = Math.ceil(res / 10);
+        let numberOfPages = Math.ceil(res.numberOfPosts / 10);
         this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
       },
       err => console.log(err)
@@ -124,7 +124,7 @@ export class ListOfPostsComponent implements OnInit {
     let pageOffset = (this.currentPage - 1).toString();
     this.userService.getUserPosts(this.username, pageOffset).subscribe(
       res => {
-        this.posts = res;
+        this.posts = res.posts;
         this.userService.userPosts = this.posts;
         this.userService.profileLoaded = true;
         if (!this.posts.length && this.currentPage != 1) {
@@ -140,7 +140,7 @@ export class ListOfPostsComponent implements OnInit {
   getUserPostCount() {
     this.userService.getUserPostCount(this.username).subscribe(
       res => {
-        let numberOfPages = Math.ceil(res / 10);
+        let numberOfPages = Math.ceil(res.numberOfPosts / 10);
         this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
       },
       err => console.log(err)
@@ -156,7 +156,7 @@ export class ListOfPostsComponent implements OnInit {
     let pageOffset = (this.currentPage - 1).toString()
     this.postService.getPostsFromSubtidder(this.subtidder, pageOffset).subscribe(
       res => {
-        this.posts = res;
+        this.posts = res.posts;
         this.postService.subtidderPosts = this.posts;
         this.subtidderService.notifySubtidderInfo();
         if (!this.posts.length && this.currentPage != 1) {
@@ -177,7 +177,7 @@ export class ListOfPostsComponent implements OnInit {
   getSubtidderPostsCount() {
     this.postService.countPostsFromSubtidder(this.subtidder).subscribe(
       res => {
-        let numberOfPages = Math.ceil(res / 10);
+        let numberOfPages = Math.ceil(res.numberOfPosts / 10);
         this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
       },
       err => console.log(err)
