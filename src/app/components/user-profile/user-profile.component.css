@@ -4,6 +4,7 @@ div.top {
 
 .biography {
     flex: 1;
+    font-size: 16px;
 }
 
 .ui.card {

@@ -1,7 +1,7 @@
 <div class="ui main text container" *ngIf="postLoaded">
 
-    <h2 class="ui dividing header post content">{{ postData.title }}</h2>
-    <p class="post content preline">{{ postData.content }}</p>
+    <h2 class="ui dividing header justify">{{ postData.title }}</h2>
+    <p class="justify preline">{{ postData.content }}</p>
     <div class="ui grid small text">
         <div class="column eight wide left aligned">
             <span class="grey text">{{ postData.pub_date }} by <a class="link to user profile" routerLink="/u/{{ postData.author }}">{{ postData.author }}</a></span>

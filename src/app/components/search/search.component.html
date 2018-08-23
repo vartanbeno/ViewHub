@@ -23,7 +23,7 @@
         <a class="ui right floated link to subtidder" routerLink="/t/{{ post.subtidder }}">{{ post.subtidder }}</a>
       </div>
       <div class="description">
-        <p class="post content preline">{{ (post.content.length > 200) ? (post.content | slice:0:200) + '...' : (post.content) }}</p>
+        <p class="justify preline">{{ (post.content.length > 200) ? (post.content | slice:0:200) + '...' : (post.content) }}</p>
       </div>
     </div>
   </div>

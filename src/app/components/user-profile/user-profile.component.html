@@ -19,9 +19,9 @@
         <div class="biography">
             <h1 class="ui dividing header">About</h1>
 
-            <p class="preline" *ngIf="user.biography && !editingBio">{{ user.biography }}</p>
-            <p class="preline" *ngIf="!user.biography && isOwnProfile && !editingBio"><a style="cursor: pointer;" (click)="editingBiography()">Click here</a> to write about yourself!</p>
-            <p class="preline grey text" *ngIf="!user.biography && !isOwnProfile">It's quiet here... too quiet.</p>
+            <p class="justify preline" *ngIf="user.biography && !editingBio">{{ user.biography }}</p>
+            <p *ngIf="!user.biography && isOwnProfile && !editingBio"><a style="cursor: pointer;" (click)="editingBiography()">Click here</a> to write about yourself.</p>
+            <p class="grey text" *ngIf="!user.biography && !isOwnProfile">It's quiet here... too quiet.</p>
 
             <form #editBioForm="ngForm" class="ui form" autocomplete="off" *ngIf="editingBio" (ngSubmit)="editBiography()">
                 <div class="field">
@@ -38,7 +38,7 @@
             <div *ngIf="user.biography && isOwnProfile && !editingBio">
                 <div class="ui divider"></div>
 
-                <p class="preline"><a style="cursor: pointer;" (click)="editingBiography()">Click here</a> to edit your biography! <a style="cursor: pointer;" (click)="clearBiography()">You can also completely <b>erase</b> it.</a></p>
+                <p><a style="cursor: pointer;" (click)="editingBiography()">Click here</a> to edit your biography. <a style="cursor: pointer;" (click)="clearBiography()">You can also completely <b>erase</b> it.</a></p>
             </div>
 
             
