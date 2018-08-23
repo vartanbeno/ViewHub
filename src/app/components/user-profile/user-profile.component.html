@@ -1,22 +1,52 @@
 <div *ngIf="userService.profileLoaded && !userDoesNotExist">
-    <div class="ui items">
-        <div class="item">
+    <div class="top">
+        <div class="ui card">
             <div class="image">
                 <img src="{{ imageSource }}" alt="profile picture">
             </div>
             <div class="content">
                 <div class="header">{{ user.full_name }}</div>
-                <div class="meta">{{ user.username }}</div>
-                <div class="description">Contact at {{ user.email }}.</div>
-                <div class="extra">Joined {{ user.join_date }}</div>
+                <div class="meta">Joined {{ user.join_date }}</div>
+                <div class="description">{{ user.username }}</div>
+            </div>
+            <div class="ui two bottom attached fluid buttons" *ngIf="isOwnProfile">
+                <button class="ui green button" (click)="profilePicInput.click()">Upload Picture</button>
+                <button class="ui red button" (click)="deleteProfilePicture()">Delete Picture</button>
+                <input type="file" accept="image/png, image/jpeg" #profilePicInput (change)="setNewProfilePicture($event)" placeholder="Choose file" hidden>
             </div>
         </div>
-        <div *ngIf="isOwnProfile">
-            <input type="file" accept="image/png, image/jpeg" #profilePicInput (change)="setNewProfilePicture($event)" placeholder="Choose file" hidden>
-            <div class="ui vertical labeled icon buttons">
-                <button class="ui labeled icon green button" (click)="profilePicInput.click()"><i class="upload icon"></i>Upload Picture</button>
-                <button class="ui labeled icon red button" (click)="deleteProfilePicture()"><i class="delete icon"></i>Delete Picture</button>        
-            </div>
+
+        <div class="biography">
+            <h1 class="ui dividing header">
+                <!-- <i class="user icon"></i> -->
+                <div class="content">
+                    About
+                    <div class="sub header" *ngIf="isOwnProfile">
+                        <p *ngIf="!user.biography && !editingBio"><a style="cursor: pointer;" (click)="editingBiography()">Click here</a> to
+                            write about yourself.</p>
+                        <p *ngIf="user.biography && !editingBio"><a style="cursor: pointer;" (click)="editingBiography()">Click here</a> to edit
+                            your biography. <a style="cursor: pointer;" (click)="clearBiography()">You can also completely <b>erase</b> it.</a></p>
+                        <p *ngIf="editingBio">Editing...</p>
+                    </div>
+                </div>
+            </h1>
+
+            <p class="justify preline" *ngIf="user.biography && !editingBio">{{ user.biography }}</p>
+            <p class="grey text" *ngIf="!user.biography && !editingBio">It's quiet here... too quiet.</p>
+
+            <form #editBioForm="ngForm" class="ui form" autocomplete="off" *ngIf="editingBio" (ngSubmit)="editBiography()">
+                <div class="field">
+                    <textarea #biographyField [(ngModel)]="user.editedBiography" id="biography" name="biography" rows="10" placeholder="Write about yourself!"></textarea>
+                </div>
+                <button type="submit" class="ui blue mini button">
+                    Save
+                </button>
+                <button type="button" class="ui red mini button" (click)="editingBio = false">
+                    Cancel
+                </button>
+            </form>
+
+            
         </div>
     </div>
 

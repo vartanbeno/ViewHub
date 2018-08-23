@@ -27,8 +27,8 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getPostsFromSubscriptions(id: string, page: string) {
-    return this.http.get<any>(`${this.subscriptionsUrl}/${id}/posts`, { params: { page } });
+  getPostsFromSubscriptions(user_id: string, page: string) {
+    return this.http.get<any>(`${this.subscriptionsUrl}/${user_id}/posts`, { params: { page } });
   }
 
   getAllUsers() {
@@ -39,8 +39,8 @@ export class UserService {
     return this.http.get<any>(`${this.userUrl}/${username}`);
   }
 
-  getSubscriptions(id: string) {
-    return this.http.get<any>(`${this.subscriptionsUrl}/${id}`);
+  getSubscriptions(user_id: string) {
+    return this.http.get<any>(`${this.subscriptionsUrl}/${user_id}`);
   }
 
   refreshSubscriptions() {
@@ -51,8 +51,8 @@ export class UserService {
     this.subscriptionsFetch_Observable.next();
   }
 
-  getUsername(id: string) {
-    return this.http.get<any>(`${this.usernameUrl}/${id}`);
+  getUsername(user_id: string) {
+    return this.http.get<any>(`${this.usernameUrl}/${user_id}`);
   }
 
   updateProfilePicture(username: string, base64String: string) {
@@ -71,16 +71,20 @@ export class UserService {
     this.authentication_Observable.next();
   }
 
-  checkIfSubscribed(id: string, subtidder: string) {
-    return this.http.get<any>(`${this.subscriptionsUrl}/${id}/${subtidder}`);
+  checkIfSubscribed(user_id: string, subtidder: string) {
+    return this.http.get<any>(`${this.subscriptionsUrl}/${user_id}/${subtidder}`);
   }
 
-  subscribe(id: string, subtidder: string) {
-    return this.http.post<any>(`${this.subscriptionsUrl}/${id}/${subtidder}`, null);
+  subscribe(user_id: string, subtidder: string) {
+    return this.http.post<any>(`${this.subscriptionsUrl}/${user_id}/${subtidder}`, null);
   }
 
-  unsubscribe(id: string, subtidder: string) {
-    return this.http.delete<any>(`${this.subscriptionsUrl}/${id}/${subtidder}`);
+  unsubscribe(user_id: string, subtidder: string) {
+    return this.http.delete<any>(`${this.subscriptionsUrl}/${user_id}/${subtidder}`);
+  }
+
+  editBiography(user_id: string, biography: string) {
+    return this.http.put<any>(`${this.userUrl}/${user_id}/bio`, { biography: biography });
   }
 
 }

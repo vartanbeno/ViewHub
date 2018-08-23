@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -26,6 +26,9 @@ export class UserProfileComponent implements OnInit {
   userDoesNotExist: boolean = false;
   isOwnProfile = false;
 
+  editingBio: boolean = false;
+  @ViewChild('biographyField') biographyField: ElementRef;
+
   constructor(
     private userService: UserService,
     private authService: AuthService,
@@ -36,6 +39,7 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit() {
     this.userService.profileLoaded = false;
+    this.loggedInUserId = this.authService.getId();
     this.getUserInfo();
     this.getLoggedInUsername();
   }
@@ -70,8 +74,8 @@ export class UserProfileComponent implements OnInit {
       let fr = new FileReader();
 
       fr.onload = () => {
-        this.imageSource = fr.result;
-        this.base64String = fr.result.split(';')[1].replace('base64,', '');
+        this.imageSource = String(fr.result);
+        this.base64String = this.imageSource.split(';')[1].replace('base64,', '');
         this.updateProfilePicture();
       }
 
@@ -82,7 +86,6 @@ export class UserProfileComponent implements OnInit {
   }
 
   getLoggedInUsername() {
-    this.loggedInUserId = this.authService.getId();
     this.userService.getUsername(this.loggedInUserId).subscribe(
       res => {
         this.loggedInUsername = res.username;
@@ -110,6 +113,31 @@ export class UserProfileComponent implements OnInit {
       },
       err => console.log(err)
     )
+  }
+
+  editingBiography() {
+    this.editingBio = true;
+    this.user['editedBiography'] = this.user['biography'];
+    setTimeout(() => this.biographyField.nativeElement.focus());
+  }
+
+  editBiography() {
+    this.userService.editBiography(this.loggedInUserId, this.user['editedBiography']).subscribe(
+      res => {
+        this.user['biography'] = this.user['editedBiography'];
+        this.editingBio = false;
+      },
+      err => console.log(err)
+    )
+  }
+
+  clearBiography() {
+    let confirmClearBiography = confirm('Click OK to clear your biography.');
+
+    if (confirmClearBiography) {
+      this.user['editedBiography'] = null;
+      this.editBiography();
+    }
   }
 
 }

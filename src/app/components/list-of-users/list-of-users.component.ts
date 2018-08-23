@@ -5,10 +5,10 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css']
+  templateUrl: './list-of-users.component.html',
+  styleUrls: ['./list-of-users.component.css']
 })
-export class UsersComponent implements OnInit {
+export class ListOfUsersComponent implements OnInit {
 
   users: Array<any> = [];
   defaultImageSource: string = 'assets/images/default.png';

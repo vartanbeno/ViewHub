@@ -4,7 +4,7 @@
   <div class="item" *ngFor="let subtidder of subtidders">
     <div class="content">
       <div class="header"><a class="link to subtidder" routerLink="/t/{{ subtidder.name }}">{{ subtidder.name }}</a></div>
-      <div class="meta">Created {{ subtidder.creation_date }} by <a class="link to user profile" routerLink="/u/{{ subtidder.creator }}">{{ subtidder.creator }}</a></div>
+      <div class="meta">Created {{ subtidder.creation_date }} by <a class="ui link to user profile" routerLink="/u/{{ subtidder.creator }}">{{ subtidder.creator }}</a></div>
       <div class="description">
         <p class="preline">{{ subtidder.description }}</p>
       </div>
@@ -23,7 +23,7 @@
         <a class="ui right floated link to subtidder" routerLink="/t/{{ post.subtidder }}">{{ post.subtidder }}</a>
       </div>
       <div class="description">
-        <p class="post content preline">{{ (post.content.length > 200) ? (post.content | slice:0:200) + '...' : (post.content) }}</p>
+        <p class="justify preline">{{ (post.content.length > 200) ? (post.content | slice:0:200) + '...' : (post.content) }}</p>
       </div>
     </div>
   </div>

@@ -38,6 +38,7 @@ export class ListOfCommentsComponent implements OnInit {
     let commentToEdit = this.comments.find(comment => comment.id === comment_id);
     commentToEdit['editing'] = true;
     commentToEdit['editedBody'] = commentToEdit.body;
+    setTimeout(() => document.getElementById('body' + comment_id).focus());
   }
 
   unsetCommentToEdit(comment_id: string) {

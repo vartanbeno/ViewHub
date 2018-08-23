@@ -45,7 +45,7 @@ users.get('/all', verifyToken, (req, res) => {
 users.get('/u/:username', (req, res) => {
     let { username } = req.params;
     db.query(`
-    SELECT id, CONCAT(first_name, ' ', last_name) as full_name, email, username, join_date,
+    SELECT id, CONCAT(first_name, ' ', last_name) as full_name, email, username, join_date, biography,
     ENCODE(image, 'escape') as base64
     FROM users WHERE username = $1;`, [username], (error, result) => {
         if (error) {
@@ -156,6 +156,23 @@ users.get('/u/:username/posts', (req, res) => {
             else {
                 return res.status(200).send({ message: 'The user does not have any posts.' });
             }
+        }
+    })
+})
+
+users.put('/u/:user_id/bio', (req, res) => {
+    let { user_id } = req.params;
+    let { biography } = req.body;
+
+    db.query(`
+    UPDATE users SET biography = $1 WHERE id = $2;
+    `, [biography, user_id], (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+        else {
+            return res.status(200).send({ message: 'Successfully updated biography.' });
         }
     })
 })

@@ -1,0 +1,16 @@
+<div class="ui divided items" *ngIf="userService.listOfUsersLoaded">
+  <div class="item" *ngFor="let user of users">
+    <div class="ui tiny image">
+      <img class="profile picture" src="{{ user.image }}" alt="profile picture" routerLink="/u/{{ user.username }}">
+    </div>
+    <div class="content">
+      <div class="ui blue header link to user profile" routerLink="/u/{{ user.username }}">{{ user.full_name }}</div>
+      <div class="meta">Joined {{ user.join_date }}</div>
+      <div class="description">
+        <p>Contact {{ user.username }} at {{ user.email }}.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-loader *ngIf="!userService.listOfUsersLoaded"></app-loader>
