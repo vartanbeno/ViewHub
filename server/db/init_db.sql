@@ -1,4 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS CITEXT;
+CREATE EXTENSION IF NOT EXISTS PGCRYPTO;
 
 CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
@@ -7,8 +8,7 @@ CREATE TABLE IF NOT EXISTS users(
     email VARCHAR(255) NOT NULL,
     username CITEXT UNIQUE NOT NULL
         CHECK (char_length(username) >= 4 AND char_length(username) <= 30),
-    password VARCHAR(30) NOT NULL
-        CHECK (char_length(password) >= 4),
+    password VARCHAR(255),
     join_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     biography VARCHAR(10000) DEFAULT NULL,
     image BYTEA DEFAULT NULL
@@ -60,6 +60,18 @@ CREATE TABLE IF NOT EXISTS comments(
     pub_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE OR REPLACE FUNCTION hash_password() RETURNS TRIGGER AS
+$$
+BEGIN
+    IF ((SELECT LENGTH(NEW.password) < 4) OR (SELECT LENGTH(NEW.password) > 30))
+    THEN RAISE EXCEPTION 'The password should be 4 to 30 characters long.';
+    END IF;
+    NEW.password := crypt(NEW.password, gen_salt('bf', 8));
+    RETURN NEW;
+END
+$$
+LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION set_subtidder_tokens() RETURNS TRIGGER AS
 $$
 BEGIN
@@ -77,6 +89,16 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+CREATE TRIGGER hash_password
+BEFORE INSERT ON users
+    FOR EACH ROW EXECUTE PROCEDURE hash_password();
+
+CREATE TRIGGER hash_updated_password
+BEFORE UPDATE ON users
+    FOR EACH ROW
+    WHEN (OLD.password IS DISTINCT FROM NEW.password)
+    EXECUTE PROCEDURE hash_password();
 
 CREATE TRIGGER set_subtidder_tokens
 BEFORE INSERT OR UPDATE ON subtidders
