@@ -47,8 +47,8 @@ auth.post('/login', (req, res) => {
     let { username, password } = req.body;
 
     db.query(`
-    SELECT id, CONCAT(first_name, ' ', last_name) as full_name, username, password FROM users
-    WHERE username = $1 AND password = $2;`,
+    SELECT id, CONCAT(first_name, ' ', last_name) as full_name, username FROM users
+    WHERE username = $1 AND password = crypt($2, password);`,
     [username, password],
     (error, result) => {
         if (error) {
@@ -62,7 +62,7 @@ auth.post('/login', (req, res) => {
             let payload = { subject: result.rows[0].id };
             let token = jwt.sign(payload, 'secretKey');
             return res.status(200).send({
-                token: token,
+                token,
                 id: result.rows[0].id,
                 fullname: result.rows[0].full_name
             });
