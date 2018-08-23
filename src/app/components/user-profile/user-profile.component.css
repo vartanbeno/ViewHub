@@ -9,4 +9,5 @@ div.top {
 
 .ui.card {
     margin-right: 1em;
+    max-height: 420px;
 }
