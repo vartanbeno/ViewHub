@@ -3,7 +3,7 @@ div.top {
 }
 
 .biography {
-    flex-grow: 1;
+    flex: 1;
 }
 
 .ui.card {
