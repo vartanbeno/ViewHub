@@ -74,8 +74,8 @@ export class UserProfileComponent implements OnInit {
       let fr = new FileReader();
 
       fr.onload = () => {
-        this.imageSource = fr.result;
-        this.base64String = fr.result.split(';')[1].replace('base64,', '');
+        this.imageSource = String(fr.result);
+        this.base64String = this.imageSource.split(';')[1].replace('base64,', '');
         this.updateProfilePicture();
       }
 
