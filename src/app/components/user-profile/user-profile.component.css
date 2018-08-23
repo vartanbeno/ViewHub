@@ -1,0 +1,11 @@
+div.top {
+    display: flex;
+}
+
+.biography {
+    flex-grow: 1;
+}
+
+.ui.card {
+    margin-right: 1em;
+}

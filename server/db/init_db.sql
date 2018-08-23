@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS users(
     password VARCHAR(30) NOT NULL
         CHECK (char_length(password) >= 4),
     join_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    image BYTEA
+    biography VARCHAR(10000) DEFAULT NULL,
+    image BYTEA DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS subtidders(

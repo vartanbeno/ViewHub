@@ -26,6 +26,8 @@ export class UserProfileComponent implements OnInit {
   userDoesNotExist: boolean = false;
   isOwnProfile = false;
 
+  editingBio: boolean = false;
+
   constructor(
     private userService: UserService,
     private authService: AuthService,
@@ -36,6 +38,7 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit() {
     this.userService.profileLoaded = false;
+    this.loggedInUserId = this.authService.getId();
     this.getUserInfo();
     this.getLoggedInUsername();
   }
@@ -82,7 +85,6 @@ export class UserProfileComponent implements OnInit {
   }
 
   getLoggedInUsername() {
-    this.loggedInUserId = this.authService.getId();
     this.userService.getUsername(this.loggedInUserId).subscribe(
       res => {
         this.loggedInUsername = res.username;
@@ -110,6 +112,26 @@ export class UserProfileComponent implements OnInit {
       },
       err => console.log(err)
     )
+  }
+
+  editingBiography() {
+    this.editingBio = true;
+    this.user['editedBiography'] = this.user['biography'];
+  }
+
+  editBiography() {
+    this.userService.editBiography(this.loggedInUserId, this.user['editedBiography']).subscribe(
+      res => {
+        this.user['biography'] = this.user['editedBiography'];
+        this.editingBio = false;
+      },
+      err => console.log(err)
+    )
+  }
+
+  clearBiography() {
+    this.user['editedBiography'] = null;
+    this.editBiography();
   }
 
 }
