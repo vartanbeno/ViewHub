@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users(
     email VARCHAR(255) NOT NULL,
     username CITEXT UNIQUE NOT NULL
         CHECK (char_length(username) >= 4 AND char_length(username) <= 30),
-    password VARCHAR(255),
+    password VARCHAR(255) NOT NULL,
     join_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     biography VARCHAR(10000) DEFAULT NULL,
     image BYTEA DEFAULT NULL
@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS posts(
     subtidder_id INTEGER REFERENCES subtidders(id)
         ON DELETE SET NULL,
     pub_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_edited TIMESTAMPTZ DEFAULT NULL,
     tokens TSVECTOR
 );
 
@@ -57,7 +58,8 @@ CREATE TABLE IF NOT EXISTS comments(
         ON DELETE SET NULL,
     post_id INTEGER REFERENCES posts(id)
         ON DELETE CASCADE,
-    pub_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+    pub_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_edited TIMESTAMPTZ DEFAULT NULL
 );
 
 CREATE OR REPLACE FUNCTION hash_password() RETURNS TRIGGER AS
@@ -90,6 +92,15 @@ END
 $$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION set_edited_date() RETURNS TRIGGER AS
+$$
+BEGIN
+    NEW.last_edited := CURRENT_TIMESTAMP;
+    RETURN NEW;
+END
+$$
+LANGUAGE plpgsql;
+
 CREATE TRIGGER hash_password
 BEFORE INSERT ON users
     FOR EACH ROW EXECUTE PROCEDURE hash_password();
@@ -107,6 +118,14 @@ BEFORE INSERT OR UPDATE ON subtidders
 CREATE TRIGGER set_post_tokens
 BEFORE INSERT OR UPDATE ON posts
     FOR EACH ROW EXECUTE PROCEDURE set_post_tokens();
+
+CREATE TRIGGER set_post_edited_date
+BEFORE UPDATE ON posts
+    FOR EACH ROW EXECUTE PROCEDURE set_edited_date();
+
+CREATE TRIGGER set_comment_edited_date
+BEFORE UPDATE ON comments
+    FOR EACH ROW EXECUTE PROCEDURE set_edited_date();
 
 INSERT INTO users (first_name, last_name, email, username, password) VALUES
     ('Vartan', 'Benohanian', 'vartabeno@gmail.com', 'vartanbeno', '1234'),
