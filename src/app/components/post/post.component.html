@@ -2,12 +2,17 @@
 
     <h2 class="ui dividing header justify">{{ postData.title }}</h2>
     <p class="justify preline">{{ postData.content }}</p>
-    <div class="ui grid small text">
+    <div class="ui grid small text post info">
         <div class="column eight wide left aligned">
             <span class="grey text">{{ postData.pub_date }} by <a class="link to user profile" routerLink="/u/{{ postData.author }}">{{ postData.author }}</a></span>
         </div>
         <div class="column eight wide right aligned">
             <a class="link to subtidder" routerLink="/t/{{ postData.subtidder }}">{{ postData.subtidder }}</a>
+        </div>
+    </div>
+    <div class="ui grid small text edit info" *ngIf="postData.last_edited">
+        <div class="column sixteen wide left aligned">
+            <span class="grey text">(last edited {{ postData.last_edited }})</span>
         </div>
     </div>
 

@@ -25,7 +25,7 @@ export class AddCommentComponent implements OnInit {
   addComment() {
     this.commentService.addComment(this.comment).subscribe(
       res => {
-        this.commentService.notifyCommentAdditionOrDeletion();
+        this.commentService.notifyCommentAdditionOrEditionOrDeletion();
         this.makeNewComment();
       },
       err => console.log(err)

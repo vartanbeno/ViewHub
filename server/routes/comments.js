@@ -7,7 +7,9 @@ comments.get('/:post_id', (req, res) => {
     let { post_id } = req.params;
 
     db.query(`
-    SELECT comments.id, body, CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author, author_id, post_id, pub_date
+    SELECT comments.id, body,
+    CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
+    author_id, post_id, pub_date, last_edited
     FROM comments
     LEFT OUTER JOIN users ON (comments.author_id = users.id)
     WHERE post_id = $1
@@ -19,7 +21,10 @@ comments.get('/:post_id', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            comments.forEach((comment) => comment.pub_date = moment(comment.pub_date, 'MMMM DD YYYY').fromNow());
+            comments.forEach((comment) => {
+                comment.pub_date = moment(comment.pub_date, 'MMMM DD YYYY').fromNow();
+                comment.last_edited = (comment.last_edited) ? moment(comment.last_edited, 'MMMM DD YYYY').fromNow() : comment.last_edited;
+            });
             return res.status(200).send({ comments });
         }
     })

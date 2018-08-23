@@ -10,7 +10,7 @@ export class CommentService {
 
   private commentsUrl = 'http://localhost:3000/comments';
 
-  commentAdded_or_Deleted_Observable = new Subject();
+  commentAdded_or_Edited_or_Deleted_Observable = new Subject();
 
   constructor(private http: HttpClient) { }
 
@@ -30,8 +30,8 @@ export class CommentService {
     return this.http.delete<any>(`${this.commentsUrl}/${comment_id}`);
   }
 
-  notifyCommentAdditionOrDeletion() {
-    this.commentAdded_or_Deleted_Observable.next();
+  notifyCommentAdditionOrEditionOrDeletion() {
+    this.commentAdded_or_Edited_or_Deleted_Observable.next();
   }
 
 }

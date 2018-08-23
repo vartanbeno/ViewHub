@@ -1,0 +1,7 @@
+.post.info > .column {
+    padding-bottom: 0;
+}
+
+.edit.info > .column {
+    padding-top: 0;
+}

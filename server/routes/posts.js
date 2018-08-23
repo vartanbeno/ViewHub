@@ -9,7 +9,7 @@ posts.get('/:post_id', (req, res) => {
     db.query(`
     SELECT posts.id, title, content,
     CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
-    author_id, subtidders.name AS subtidder, pub_date
+    author_id, subtidders.name AS subtidder, pub_date, last_edited
     FROM posts
     LEFT OUTER JOIN users ON (posts.author_id = users.id)
     INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
@@ -22,6 +22,7 @@ posts.get('/:post_id', (req, res) => {
         }
         else if (post) {
             post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
+            post.last_edited = (post.last_edited) ? moment(post.last_edited, 'MMMM DD YYYY').fromNow() : post.last_edited;
             return res.status(200).send({ post });
         }
         else {

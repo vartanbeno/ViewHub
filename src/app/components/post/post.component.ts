@@ -24,7 +24,7 @@ export class PostComponent implements OnInit {
 
   ngOnInit() {
     this.getPost();
-    this.postService.postEdit_Observable.subscribe(res => this.getPost);
+    this.postService.postEdit_Observable.subscribe(res => this.getPost());
   }
 
   getPost() {
