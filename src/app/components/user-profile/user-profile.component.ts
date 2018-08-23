@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -27,6 +27,7 @@ export class UserProfileComponent implements OnInit {
   isOwnProfile = false;
 
   editingBio: boolean = false;
+  @ViewChild('biographyField') biographyField: ElementRef;
 
   constructor(
     private userService: UserService,
@@ -117,6 +118,7 @@ export class UserProfileComponent implements OnInit {
   editingBiography() {
     this.editingBio = true;
     this.user['editedBiography'] = this.user['biography'];
+    setTimeout(() => this.biographyField.nativeElement.focus());
   }
 
   editBiography() {
@@ -130,8 +132,12 @@ export class UserProfileComponent implements OnInit {
   }
 
   clearBiography() {
-    this.user['editedBiography'] = null;
-    this.editBiography();
+    let confirmClearBiography = confirm('Click OK to clear your biography.');
+
+    if (confirmClearBiography) {
+      this.user['editedBiography'] = null;
+      this.editBiography();
+    }
   }
 
 }

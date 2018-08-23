@@ -25,7 +25,7 @@
 
             <form #editBioForm="ngForm" class="ui form" autocomplete="off" *ngIf="editingBio" (ngSubmit)="editBiography()">
                 <div class="field">
-                    <textarea [(ngModel)]="user.editedBiography" id="biography" name="biography" rows="10" placeholder="Write about yourself!"></textarea>
+                    <textarea #biographyField [(ngModel)]="user.editedBiography" id="biography" name="biography" rows="10" placeholder="Write about yourself!"></textarea>
                 </div>
                 <button type="submit" class="ui blue mini button">
                     Save
