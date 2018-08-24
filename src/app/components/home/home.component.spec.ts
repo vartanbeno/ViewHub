@@ -65,10 +65,7 @@ fdescribe('HomeComponent', () => {
     })
 
     it(`should say 'Hello, [name]' on the homepage if user is logged in`, () => {
-      localStorage.setItem('token', 'token');
-      localStorage.setItem('name', 'test');
-      localStorage.setItem('id', '1');
-
+      login();
       fixture.detectChanges();
 
       debugElement = fixture.debugElement.query(By.css('h2'));
@@ -78,14 +75,48 @@ fdescribe('HomeComponent', () => {
     })
   })
 
+  describe(`what's available and what's not depending on if user's logged in`, () => {
+    it('should not have add-post component if user is not logged in', () => {
+      debugElement = fixture.debugElement.query(By.css('app-add-post'));
+      expect(debugElement).toBeNull();
+
+      login();
+      fixture.detectChanges();
+
+      debugElement = fixture.debugElement.query(By.css('app-add-post'));
+      expect(debugElement).toBeTruthy();
+    })
+
+    it('should not display add post button if user is not logged in', () => {
+      debugElement = fixture.debugElement.query(By.css('#addPostButton'));
+      expect(debugElement).toBeNull();
+
+      login();
+      fixture.detectChanges();
+
+      debugElement = fixture.debugElement.query(By.css('#addPostButton'));
+      expect(debugElement).toBeTruthy();
+    })
+  })
+
   afterEach(() => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('name');
-    localStorage.removeItem('id');
+    logout();
   })
 });
 
-class MockAuthService {  
+function login() {
+  localStorage.setItem('token', 'token');
+  localStorage.setItem('name', 'test');
+  localStorage.setItem('id', '1');
+}
+
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('name');
+  localStorage.removeItem('id');
+}
+
+class MockAuthService {
   loggedIn() {
     return !!(this.getToken() && this.getName() && this.getId());
   }
