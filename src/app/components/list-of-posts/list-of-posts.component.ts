@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { SubtidderService } from '../../services/subtidder.service';
+import { Post } from '../../models/post';
 
 @Component({
   selector: 'app-list-of-posts',
@@ -16,10 +17,10 @@ export class ListOfPostsComponent implements OnInit {
   @Input() username?: string;
   @Input() subtidder?: string;
 
-  posts: Array<any> = [];
+  posts: Array<Post> = [];
   pages: Array<number> = [];
   currentPage: number;
-  id: string;
+  user_id: number;
 
   constructor(
     private postService: PostService,
@@ -30,13 +31,13 @@ export class ListOfPostsComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.route.queryParams.subscribe(params => this.currentPage = params.page);
-    this.currentPage = (!this.currentPage) ? 1 : this.currentPage;
+    this.currentPage = this.currentPage || 1;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit() {
 
-    this.id = this.authService.getId();
+    this.user_id = +this.authService.getId();
 
     switch(this.componentName) {
 
@@ -83,7 +84,7 @@ export class ListOfPostsComponent implements OnInit {
       this.router.navigate([''], { queryParams: { page: this.currentPage } });
       return;
     }
-    this.userService.getPostsFromSubscriptions(this.id, this.currentPage.toString()).subscribe(
+    this.userService.getPostsFromSubscriptions(this.user_id, this.currentPage.toString()).subscribe(
       res => {
         this.posts = res.posts || [];
         this.userService.subscriptionsPosts = this.posts;

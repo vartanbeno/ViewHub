@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
 
   badCredentials: boolean = false;
   @ViewChild('usernameInput') usernameInput: ElementRef;
-  userData = new User();
+  userData: User;
 
   constructor(
     private authService: AuthService,
@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.userData = new User();
     this.usernameInput.nativeElement.focus();
   }
 

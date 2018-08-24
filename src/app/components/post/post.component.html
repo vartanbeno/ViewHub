@@ -1,27 +1,27 @@
 <div class="ui main text container" *ngIf="postLoaded">
 
-    <h2 class="ui dividing header justify">{{ postData.title }}</h2>
-    <p class="justify preline">{{ postData.content }}</p>
+    <h2 class="ui dividing header justify">{{ post.title }}</h2>
+    <p class="justify preline">{{ post.content }}</p>
     <div class="ui grid small text post info">
         <div class="column eight wide left aligned">
-            <span class="grey text">{{ postData.pub_date }} by <a class="link to user profile" routerLink="/u/{{ postData.author }}">{{ postData.author }}</a></span>
+            <span class="grey text">{{ post.pub_date }} by <a class="link to user profile" routerLink="/u/{{ post.author }}">{{ post.author }}</a></span>
         </div>
         <div class="column eight wide right aligned">
-            <a class="link to subtidder" routerLink="/t/{{ postData.subtidder }}">{{ postData.subtidder }}</a>
+            <a class="link to subtidder" routerLink="/t/{{ post.subtidder }}">{{ post.subtidder }}</a>
         </div>
     </div>
-    <div class="ui grid small text edit info" *ngIf="postData.last_edited">
+    <div class="ui grid small text edit info" *ngIf="post.last_edited">
         <div class="column sixteen wide left aligned">
-            <span class="grey text">(last edited {{ postData.last_edited }})</span>
+            <span class="grey text">(last edited {{ post.last_edited }})</span>
         </div>
     </div>
 
-    <div class="ui grid" *ngIf="authService.loggedIn() && postData.author_id == authService.getId()">
+    <div class="ui grid" *ngIf="authService.loggedIn() && post.author_id === +authService.getId()">
         <div class="column eight wide">
-            <button class="ui grey button fluid" (click)="postService.setPostToEdit(postData)"><i class="edit alternate outline icon"></i>Edit</button>
+            <button class="ui grey button fluid" (click)="postService.setPostToEdit(post)"><i class="edit alternate outline icon"></i>Edit</button>
         </div>
         <div class="column eight wide">
-            <button class="ui negative button fluid" (click)="postService.setPostToDelete(postData)"><i class="trash alternate outline icon"></i>Delete</button>
+            <button class="ui negative button fluid" (click)="postService.setPostToDelete(post)"><i class="trash alternate outline icon"></i>Delete</button>
         </div>
         <app-edit-post></app-edit-post>
         <app-delete-post [navigateBackHome]="true"></app-delete-post>
@@ -29,10 +29,10 @@
 
     <h3 class="ui dividing header">Comments</h3>
     <div *ngIf="authService.loggedIn()">
-        <app-add-comment post_id="{{ postData.id }}" *ngIf="authService.loggedIn()"></app-add-comment>
+        <app-add-comment post_id="{{ post.id }}" *ngIf="authService.loggedIn()"></app-add-comment>
         <br/>
     </div>
-    <app-list-of-comments post_id="{{ postData.id }}"></app-list-of-comments>
+    <app-list-of-comments post_id="{{ post.id }}"></app-list-of-comments>
 
 </div>
 

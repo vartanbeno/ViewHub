@@ -4,6 +4,7 @@ import { PostService } from '../../services/post.service';
 import { AuthService } from '../../services/auth.service';
 import { SubtidderService } from '../../services/subtidder.service';
 import { UserService } from '../../services/user.service';
+import { Subtidder } from '../../models/subtidder';
 declare var $: any;
 
 @Component({
@@ -14,10 +15,10 @@ declare var $: any;
 export class SubtidderComponent implements OnInit {
 
   subtidder: string;
-  subtidderData: Object = {};
+  subtidderData: Subtidder;
   @ViewChild('addPostToSubtidderButton') addPostToSubtidderButton: ElementRef;
 
-  id: string;
+  user_id: number;
   isSubscribed: boolean;
 
   constructor(
@@ -32,10 +33,12 @@ export class SubtidderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.id = this.authService.getId();
+    this.user_id = +this.authService.getId();
+    this.subtidderData = new Subtidder();
+    
     this.subtidderService.subtidderInfo_Observable.subscribe(res => {
       if (this.subtidder === 'all') {
-        this.subtidderData['name'] = 'all';
+        this.subtidderData.name = 'all';
         this.postService.subtidderLoaded = true;
       };
       if (this.subtidder && this.subtidder !== 'all') this.getSubtidderInfo();
@@ -76,7 +79,7 @@ export class SubtidderComponent implements OnInit {
   }
 
   checkIfSubscribed() {
-    this.userService.checkIfSubscribed(this.id, this.subtidderData['name']).subscribe(
+    this.userService.checkIfSubscribed(this.user_id, this.subtidderData.name).subscribe(
       res => {
         this.isSubscribed = (res.isSubscribed) ? true : false;
         this.postService.subtidderLoaded = true;
@@ -86,7 +89,7 @@ export class SubtidderComponent implements OnInit {
   }
 
   subscribe() {
-    this.userService.subscribe(this.id, this.subtidderData['name']).subscribe(
+    this.userService.subscribe(this.user_id, this.subtidderData.name).subscribe(
       res => {
         this.isSubscribed = true;
         this.userService.refreshSubscriptions();
@@ -96,7 +99,7 @@ export class SubtidderComponent implements OnInit {
   }
 
   unsubscribe() {
-    this.userService.unsubscribe(this.id, this.subtidderData['name']).subscribe(
+    this.userService.unsubscribe(this.user_id, this.subtidderData.name).subscribe(
       res => {
         this.isSubscribed = false;
         this.userService.refreshSubscriptions();

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { User } from '../../models/user';
 declare var $: any;
 
 @Component({
@@ -11,9 +12,10 @@ declare var $: any;
 })
 export class UserProfileComponent implements OnInit {
 
-  user = {};
+  user: User;
   username: string;
-  loggedInUserId: string;
+
+  loggedInUserId: number;
   loggedInUsername: string;
 
   base64String: string;
@@ -38,8 +40,9 @@ export class UserProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.user = new User();
     this.userService.profileLoaded = false;
-    this.loggedInUserId = this.authService.getId();
+    this.loggedInUserId = +this.authService.getId();
     this.getUserInfo();
     this.getLoggedInUsername();
   }
@@ -48,7 +51,7 @@ export class UserProfileComponent implements OnInit {
     this.userService.getUser(this.username).subscribe(
       res => {
         this.user = res.user;
-        this.imageSource = (this.user['base64']) ? 'data:image/png;base64,' + this.user['base64'] : this.defaultImageSource;
+        this.imageSource = (this.user.image) ? 'data:image/png;base64,' + this.user.image : this.defaultImageSource;
       },
       err => {
         console.log(err);
@@ -117,14 +120,14 @@ export class UserProfileComponent implements OnInit {
 
   editingBiography() {
     this.editingBio = true;
-    this.user['editedBiography'] = this.user['biography'];
+    this.user['editedBiography'] = this.user.biography;
     setTimeout(() => this.biographyField.nativeElement.focus());
   }
 
   editBiography() {
     this.userService.editBiography(this.loggedInUserId, this.user['editedBiography']).subscribe(
       res => {
-        this.user['biography'] = this.user['editedBiography'];
+        this.user.biography = this.user['editedBiography'];
         this.editingBio = false;
       },
       err => console.log(err)

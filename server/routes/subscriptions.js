@@ -6,7 +6,7 @@ const express = require('express'),
 // get posts from subscriptions
 subscriptions.get('/:user_id/posts', (req, res) => {
     let { user_id } = req.params;
-    let page = Number(req.query.page);
+    let page = +req.query.page;
     page = (page > 0) ? (page - 1) : 0;
 
     db.query(`
@@ -82,7 +82,7 @@ subscriptions.get('/:user_id', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            let subscriptions = result.rows.map(sub => sub.name);
+            let subscriptions = result.rows;
             return res.status(200).send({ subscriptions });
         }
     })
@@ -132,7 +132,7 @@ subscriptions.get('/:user_id/:subtidder', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            let isSubscribed = (Number(result.rows[0].count)) ? true : false;
+            let isSubscribed = (+(result.rows[0].count)) ? true : false;
             return res.status(200).send({ isSubscribed });
         }
     })

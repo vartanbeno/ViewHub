@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 })
 export class DeletePostComponent implements OnInit {
 
-  postId: number;
   @Input() navigateBackHome?: boolean;
 
   constructor(

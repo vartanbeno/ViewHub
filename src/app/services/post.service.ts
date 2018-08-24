@@ -69,16 +69,16 @@ export class PostService {
     this.notifyPostEdition();
   }
 
-  searchPosts(searchTerm: string) {
-    return this.http.get<any>(this.searchPostsUrl, { params: { s: searchTerm } });
+  searchPosts(q: string) {
+    return this.http.get<any>(this.searchPostsUrl, { params: { q } });
   }
 
   getPostsFromSubtidder(subtidder: string, page: string) {
     return this.http.get<any>(`${this.subtidderUrl}/${subtidder}`, { params: { page } });
   }
 
-  getPost(id: string) {
-    return this.http.get<any>(`${this.getPostUrl}/${id}`);
+  getPost(post_id: number) {
+    return this.http.get<any>(`${this.getPostUrl}/${post_id}`);
   }
 
 }

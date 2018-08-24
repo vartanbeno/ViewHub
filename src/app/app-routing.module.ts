@@ -22,8 +22,8 @@ const routes: Routes = [
   { path: 'u/:username', component: UserProfileComponent, canActivate: [AuthGuard] },
 
   { path: 't/:subtidder', component: SubtidderComponent },
-  { path: 't/comments/:id', component: PostComponent },
-  // { path: 't/:subtidder/comments/:id/', component: PostComponent },
+  { path: 't/comments/:post_id', component: PostComponent },
+  // { path: 't/:subtidder/comments/:post_id/', component: PostComponent },
   { path: 'subtidders/create', component: CreateSubtidderComponent, canActivate: [AuthGuard] },
 
   { path: 'search', component: SearchComponent },

@@ -7,7 +7,7 @@
       My Subtidders
       <i class="dropdown icon"></i>
       <div class="menu">
-        <div class="item" *ngFor="let subscription of subscriptions" routerLink="/t/{{ subscription }}"><span class="subscription">{{ subscription }}</span></div>
+        <div class="item" *ngFor="let subscription of subscriptions" routerLink="/t/{{ subscription }}"><span class="subscription">{{ subscription.name }}</span></div>
         <div class="item" *ngIf="!subscriptions.length" (click)="focusOnSearch()"><span class="subscription empty">Search and subscribe!</span></div>
       </div>
     </div>
@@ -15,7 +15,7 @@
       <div class="item">
         <form autocomplete="off" (ngSubmit)="search()">
           <div class="ui inverted transparent icon input">
-            <input #searchBox type="text" placeholder="Search..." required>
+            <input #searchBox [(ngModel)]="q" id="query" name="query" type="text" placeholder="Search..." required>
             <i class="search link icon" (click)="search()"></i>
           </div>
         </form>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-users',
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class ListOfUsersComponent implements OnInit {
 
-  users: Array<any> = [];
+  users: Array<User> = [];
   defaultImageSource: string = 'assets/images/default.png';
 
   constructor(

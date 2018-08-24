@@ -10,7 +10,7 @@ t.get('/', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            let subtidders = result.rows.map(subtidder => subtidder.name);
+            let subtidders = result.rows;
             return res.status(200).send({ subtidders });
         }
     })
@@ -42,7 +42,7 @@ t.post('/subtidders/create', (req, res) => {
 
 t.get('/:subtidder', (req, res) => {
     let { subtidder } = req.params;
-    let page = Number(req.query.page);
+    let page = +req.query.page;
     page = (page > 0) ? (page - 1) : 0;
 
     let isAll = (subtidder === 'all');

@@ -46,7 +46,7 @@ users.get('/u/:username', (req, res) => {
     let { username } = req.params;
     db.query(`
     SELECT id, CONCAT(first_name, ' ', last_name) as full_name, email, username, join_date, biography,
-    ENCODE(image, 'escape') as base64
+    ENCODE(image, 'escape') as image
     FROM users WHERE username = $1;`, [username], (error, result) => {
         if (error) {
             console.log(error);
@@ -112,7 +112,7 @@ users.delete('/u/:username/pic', (req, res) => {
 })
 
 users.get('/u/:username/posts', (req, res) => {
-    let page = Number(req.query.page);
+    let page = +req.query.page;
     page = (page > 0) ? (page - 1) : 0;
 
     let { username } = req.params;

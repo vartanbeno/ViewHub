@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PostService } from '../../services/post.service';
 import { AuthService } from '../../services/auth.service';
+import { Post } from '../../models/post';
 
 @Component({
   selector: 'app-post',
@@ -10,8 +11,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class PostComponent implements OnInit {
 
-  id: string;
-  postData: Object = {};
+  post_id: number;
+  post: Post;
   postLoaded: boolean = false;
 
   constructor(
@@ -19,7 +20,7 @@ export class PostComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute
   ) {
-    this.id = this.route.snapshot.paramMap.get('id');
+    this.post_id = +this.route.snapshot.paramMap.get('post_id');
   }
 
   ngOnInit() {
@@ -28,9 +29,9 @@ export class PostComponent implements OnInit {
   }
 
   getPost() {
-    this.postService.getPost(this.id).subscribe(
+    this.postService.getPost(this.post_id).subscribe(
       res => {
-        this.postData = res.post;
+        this.post = res.post;
         this.postLoaded = true;
       },
       err => {

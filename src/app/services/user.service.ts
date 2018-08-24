@@ -27,7 +27,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getPostsFromSubscriptions(user_id: string, page: string) {
+  getPostsFromSubscriptions(user_id: number, page: string) {
     return this.http.get<any>(`${this.subscriptionsUrl}/${user_id}/posts`, { params: { page } });
   }
 
@@ -39,7 +39,7 @@ export class UserService {
     return this.http.get<any>(`${this.userUrl}/${username}`);
   }
 
-  getSubscriptions(user_id: string) {
+  getSubscriptions(user_id: number) {
     return this.http.get<any>(`${this.subscriptionsUrl}/${user_id}`);
   }
 
@@ -51,7 +51,7 @@ export class UserService {
     this.subscriptionsFetch_Observable.next();
   }
 
-  getUsername(user_id: string) {
+  getUsername(user_id: number) {
     return this.http.get<any>(`${this.usernameUrl}/${user_id}`);
   }
 
@@ -71,19 +71,19 @@ export class UserService {
     this.authentication_Observable.next();
   }
 
-  checkIfSubscribed(user_id: string, subtidder: string) {
+  checkIfSubscribed(user_id: number, subtidder: string) {
     return this.http.get<any>(`${this.subscriptionsUrl}/${user_id}/${subtidder}`);
   }
 
-  subscribe(user_id: string, subtidder: string) {
+  subscribe(user_id: number, subtidder: string) {
     return this.http.post<any>(`${this.subscriptionsUrl}/${user_id}/${subtidder}`, null);
   }
 
-  unsubscribe(user_id: string, subtidder: string) {
+  unsubscribe(user_id: number, subtidder: string) {
     return this.http.delete<any>(`${this.subscriptionsUrl}/${user_id}/${subtidder}`);
   }
 
-  editBiography(user_id: string, biography: string) {
+  editBiography(user_id: number, biography: string) {
     return this.http.put<any>(`${this.userUrl}/${user_id}/bio`, { biography: biography });
   }
 

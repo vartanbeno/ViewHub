@@ -23,7 +23,7 @@
 				</form>
 			</div>
 
-			<div class="actions" *ngIf="authService.loggedIn() && comment.author_id == authService.getId()">
+			<div class="actions" *ngIf="authService.loggedIn() && comment.author_id === +authService.getId()">
 				<a (click)="setCommentToEdit(comment.id)" *ngIf="!comment.editing">Edit</a>
 				<a (click)="deleteComment(comment.id)">Delete</a>
 			</div>

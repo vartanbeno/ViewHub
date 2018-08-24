@@ -14,7 +14,7 @@ export class CommentService {
 
   constructor(private http: HttpClient) { }
 
-  getPostComments(post_id: string) {
+  getPostComments(post_id: number) {
     return this.http.get<any>(`${this.commentsUrl}/${post_id}`);
   }
 

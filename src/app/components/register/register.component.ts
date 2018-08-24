@@ -13,7 +13,7 @@ export class RegisterComponent implements OnInit {
 
   usernameTaken: boolean = false;
   @ViewChild('firstNameInput') firstNameInput: ElementRef;
-  userData = new User();
+  userData: User;
 
   constructor(
     private authService: AuthService,
@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.userData = new User();
     this.firstNameInput.nativeElement.focus();
   }
 

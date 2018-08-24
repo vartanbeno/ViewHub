@@ -20,8 +20,8 @@ export class SubtidderService {
     return this.http.get<any>(this.allSubtiddersUrl);
   }
 
-  searchSubtidders(searchTerm: string) {
-    return this.http.get<any>(this.searchSubtiddersUrl, { params: { s: searchTerm } });
+  searchSubtidders(q: string) {
+    return this.http.get<any>(this.searchSubtiddersUrl, { params: { q } });
   }
 
   createSubtidder(subtidder: Subtidder) {

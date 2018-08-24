@@ -10,7 +10,7 @@ import { Comment } from '../../models/comment';
 })
 export class ListOfCommentsComponent implements OnInit {
 
-  @Input() post_id: string;
+  @Input() post_id: number;
   comments: Array<Comment> = [];
   noComments: boolean = false;
 

@@ -11,7 +11,7 @@ import { Comment } from '../../models/comment';
 export class AddCommentComponent implements OnInit {
 
   comment: Comment;
-  @Input() post_id: string;
+  @Input() post_id: number;
 
   constructor(
     private commentService: CommentService,
@@ -35,7 +35,7 @@ export class AddCommentComponent implements OnInit {
   makeNewComment() {
     this.comment = new Comment();
     this.comment.author_id = +this.authService.getId();
-    this.comment.post_id = +this.post_id;
+    this.comment.post_id = this.post_id;
   }
 
 }
