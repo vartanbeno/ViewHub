@@ -21,6 +21,8 @@ fdescribe('HomeComponent', () => {
   let loggedOutHeader: HTMLElement;
   let loggedInHeader: HTMLElement;
 
+  let authService: AuthService;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -44,7 +46,8 @@ fdescribe('HomeComponent', () => {
       ]
     })
     .compileComponents();
-
+    
+    authService = TestBed.get(AuthService);
   }));
 
   beforeEach(() => {
@@ -59,6 +62,7 @@ fdescribe('HomeComponent', () => {
 
   describe('greeting message', () => {
     it(`should say 'Welcome to Tidder!' on the homepage if user is not logged in`, () => {
+      expect(authService.loggedIn()).toBe(false);
       debugElement = fixture.debugElement.query(By.css('div[class=header]'));
       loggedOutHeader = debugElement.nativeElement;
       expect(loggedOutHeader.textContent).toEqual('Welcome to Tidder!');
@@ -67,6 +71,7 @@ fdescribe('HomeComponent', () => {
     it(`should say 'Hello, [name]' on the homepage if user is logged in`, () => {
       login();
       fixture.detectChanges();
+      expect(authService.loggedIn()).toBe(true);
 
       debugElement = fixture.debugElement.query(By.css('h2'));
       loggedInHeader = debugElement.nativeElement;
@@ -75,26 +80,40 @@ fdescribe('HomeComponent', () => {
     })
   })
 
-  describe(`what's available and what's not depending on if user's logged in`, () => {
-    it('should not have add-post component if user is not logged in', () => {
+  describe(`presence of different elements`, () => {
+    it('should only have add-post component if user is logged in', () => {
       debugElement = fixture.debugElement.query(By.css('app-add-post'));
       expect(debugElement).toBeNull();
 
       login();
       fixture.detectChanges();
+      expect(authService.loggedIn()).toBe(true);
 
       debugElement = fixture.debugElement.query(By.css('app-add-post'));
       expect(debugElement).toBeTruthy();
     })
 
-    it('should not display add post button if user is not logged in', () => {
+    it('should only display add post button if user is logged in', () => {
       debugElement = fixture.debugElement.query(By.css('#addPostButton'));
       expect(debugElement).toBeNull();
 
       login();
       fixture.detectChanges();
+      expect(authService.loggedIn()).toBe(true);
 
       debugElement = fixture.debugElement.query(By.css('#addPostButton'));
+      expect(debugElement).toBeTruthy();
+    })
+
+    it('should only display list-of-posts component if user is logged in', () => {
+      debugElement = fixture.debugElement.query(By.css('app-list-of-posts'));
+      expect(debugElement).toBeNull();
+
+      login();
+      fixture.detectChanges();
+      expect(authService.loggedIn()).toBe(true);
+
+      debugElement = fixture.debugElement.query(By.css('app-list-of-posts'));
       expect(debugElement).toBeTruthy();
     })
   })
