@@ -22,11 +22,11 @@ export class CommentService {
     return this.http.post<any>(this.commentsUrl, comment);
   }
 
-  editComment(comment_id: string, body: string) {
+  editComment(comment_id: number, body: string) {
     return this.http.put<any>(`${this.commentsUrl}/${comment_id}`, { body: body });
   }
 
-  deleteComment(comment_id: string) {
+  deleteComment(comment_id: number) {
     return this.http.delete<any>(`${this.commentsUrl}/${comment_id}`);
   }
 

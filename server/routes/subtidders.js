@@ -193,14 +193,14 @@ t.get('/:subtidder/info', (req, res) => {
  */
 
 t.post('/:subtidder/add', (req, res) => {
-    let { title, content, userId } = req.body;
+    let { title, content, author_id } = req.body;
     let { subtidder } = req.params;
 
     db.query(`
     INSERT INTO posts (title, content, author_id, subtidder_id)
     SELECT $1, $2, $3, s.id
     FROM (SELECT id FROM subtidders WHERE name = $4) s;`,
-    [title, content, userId, subtidder],
+    [title, content, author_id, subtidder],
     (error, result) => {
         if (error) {
             console.log(error);
