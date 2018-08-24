@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ListOfPostsComponent } from './list-of-posts.component';
+import { EditPostComponent } from '../edit-post/edit-post.component';
+import { DeletePostComponent } from '../delete-post/delete-post.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('ListOfPostsComponent', () => {
   let component: ListOfPostsComponent;
@@ -8,7 +13,16 @@ describe('ListOfPostsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListOfPostsComponent ]
+      declarations: [
+        ListOfPostsComponent,
+        EditPostComponent,
+        DeletePostComponent
+      ],
+      imports: [
+        RouterTestingModule,
+        FormsModule,
+        HttpClientModule
+      ]
     })
     .compileComponents();
   }));

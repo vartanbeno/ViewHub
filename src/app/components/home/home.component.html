@@ -2,7 +2,7 @@
 
     <h2 [hidden]="!userService.homeLoaded">
         Hello, {{ authService.getName() }}.
-        <button class="ui positive right floated right labeled icon button" #addPostButton>Add Post<i class="plus icon"></i></button>
+        <button class="ui positive right floated right labeled icon button" id="addPostButton" #addPostButton>Add Post<i class="plus icon"></i></button>
         <app-add-post></app-add-post>
     </h2>
 

@@ -25,7 +25,7 @@ export class AuthService {
   }
 
   loggedIn() {
-    return !!(localStorage.getItem('token') && localStorage.getItem('name') && localStorage.getItem('id'));
+    return !!(this.getToken() && this.getName() && this.getId());
   }
 
   setToken(token: string) {
