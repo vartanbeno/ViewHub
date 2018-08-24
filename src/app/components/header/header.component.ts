@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { Subtidder } from '../../models/subtidder';
 declare var $: any;
 
 @Component({
@@ -11,9 +12,10 @@ declare var $: any;
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
 
-  id: string;
-  subscriptions: Array<any> = [];
+  user_id: number;
+  subscriptions: Array<Subtidder> = [];
   @ViewChild('searchBox') searchBox: ElementRef;
+  q: string;
 
   username: string;
 
@@ -24,6 +26,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
+    this.user_id = +this.authService.getId();
   }
 
   ngAfterViewInit() {
@@ -43,8 +46,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   getSubscriptions() {
-    this.id = this.authService.getId();
-    this.userService.getSubscriptions(this.id).subscribe(
+    this.userService.getSubscriptions(this.user_id).subscribe(
       res => {
         this.subscriptions = res.subscriptions;
         if (!this.subscriptions.length) this.userService.noSubscriptions = true;
@@ -55,8 +57,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   getUsername() {
-    this.id = this.authService.getId();
-    this.userService.getUsername(this.id).subscribe(
+    this.userService.getUsername(this.user_id).subscribe(
       res => this.username = res.username,
       err => console.log(err)
     )
@@ -71,13 +72,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   search() {
-    let s = this.searchBox.nativeElement.value;
-
-    if (!s) return;
-
-    this.router.navigate(['search'], { queryParams: { s: s } });
+    if (!this.q) return;
     
-    this.searchBox.nativeElement.value = '';
+    this.router.navigate(['search'], { queryParams: { q: this.q } });
     this.searchBox.nativeElement.blur();
   }
 

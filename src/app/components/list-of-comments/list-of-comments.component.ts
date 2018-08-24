@@ -10,7 +10,7 @@ import { Comment } from '../../models/comment';
 })
 export class ListOfCommentsComponent implements OnInit {
 
-  @Input() post_id: string;
+  @Input() post_id: number;
   comments: Array<Comment> = [];
   noComments: boolean = false;
 
@@ -34,18 +34,18 @@ export class ListOfCommentsComponent implements OnInit {
     )
   }
 
-  setCommentToEdit(comment_id: string) {
+  setCommentToEdit(comment_id: number) {
     let commentToEdit = this.comments.find(comment => comment.id === comment_id);
     commentToEdit['editing'] = true;
     commentToEdit['editedBody'] = commentToEdit.body;
     setTimeout(() => document.getElementById('body' + comment_id).focus());
   }
 
-  unsetCommentToEdit(comment_id: string) {
+  unsetCommentToEdit(comment_id: number) {
     this.comments.find(comment => comment.id === comment_id)['editing'] = false;
   }
 
-  editComment(comment_id: string) {
+  editComment(comment_id: number) {
     let editedComment = this.comments.find(comment => comment.id === comment_id);
 
     this.commentService.editComment(comment_id, editedComment['editedBody']).subscribe(
@@ -58,7 +58,7 @@ export class ListOfCommentsComponent implements OnInit {
     )
   }
 
-  deleteComment(comment_id: string) {
+  deleteComment(comment_id: number) {
     let confirmDelete = confirm('Click OK to delete the comment.');
 
     if (confirmDelete) {

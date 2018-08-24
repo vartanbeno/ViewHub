@@ -10,7 +10,7 @@
         <div class="column fourteen wide">
           <a class="link to post" routerLink="/t/comments/{{ post.id }}">{{ post.title }}</a>
         </div>
-        <div class="column two wide right aligned" *ngIf="authService.loggedIn() && post.author_id == authService.getId()">
+        <div class="column two wide right aligned" *ngIf="authService.loggedIn() && post.author_id === +authService.getId()">
           <i class="black edit alternate outline icon" (click)="postService.setPostToEdit(post)"></i>
           <i class="black trash alternate outline icon" (click)="postService.setPostToDelete(post)"></i>
         </div>

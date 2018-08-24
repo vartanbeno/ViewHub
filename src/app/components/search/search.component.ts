@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubtidderService } from '../../services/subtidder.service';
 import { PostService } from '../../services/post.service';
+import { Subtidder } from '../../models/subtidder';
+import { Post } from '../../models/post';
 
 @Component({
   selector: 'app-search',
@@ -10,9 +12,9 @@ import { PostService } from '../../services/post.service';
 })
 export class SearchComponent implements OnInit {
 
-  searchTerm: string;
-  subtidders: Array<any> = [];
-  posts: Array<any> = [];
+  searchQuery: string;
+  subtidders: Array<Subtidder> = [];
+  posts: Array<Post> = [];
   isLoaded: boolean = false;
 
   constructor(
@@ -21,7 +23,7 @@ export class SearchComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.route.queryParams.subscribe(params => this.searchTerm = params.s);
+    this.route.queryParams.subscribe(params => this.searchQuery = params.q);
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
@@ -31,14 +33,14 @@ export class SearchComponent implements OnInit {
   }
 
   searchSubtidders() {
-    this.subtidderService.searchSubtidders(this.searchTerm).subscribe(
+    this.subtidderService.searchSubtidders(this.searchQuery).subscribe(
       res => this.subtidders = res.subtidders,
       err => console.log(err)
     )
   }
 
   searchPosts() {
-    this.postService.searchPosts(this.searchTerm).subscribe(
+    this.postService.searchPosts(this.searchQuery).subscribe(
       res => {
         this.posts = res.posts;
         this.isLoaded = true;

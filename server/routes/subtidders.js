@@ -10,7 +10,7 @@ t.get('/', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            let subtidders = result.rows.map(subtidder => subtidder.name);
+            let subtidders = result.rows;
             return res.status(200).send({ subtidders });
         }
     })
@@ -42,7 +42,7 @@ t.post('/subtidders/create', (req, res) => {
 
 t.get('/:subtidder', (req, res) => {
     let { subtidder } = req.params;
-    let page = Number(req.query.page);
+    let page = +req.query.page;
     page = (page > 0) ? (page - 1) : 0;
 
     let isAll = (subtidder === 'all');
@@ -193,14 +193,14 @@ t.get('/:subtidder/info', (req, res) => {
  */
 
 t.post('/:subtidder/add', (req, res) => {
-    let { title, content, userId } = req.body;
+    let { title, content, author_id } = req.body;
     let { subtidder } = req.params;
 
     db.query(`
     INSERT INTO posts (title, content, author_id, subtidder_id)
     SELECT $1, $2, $3, s.id
     FROM (SELECT id FROM subtidders WHERE name = $4) s;`,
-    [title, content, userId, subtidder],
+    [title, content, author_id, subtidder],
     (error, result) => {
         if (error) {
             console.log(error);

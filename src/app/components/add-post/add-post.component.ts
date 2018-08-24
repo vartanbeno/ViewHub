@@ -3,6 +3,7 @@ import { Post } from '../../models/post';
 import { PostService } from '../../services/post.service';
 import { SubtidderService } from '../../services/subtidder.service';
 import { AuthService } from '../../services/auth.service';
+import { Subtidder } from '../../models/subtidder';
 declare var $: any;
 
 @Component({
@@ -15,7 +16,7 @@ export class AddPostComponent implements OnInit {
   @Input() subtidder: string;
 
   postData: Post;
-  subtidders: Array<any> = [];
+  subtidders: Array<Subtidder> = [];
 
   constructor(
     private postService: PostService,
@@ -29,7 +30,8 @@ export class AddPostComponent implements OnInit {
   }
 
   submitPost() {
-    this.postData.userId = this.authService.getId();
+    this.postData.author_id = +this.authService.getId();
+    console.log(this.postData);
     this.postService.submitPost(this.postData).subscribe(
       res => {
         this.postService.notifyPostAdditionOrDeletion();
