@@ -22,11 +22,6 @@ export class PostService {
   public postAdded_Or_Deleted_Observable = new Subject();
   public postEdit_Observable = new Subject();
 
-  public subtidderPosts: Array<any>;
-
-  public subtidderLoaded: boolean = false;
-  public subtidderDoesNotExist: boolean = false;
-
   constructor(private http: HttpClient) { }
 
   submitPost(post: Post) {

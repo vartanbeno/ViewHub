@@ -1,39 +1,44 @@
-<div class="subtidder header" [hidden]="!postService.subtidderLoaded" *ngIf="!postService.subtidderDoesNotExist">
+<div class="subtidder header" *ngIf="!subtidderDoesNotExist && subtidderLoaded">
     <h2>
         <span class="grey text">/t/</span>{{ subtidderData.name }}
-        <button *ngIf="authService.loggedIn() && subtidder !== 'all'"
-                class="ui circular icon mini button"
-                [class.green]="!isSubscribed"
-                [class.red]="isSubscribed"
-                (click)="isSubscribed ? unsubscribe() : subscribe()">
-            <i class="icon" [class.plus]="!isSubscribed" [class.minus]="isSubscribed"></i>
-        </button>
-        <button *ngIf="authService.loggedIn() && subtidder !== 'all'"
-                class="ui positive right floated right labeled icon button"
-                #addPostToSubtidderButton>
-            Add Post<i class="plus icon"></i>
-        </button>
+
+        <span *ngIf="authService.loggedIn() && !isAll">
+            <button class="ui circular icon mini button"
+                    [class.green]="!isSubscribed"
+                    [class.red]="isSubscribed"
+                    (click)="isSubscribed ? unsubscribe() : subscribe()">
+                <i class="icon" [class.plus]="!isSubscribed" [class.minus]="isSubscribed"></i>
+            </button>
+
+            <button class="ui positive right floated right labeled icon button"
+                    #addPostToSubtidderButton>
+                Add Post<i class="plus icon"></i>
+            </button>
+        </span>
+
         <app-add-post [subtidder]="subtidder"></app-add-post>
     </h2>
-    <h5 *ngIf="subtidder !== 'all'">
+
+    <h5 *ngIf="!isAll">
         <span class="preline">{{ subtidderData.description }}</span>
         <span class="grey text">
             - created {{ subtidderData.creation_date }} by
             <a class="link to user profile" routerLink="/u/{{ subtidderData.creator }}">{{ subtidderData.creator }}</a>
         </span>
     </h5>
+
+    <app-list-of-posts [posts]="posts" [pages]="pages" [currentPage]="currentPage"></app-list-of-posts>
 </div>
 
-<app-list-of-posts [componentName]="this.constructor.name" [subtidder]="subtidder"></app-list-of-posts>
-<app-loader *ngIf="!postService.subtidderLoaded"></app-loader>
+<app-loader *ngIf="!subtidderLoaded"></app-loader>
 
-<div *ngIf="postService.subtidderLoaded">
-    <app-error-message *ngIf="!postService.subtidderPosts?.length && !postService.subtidderDoesNotExist"
+<div *ngIf="subtidderLoaded">
+    <app-error-message *ngIf="!posts.length && !subtidderDoesNotExist"
         header="There doesn't seem to be any posts on /t/{{ subtidder }} at the moment."
         message="You can change that!">
     </app-error-message>
 
-    <app-error-message *ngIf="postService.subtidderDoesNotExist"
+    <app-error-message *ngIf="subtidderDoesNotExist"
         header="There's no subtidder with the name &quot;{{ subtidder }}&quot;."
         message="Go on and create it!">
     </app-error-message>

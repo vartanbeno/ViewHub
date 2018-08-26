@@ -4,8 +4,8 @@ const express = require('express'),
     search = express.Router();
 
 search.get('/subtidders', (req, res) => {
-    let s = req.query.s;
-    s = s.split(' ').join(' & ');
+    let q = req.query.q;
+    q = q.split(' ').join(' & ');
 
     db.query(`
     SELECT name, description,
@@ -13,7 +13,7 @@ search.get('/subtidders', (req, res) => {
     creation_date FROM subtidders
     LEFT OUTER JOIN users ON (subtidders.creator_id = users.id)
     WHERE subtidders.tokens @@ to_tsquery('english', $1);
-    `, [s], (error, result) => {
+    `, [q], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
@@ -29,8 +29,8 @@ search.get('/subtidders', (req, res) => {
 })
 
 search.get('/posts', (req, res) => {
-    let s = req.query.s;
-    s = s.split(' ').join(' & ');
+    let q = req.query.q;
+    q = q.split(' ').join(' & ');
 
     db.query(`
     SELECT posts.id,
@@ -39,7 +39,7 @@ search.get('/posts', (req, res) => {
     LEFT OUTER JOIN users ON (posts.author_id = users.id)
     INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
     WHERE posts.tokens @@ to_tsquery('english', $1);
-    `, [s], (error, result) => {
+    `, [q], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });

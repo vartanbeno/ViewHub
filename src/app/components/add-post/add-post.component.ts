@@ -31,7 +31,6 @@ export class AddPostComponent implements OnInit {
 
   submitPost() {
     this.postData.author_id = +this.authService.getId();
-    console.log(this.postData);
     this.postService.submitPost(this.postData).subscribe(
       res => {
         this.postService.notifyPostAdditionOrDeletion();

@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.userService.getSubscriptions(this.user_id).subscribe(
       res => {
         this.subscriptions = res.subscriptions;
-        if (!this.subscriptions.length) this.userService.noSubscriptions = true;
+        this.userService.noSubscriptions = !Boolean(this.subscriptions.length);
         this.activateDropdowns();
       },
       err => console.log(err)

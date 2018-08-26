@@ -1,4 +1,4 @@
-<div *ngIf="userService.profileLoaded && !userDoesNotExist">
+<div *ngIf="profileLoaded && !userDoesNotExist">
     <div class="top">
         <div class="ui card">
             <div class="image">
@@ -51,22 +51,22 @@
     </div>
 
     <h1 class="ui dividing header">Posts</h1>
-
-    <app-error-message *ngIf="!userService.userPosts?.length && isOwnProfile"
+    <app-list-of-posts [posts]="posts" [pages]="pages" [currentPage]="currentPage"></app-list-of-posts>
+    
+    <app-error-message *ngIf="!posts.length && isOwnProfile"
         header="You haven't posted anything yet."
         message="Submit a post!">
     </app-error-message>
 
-    <app-error-message *ngIf="!userService.userPosts?.length && !isOwnProfile"
+    <app-error-message *ngIf="!posts.length && !isOwnProfile"
         header="{{ username }} hasn't posted anything yet."
         message="Any day now...">
     </app-error-message>
 </div>
 
-<app-list-of-posts [componentName]="this.constructor.name" [username]="username"></app-list-of-posts>
-<app-loader *ngIf="!userService.profileLoaded"></app-loader>
+<app-loader *ngIf="!profileLoaded"></app-loader>
 
-<app-error-message *ngIf="userService.profileLoaded && userDoesNotExist"
+<app-error-message *ngIf="profileLoaded && userDoesNotExist"
     header="This user does not exist."
     message="Try searching for another one!">
 </app-error-message>
