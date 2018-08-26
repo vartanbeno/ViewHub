@@ -53,7 +53,7 @@ export class SubtidderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user_id = +this.authService.getId();
+    this.user_id = this.authService.getId();
     this.subtidderData = new Subtidder();
 
     this.isAll = (this.subtidder.toLowerCase() === 'all');

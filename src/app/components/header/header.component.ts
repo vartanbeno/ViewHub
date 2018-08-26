@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.user_id = +this.authService.getId();
+    this.user_id = this.authService.getId();
   }
 
   ngAfterViewInit() {

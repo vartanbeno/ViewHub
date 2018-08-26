@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <div class="ui grid" *ngIf="authService.loggedIn() && post.author_id === +authService.getId()">
+    <div class="ui grid" *ngIf="authService.loggedIn() && post.author_id === authService.getId()">
         <div class="column eight wide">
             <button class="ui grey button fluid" (click)="postService.setPostToEdit(post)"><i class="edit alternate outline icon"></i>Edit</button>
         </div>

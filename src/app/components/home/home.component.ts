@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user_id = +this.authService.getId();
+    this.user_id = this.authService.getId();
 
     if (this.authService.loggedIn()) this.getPostsFromSubscriptions();
     this.postService.postAdded_Or_Deleted_Observable.subscribe(res => this.getPostsFromSubscriptions());

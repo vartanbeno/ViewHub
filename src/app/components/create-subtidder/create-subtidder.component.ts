@@ -23,7 +23,7 @@ export class CreateSubtidderComponent implements OnInit {
 
   ngOnInit() {
     this.subtidderData = new Subtidder();
-    this.subtidderData.creator_id = +this.authService.getId();
+    this.subtidderData.creator_id = this.authService.getId();
     this.subtidderNameInput.nativeElement.focus();
   }
 

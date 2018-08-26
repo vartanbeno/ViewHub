@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,43 +17,43 @@ export class AuthService {
     private http: HttpClient
   ) { }
 
-  registerUser(user: User) {
+  registerUser(user: User): Observable<any> {
     return this.http.post<any>(this.registerUrl, user);
   }
 
-  loginUser(user: User) {
+  loginUser(user: User): Observable<any> {
     return this.http.post<any>(this.loginUrl, user);
   }
 
-  loggedIn() {
+  loggedIn(): boolean {
     return !!(this.getToken() && this.getName() && this.getId());
   }
 
-  setToken(token: string) {
+  setToken(token: string): void {
     localStorage.setItem('token', token);
   }
 
-  setId(id: string) {
+  setId(id: string): void {
     localStorage.setItem('id', id);
   }
 
-  setName(name: string) {
+  setName(name: string): void {
     localStorage.setItem('name', name);
   }
 
-  getToken() {
+  getToken(): string {
     return localStorage.getItem('token');
   }
 
-  getId() {
-    return localStorage.getItem('id');
+  getId(): number {
+    return +localStorage.getItem('id');
   }
 
-  getName() {
+  getName(): string {
     return localStorage.getItem('name');
   }
 
-  logoutUser() {
+  logoutUser(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('id');
     localStorage.removeItem('name');
