@@ -1,6 +1,10 @@
 <div class="subtidder header" *ngIf="!subtidderDoesNotExist && subtidderLoaded">
-    <h2>
-        <span class="grey text">/t/</span>{{ subtidderData.name }}
+    <div class="header">
+        <h2>
+            <span class="grey text">/t/</span>{{ subtidderData.name }}
+        </h2>
+
+        &nbsp;
 
         <span *ngIf="authService.loggedIn() && !isAll">
             <button class="ui circular icon mini button"
@@ -15,9 +19,9 @@
                 Add Post<i class="plus icon"></i>
             </button>
         </span>
+    </div>
 
-        <app-add-post [subtidder]="subtidder"></app-add-post>
-    </h2>
+    <app-add-post *ngIf="!isAll" [subtidder]="subtidder"></app-add-post>
 
     <h5 *ngIf="!isAll">
         <span class="preline">{{ subtidderData.description }}</span>

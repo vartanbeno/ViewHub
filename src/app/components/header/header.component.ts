@@ -31,18 +31,20 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     if (this.authService.loggedIn()) {
+      this.user_id = this.authService.getId();
       this.getSubscriptions();
       this.getUsername();
     }
 
     this.userService.authentication_Observable.subscribe(res => {
+      this.user_id = this.authService.getId();
       this.getSubscriptions();
       this.getUsername();
     });
 
     this.userService.subscriptionsList_Observable.subscribe(res => this.getSubscriptions());
     
-    this.focusOnSearch();
+    this.searchBox.nativeElement.focus();
   }
 
   getSubscriptions() {
@@ -65,10 +67,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   activateDropdowns() {
     $('.ui.dropdown').dropdown();
-  }
-
-  focusOnSearch() {
-    this.searchBox.nativeElement.focus();
   }
 
   search() {

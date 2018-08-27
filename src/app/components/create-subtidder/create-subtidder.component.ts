@@ -30,7 +30,7 @@ export class CreateSubtidderComponent implements OnInit {
   createSubtidder() {
     this.subtidderService.createSubtidder(this.subtidderData).subscribe(
       res => this.router.navigate([`t/${this.subtidderData.name}`]),
-      err => this.nameInvalid = (err.status === 400) ? true : false
+      err => this.nameInvalid = (err.status === 400)
     )
   }
 
