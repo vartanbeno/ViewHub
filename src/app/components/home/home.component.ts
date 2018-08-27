@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
 
   @ViewChild('addPostButton') addPostButton: ElementRef;
 
-  pages: Array<number>
+  pages: Array<number>;
   currentPage: number;
 
   posts: Array<Post>;

@@ -12,7 +12,7 @@
 
         <app-list-of-posts [posts]="posts" [pages]="pages" [currentPage]="currentPage"></app-list-of-posts>
 
-        <app-error-message *ngIf="!posts.length && !userService.noSubscriptions"
+        <app-error-message *ngIf="!posts?.length && !userService.noSubscriptions"
             header="There doesn't seem to be any posts from your subscribed subtidders at the moment."
             message="Subscribe to others to populate your feed!">
         </app-error-message>
