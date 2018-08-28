@@ -37,7 +37,7 @@
 <app-loader *ngIf="!subtidderLoaded"></app-loader>
 
 <div *ngIf="subtidderLoaded">
-    <app-error-message *ngIf="!posts.length && !subtidderDoesNotExist"
+    <app-error-message *ngIf="!posts?.length && !subtidderDoesNotExist"
         header="There doesn't seem to be any posts on /t/{{ subtidder }} at the moment."
         message="You can change that!">
     </app-error-message>

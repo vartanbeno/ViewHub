@@ -135,7 +135,7 @@ export class SubtidderComponent implements OnInit {
         }
 
         this.subtidderLoaded = true;
-        if (!this.isAll) setTimeout(() => this.attachClickEventListener());
+        if (!this.isAll && this.authService.loggedIn()) setTimeout(() => this.attachClickEventListener());
       },
       err => console.log(err)
     )
