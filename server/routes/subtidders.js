@@ -64,27 +64,21 @@ t.get('/:subtidder', (req, res) => {
             }
             else {
                 let posts = result.rows;
-                if (posts.length) {
 
-                    posts.forEach((post) => {
-                        post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
-                    })
+                posts.forEach((post) => {
+                    post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
+                })
 
-                    db.query(`SELECT COUNT(*) FROM posts`, (error, result) => {
-                        if (error) {
-                            console.log(error);
-                            return res.status(500).send({ error: 'Something went wrong.' });
-                        }
-                        else {
-                            let numberOfPosts = result.rows[0].count;
-                            return res.status(200).send({ numberOfPosts, posts });
-                        }
-                    })
-
-                }
-                else {
-                    return res.status(200).send({ message: 'There are no posts.' });
-                }
+                db.query(`SELECT COUNT(*) FROM posts`, (error, result) => {
+                    if (error) {
+                        console.log(error);
+                        return res.status(500).send({ error: 'Something went wrong.' });
+                    }
+                    else {
+                        let numberOfPosts = result.rows[0].count;
+                        return res.status(200).send({ numberOfPosts, posts });
+                    }
+                })
             }
         })
     }
@@ -118,31 +112,25 @@ t.get('/:subtidder', (req, res) => {
                     }
                     else {
                         let posts = result.rows;
-                        if (posts.length) {
 
-                            posts.forEach((post) => {
-                                post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
-                            })
+                        posts.forEach((post) => {
+                            post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
+                        })
 
-                            db.query(`
-                            SELECT COUNT(*) FROM posts
-                            INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
-                            WHERE subtidders.name = $1;
-                            `, [subtidder], (error, result) => {
-                                if (error) {
-                                    console.log(error);
-                                    return res.status(500).send({ error: 'Something went wrong.' });
-                                }
-                                else {
-                                    let numberOfPosts = result.rows[0].count;
-                                    return res.status(200).send({ numberOfPosts, posts });
-                                }
-                            })
-
-                        }
-                        else {
-                            return res.status(200).send({ message: 'There are no posts.' });
-                        }
+                        db.query(`
+                        SELECT COUNT(*) FROM posts
+                        INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
+                        WHERE subtidders.name = $1;
+                        `, [subtidder], (error, result) => {
+                            if (error) {
+                                console.log(error);
+                                return res.status(500).send({ error: 'Something went wrong.' });
+                            }
+                            else {
+                                let numberOfPosts = result.rows[0].count;
+                                return res.status(200).send({ numberOfPosts, posts });
+                            }
+                        })
                     }
                 })
             }
@@ -179,9 +167,14 @@ t.get('/:subtidder/info', (req, res) => {
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            let subtidderData = result.rows[0];
-            subtidderData.creation_date = moment(subtidderData.creation_date, 'MMMM DD YYYY').fromNow();
-            return res.status(200).send({ subtidderData });
+            if (result.rowCount) {
+                let subtidderData = result.rows[0];
+                subtidderData.creation_date = moment(subtidderData.creation_date, 'MMMM DD YYYY').fromNow();
+                return res.status(200).send({ subtidderData });
+            }
+            else {
+                return res.status(404).send({ error: 'Subtidder does not exist.' });
+            }
         }
     })
 })

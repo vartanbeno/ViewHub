@@ -16,13 +16,7 @@ export class UserService {
   public authentication_Observable = new Subject();
   public subscriptionsList_Observable = new Subject();
   public subscriptionsFetch_Observable = new Subject();
-
-  public userPosts: Array<any>;
-  public subscriptionsPosts: Array<any>;
   
-  public profileLoaded: boolean = false;
-  public listOfUsersLoaded: boolean = false;
-  public homeLoaded: boolean = false;
   public noSubscriptions: boolean;
 
   constructor(private http: HttpClient) { }

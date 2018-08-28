@@ -7,8 +7,8 @@
       My Subtidders
       <i class="dropdown icon"></i>
       <div class="menu">
-        <div class="item" *ngFor="let subscription of subscriptions" routerLink="/t/{{ subscription }}"><span class="subscription">{{ subscription.name }}</span></div>
-        <div class="item" *ngIf="!subscriptions.length" (click)="focusOnSearch()"><span class="subscription empty">Search and subscribe!</span></div>
+        <div class="item" *ngFor="let subscription of subscriptions" routerLink="/t/{{ subscription.name }}"><span class="subscription">{{ subscription.name }}</span></div>
+        <div class="item" *ngIf="!subscriptions.length" (click)="searchBox.focus()"><span class="subscription empty">Search and subscribe!</span></div>
       </div>
     </div>
     <div class="right menu">

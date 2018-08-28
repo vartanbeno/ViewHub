@@ -1,3 +1,7 @@
 .subtidder.header {
     padding-bottom: 1em;
 }
+
+div.header > h2 {
+    display: inline-block;
+}

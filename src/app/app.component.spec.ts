@@ -14,7 +14,7 @@ class FooterStubComponent { }
 @Component({ selector: 'router-outlet', template: '' })
 class RouterOutletStubComponent { }
 
-fdescribe('AppComponent', () => {
+describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [

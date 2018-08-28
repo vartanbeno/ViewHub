@@ -53,6 +53,7 @@ describe('HomeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
+    component.homeLoaded = true;
     fixture.detectChanges();
   });
 
@@ -76,11 +77,11 @@ describe('HomeComponent', () => {
       debugElement = fixture.debugElement.query(By.css('h2'));
       loggedInHeader = debugElement.nativeElement;
 
-      expect(loggedInHeader.textContent).toContain('Hello, test');
+      expect(loggedInHeader.textContent).toEqual('Hello, test.');
     })
   })
 
-  describe(`presence of different elements`, () => {
+  describe(`homepage`, () => {
     it('should only have add-post component if user is logged in', () => {
       debugElement = fixture.debugElement.query(By.css('app-add-post'));
       expect(debugElement).toBeNull();

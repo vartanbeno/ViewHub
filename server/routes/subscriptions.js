@@ -33,35 +33,32 @@ subscriptions.get('/:user_id/posts', (req, res) => {
         }
         else {
             let posts = result.rows;
-            if (posts.length) {
-                posts.forEach((post) => {
-                    post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
-                })
-                db.query(`
-                SELECT COUNT(*)
-                FROM posts
-                INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
-                WHERE subtidders.name IN (
-                    SELECT subtidders.name
-                    FROM users
-                    INNER JOIN subscriptions ON users.id = subscriptions.user_id
-                    INNER JOIN subtidders ON subscriptions.subtidder_id = subtidders.id
-                    WHERE users.id = $1
-                );
-                `, [user_id], (error, result) => {
-                    if (error) {
-                        console.log(error);
-                        return res.status(500).send({ error: 'Something went wrong.' });
-                    }
-                    else {
-                        let numberOfPosts = result.rows[0].count;
-                        return res.status(200).send({ numberOfPosts, posts });
-                    }
-                })
-            }
-            else {
-                return res.status(200).send({ message: 'There are no posts in user\'s subscriptions.' });
-            }
+
+            posts.forEach((post) => {
+                post.pub_date = moment(post.pub_date, 'MMMM DD YYYY').fromNow();
+            })
+            
+            db.query(`
+            SELECT COUNT(*)
+            FROM posts
+            INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
+            WHERE subtidders.name IN (
+                SELECT subtidders.name
+                FROM users
+                INNER JOIN subscriptions ON users.id = subscriptions.user_id
+                INNER JOIN subtidders ON subscriptions.subtidder_id = subtidders.id
+                WHERE users.id = $1
+            );
+            `, [user_id], (error, result) => {
+                if (error) {
+                    console.log(error);
+                    return res.status(500).send({ error: 'Something went wrong.' });
+                }
+                else {
+                    let numberOfPosts = result.rows[0].count;
+                    return res.status(200).send({ numberOfPosts, posts });
+                }
+            })
         }
     })
 })

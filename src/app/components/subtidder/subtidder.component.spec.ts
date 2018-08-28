@@ -38,6 +38,7 @@ describe('SubtidderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SubtidderComponent);
     component = fixture.componentInstance;
+    component.subtidder = 'nba';
     fixture.detectChanges();
   });
 

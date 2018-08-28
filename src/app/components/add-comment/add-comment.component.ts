@@ -34,7 +34,7 @@ export class AddCommentComponent implements OnInit {
 
   makeNewComment() {
     this.comment = new Comment();
-    this.comment.author_id = +this.authService.getId();
+    this.comment.author_id = this.authService.getId();
     this.comment.post_id = this.post_id;
   }
 

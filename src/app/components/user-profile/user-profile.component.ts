@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user';
+import { Post } from '../../models/post';
+import { PostService } from '../../services/post.service';
 declare var $: any;
 
 @Component({
@@ -22,42 +24,64 @@ export class UserProfileComponent implements OnInit {
   imageSource: string;
   defaultImageSource: string = 'assets/images/default.png';
 
-  pages: Array<number> = [];
+  pages: Array<number>;
   currentPage: number;
+  posts: Array<Post>;
 
   userDoesNotExist: boolean = false;
-  isOwnProfile = false;
+  isOwnProfile: boolean = false;
+  profileLoaded: boolean = false;
 
   editingBio: boolean = false;
   @ViewChild('biographyField') biographyField: ElementRef;
 
   constructor(
     private userService: UserService,
+    private postService: PostService,
     private authService: AuthService,
+    private router: Router,
     private route: ActivatedRoute
   ) {
     this.username = this.route.snapshot.paramMap.get('username');
+
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+
+    this.route.queryParams.subscribe(params => this.currentPage = params.page);
+    if (this.currentPage && isNaN(this.currentPage) || this.currentPage < 1) {
+      this.router.navigate([`/u/${this.username}`], { queryParams: { page: 1 } });
+      return;
+    }
+    this.currentPage = this.currentPage || 1;
   }
 
   ngOnInit() {
     this.user = new User();
-    this.userService.profileLoaded = false;
-    this.loggedInUserId = +this.authService.getId();
+    this.loggedInUserId = this.authService.getId();
     this.getUserInfo();
     this.getLoggedInUsername();
+    this.getUserPosts();
+    this.postService.postAdded_Or_Deleted_Observable.subscribe(res => this.getUserPosts());
+
   }
 
   getUserInfo() {
     this.userService.getUser(this.username).subscribe(
       res => {
         this.user = res.user;
+
+        // url in browser should at least get correct case representation of username
+        if (this.username !== this.user.username) {
+          this.router.navigate([`/u/${this.user.username}`], { queryParams: { page: this.currentPage } });
+          return;
+        }
+
         this.imageSource = (this.user.image) ? 'data:image/png;base64,' + this.user.image : this.defaultImageSource;
       },
       err => {
         console.log(err);
         if (err.status === 404) {
           this.userDoesNotExist = true;
-          this.userService.profileLoaded = true;
+          this.profileLoaded = true;
         }
       }
     )
@@ -65,7 +89,7 @@ export class UserProfileComponent implements OnInit {
 
   updateProfilePicture() {
     this.userService.updateProfilePicture(this.username, this.base64String).subscribe(
-      res => console.log(res),
+      res => void 0,
       err => console.log(err)
     )
   }
@@ -92,9 +116,7 @@ export class UserProfileComponent implements OnInit {
     this.userService.getUsername(this.loggedInUserId).subscribe(
       res => {
         this.loggedInUsername = res.username;
-        if (this.loggedInUsername === this.username) {
-          this.isOwnProfile = true;
-        }
+        this.isOwnProfile = (this.loggedInUsername.toLowerCase() === this.username.toLowerCase());
       },
       err => console.log(err)
     )
@@ -110,9 +132,27 @@ export class UserProfileComponent implements OnInit {
     if (!confirmDelete) return;
 
     this.userService.deleteProfilePicture(this.username).subscribe(
+      res => this.imageSource = 'assets/images/default.png',
+      err => console.log(err)
+    )
+  }
+
+  getUserPosts() {
+    this.userService.getUserPosts(this.username, this.currentPage.toString()).subscribe(
       res => {
-        console.log(res);
-        this.imageSource = 'assets/images/default.png';
+        this.posts = res.posts;
+
+        let numberOfPages = Math.ceil((res.numberOfPosts) / 10);
+        this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
+
+        if (!this.posts.length && this.currentPage != 1) {
+          let maxPage = this.pages[this.pages.length - 1];
+          this.currentPage = (this.currentPage > maxPage) ? maxPage : 1;
+          this.router.navigate([`u/${this.username}`], { queryParams: { page: this.currentPage } });
+          return;
+        }
+
+        this.profileLoaded = true;
       },
       err => console.log(err)
     )

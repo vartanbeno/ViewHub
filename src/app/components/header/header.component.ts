@@ -26,30 +26,32 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.user_id = +this.authService.getId();
+    this.user_id = this.authService.getId();
   }
 
   ngAfterViewInit() {
     if (this.authService.loggedIn()) {
+      this.user_id = this.authService.getId();
       this.getSubscriptions();
       this.getUsername();
     }
 
     this.userService.authentication_Observable.subscribe(res => {
+      this.user_id = this.authService.getId();
       this.getSubscriptions();
       this.getUsername();
     });
 
     this.userService.subscriptionsList_Observable.subscribe(res => this.getSubscriptions());
     
-    this.focusOnSearch();
+    this.searchBox.nativeElement.focus();
   }
 
   getSubscriptions() {
     this.userService.getSubscriptions(this.user_id).subscribe(
       res => {
         this.subscriptions = res.subscriptions;
-        if (!this.subscriptions.length) this.userService.noSubscriptions = true;
+        this.userService.noSubscriptions = !Boolean(this.subscriptions.length);
         this.activateDropdowns();
       },
       err => console.log(err)
@@ -65,10 +67,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   activateDropdowns() {
     $('.ui.dropdown').dropdown();
-  }
-
-  focusOnSearch() {
-    this.searchBox.nativeElement.focus();
   }
 
   search() {

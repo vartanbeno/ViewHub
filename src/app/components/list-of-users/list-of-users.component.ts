@@ -14,13 +14,14 @@ export class ListOfUsersComponent implements OnInit {
   users: Array<User> = [];
   defaultImageSource: string = 'assets/images/default.png';
 
+  listOfUsersLoaded: boolean = false;
+
   constructor(
     private userService: UserService,
     private router: Router
   ) { }
 
   ngOnInit() {
-    this.userService.listOfUsersLoaded = false;
     this.getAllUsers();
   }
 
@@ -31,7 +32,7 @@ export class ListOfUsersComponent implements OnInit {
         this.users.forEach((user) => {
           user.image = (user.image) ? 'data:image/png;base64,' + user.image : this.defaultImageSource;
         })
-        this.userService.listOfUsersLoaded = true;
+        this.listOfUsersLoaded = true;
       },
       err => {
         if (err instanceof HttpErrorResponse) {

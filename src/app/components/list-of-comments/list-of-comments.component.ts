@@ -28,7 +28,7 @@ export class ListOfCommentsComponent implements OnInit {
     this.commentService.getPostComments(this.post_id).subscribe(
       res => {
         this.comments = res.comments;
-        this.noComments = (this.comments.length) ? false : true;
+        this.noComments = !Boolean(this.comments.length);
       },
       err => console.log(err)
     )

@@ -23,14 +23,14 @@ export class CreateSubtidderComponent implements OnInit {
 
   ngOnInit() {
     this.subtidderData = new Subtidder();
-    this.subtidderData.creator_id = +this.authService.getId();
+    this.subtidderData.creator_id = this.authService.getId();
     this.subtidderNameInput.nativeElement.focus();
   }
 
   createSubtidder() {
     this.subtidderService.createSubtidder(this.subtidderData).subscribe(
       res => this.router.navigate([`t/${this.subtidderData.name}`]),
-      err => this.nameInvalid = (err.status === 400) ? true : false
+      err => this.nameInvalid = (err.status === 400)
     )
   }
 

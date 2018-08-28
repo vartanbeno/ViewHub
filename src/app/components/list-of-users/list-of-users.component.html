@@ -1,4 +1,4 @@
-<div class="ui divided items" *ngIf="userService.listOfUsersLoaded">
+<div class="ui divided items" *ngIf="listOfUsersLoaded">
   <div class="item" *ngFor="let user of users">
     <div class="ui tiny image">
       <img class="profile picture" src="{{ user.image }}" alt="profile picture" routerLink="/u/{{ user.username }}">
@@ -13,4 +13,4 @@
   </div>
 </div>
 
-<app-loader *ngIf="!userService.listOfUsersLoaded"></app-loader>
+<app-loader *ngIf="!listOfUsersLoaded"></app-loader>
