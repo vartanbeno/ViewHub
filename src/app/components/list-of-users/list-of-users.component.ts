@@ -11,7 +11,7 @@ import { User } from '../../models/user';
 })
 export class ListOfUsersComponent implements OnInit {
 
-  users: Array<User> = [];
+  users: Array<User>;
   defaultImageSource: string = 'assets/images/default.png';
 
   listOfUsersLoaded: boolean = false;
