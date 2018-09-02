@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SubtidderService } from '../../services/subtidder.service';
+import { ViewService } from '../../services/view.service';
 import { PostService } from '../../services/post.service';
-import { Subtidder } from '../../models/subtidder';
+import { View } from '../../models/view';
 import { Post } from '../../models/post';
 
 @Component({
@@ -13,12 +13,12 @@ import { Post } from '../../models/post';
 export class SearchComponent implements OnInit {
 
   searchQuery: string;
-  subtidders: Array<Subtidder> = [];
+  views: Array<View> = [];
   posts: Array<Post> = [];
   isLoaded: boolean = false;
 
   constructor(
-    private subtidderService: SubtidderService,
+    private viewService: ViewService,
     private postService: PostService,
     private route: ActivatedRoute,
     private router: Router
@@ -28,13 +28,13 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.searchSubtidders();
+    this.searchViews();
     this.searchPosts();
   }
 
-  searchSubtidders() {
-    this.subtidderService.searchSubtidders(this.searchQuery).subscribe(
-      res => this.subtidders = res.subtidders,
+  searchViews() {
+    this.viewService.searchViews(this.searchQuery).subscribe(
+      res => this.views = res.views,
       err => console.log(err)
     )
   }

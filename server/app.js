@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/authenticate', require('./routes/authenticate'));
-app.use('/t', require('./routes/subtidders'));
+app.use('/v', require('./routes/views'));
 app.use('/users', require('./routes/users'));
 app.use('/search', require('./routes/search'));
 app.use('/posts', require('./routes/posts'));

@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS users(
     image BYTEA DEFAULT NULL
 );
 
-CREATE TABLE IF NOT EXISTS subtidders(
+CREATE TABLE IF NOT EXISTS views(
     id SERIAL PRIMARY KEY,
     name CITEXT UNIQUE NOT NULL
         CONSTRAINT check_name_length CHECK (char_length(name) >= 3 AND char_length(name) <= 20)
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS posts(
         CHECK(char_length(content) >= 1),
     author_id INTEGER REFERENCES users(id)
         ON DELETE SET NULL,
-    subtidder_id INTEGER REFERENCES subtidders(id)
+    view_id INTEGER REFERENCES views(id)
         ON DELETE SET NULL,
     pub_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_edited TIMESTAMPTZ DEFAULT NULL,
@@ -44,10 +44,10 @@ CREATE TABLE IF NOT EXISTS posts(
 CREATE TABLE IF NOT EXISTS subscriptions(
     user_id INTEGER REFERENCES users(id)
         ON DELETE CASCADE,
-    subtidder_id INTEGER REFERENCES subtidders(id)
+    view_id INTEGER REFERENCES views(id)
         ON DELETE CASCADE,
     subscription_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user_id, subtidder_id)
+    PRIMARY KEY (user_id, view_id)
 );
 
 CREATE TABLE IF NOT EXISTS comments(
@@ -74,7 +74,7 @@ END
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION set_subtidder_tokens() RETURNS TRIGGER AS
+CREATE OR REPLACE FUNCTION set_view_tokens() RETURNS TRIGGER AS
 $$
 BEGIN
     NEW.tokens := to_tsvector('english', NEW.name || ' ' || NEW.description);
@@ -111,9 +111,9 @@ BEFORE UPDATE ON users
     WHEN (OLD.password IS DISTINCT FROM NEW.password)
     EXECUTE PROCEDURE hash_password();
 
-CREATE TRIGGER set_subtidder_tokens
-BEFORE INSERT OR UPDATE ON subtidders
-    FOR EACH ROW EXECUTE PROCEDURE set_subtidder_tokens();
+CREATE TRIGGER set_view_tokens
+BEFORE INSERT OR UPDATE ON views
+    FOR EACH ROW EXECUTE PROCEDURE set_view_tokens();
 
 CREATE TRIGGER set_post_tokens
 BEFORE INSERT OR UPDATE ON posts
@@ -134,14 +134,14 @@ INSERT INTO users (first_name, last_name, email, username, password) VALUES
     ('Postgres', 'Root', 'postgres@root.com', 'postgres', 'root'),
     ('Test', 'Object', 'test@object.com', 'test', 'test');
 
-INSERT INTO subtidders (name, description, creator_id) VALUES
+INSERT INTO views (name, description, creator_id) VALUES
     ('nba', 'Discuss everything NBA related here. Game threads, trades, offseason news, and memes!', 1),
-    ('AskTidder', 'A place to ask insightful questions.', 3),
+    ('AskViewHub', 'A place to ask insightful questions.', 3),
     ('CSCareerQuestions', 'We encourage good questions breeding discussion about careers in computer science and software engineering.', 1),
     ('programming', 'Discuss anything coding-related. If you ask for help, be sure to include some code in your post.', 4),
     ('EngineeringStudents', 'A common place for all engineering students to ask questions and give advice.', 1);
 
-INSERT INTO posts (title, content, author_id, subtidder_id) VALUES
+INSERT INTO posts (title, content, author_id, view_id) VALUES
     ('Test', 'This is a test.', 4, 2),
     ('Hello world', 'Postgres is really cool', 3, 4),
     ('LeBron James has agreed to a $154M/4-year deal with the Los Angeles Lakers.', 'Lonzo finally gets some help!', 1, 1),
@@ -155,7 +155,7 @@ INSERT INTO posts (title, content, author_id, subtidder_id) VALUES
     ('Filler title', 'Filler content', 3, 3),
     ('Paginated', 'results', 1, 2);
 
-INSERT INTO subscriptions (user_id, subtidder_id) VALUES
+INSERT INTO subscriptions (user_id, view_id) VALUES
     (1, 1), (1, 2), (1, 3), (1, 4), (1, 5),
     (2, 2), (2, 5),
     (3, 4), (3, 5),

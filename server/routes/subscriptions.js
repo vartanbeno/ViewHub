@@ -12,15 +12,15 @@ subscriptions.get('/:user_id/posts', (req, res) => {
     db.query(`
     SELECT posts.id, title, content,
     CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
-    author_id, subtidders.name AS subtidder, pub_date
+    author_id, views.name AS view, pub_date
     FROM posts
     LEFT OUTER JOIN users ON (posts.author_id = users.id)
-    INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
-    WHERE subtidders.name IN (
-        SELECT subtidders.name
+    INNER JOIN views ON (posts.view_id = views.id)
+    WHERE views.name IN (
+        SELECT views.name
 	    FROM users
 	    INNER JOIN subscriptions ON users.id = subscriptions.user_id
-	    INNER JOIN subtidders ON subscriptions.subtidder_id = subtidders.id
+	    INNER JOIN views ON subscriptions.view_id = views.id
 	    WHERE users.id = $1
     )
     ORDER BY pub_date DESC
@@ -41,12 +41,12 @@ subscriptions.get('/:user_id/posts', (req, res) => {
             db.query(`
             SELECT COUNT(*)
             FROM posts
-            INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
-            WHERE subtidders.name IN (
-                SELECT subtidders.name
+            INNER JOIN views ON (posts.view_id = views.id)
+            WHERE views.name IN (
+                SELECT views.name
                 FROM users
                 INNER JOIN subscriptions ON users.id = subscriptions.user_id
-                INNER JOIN subtidders ON subscriptions.subtidder_id = subtidders.id
+                INNER JOIN views ON subscriptions.view_id = views.id
                 WHERE users.id = $1
             );
             `, [user_id], (error, result) => {
@@ -67,12 +67,12 @@ subscriptions.get('/:user_id', (req, res) => {
     let { user_id } = req.params;
 
     db.query(`
-    SELECT subtidders.name
+    SELECT views.name
     FROM users
     INNER JOIN subscriptions ON users.id = subscriptions.user_id
-    INNER JOIN subtidders ON subscriptions.subtidder_id = subtidders.id
+    INNER JOIN views ON subscriptions.view_id = views.id
     WHERE users.id = $1
-    ORDER BY subtidders.name;
+    ORDER BY views.name;
     `, [user_id], (error, result) => {
         if (error) {
             console.log(error);
@@ -96,7 +96,7 @@ subscriptions.get('/:user_id/count', (req, res) => {
     SELECT COUNT(*)
     FROM users
     INNER JOIN subscriptions ON users.id = subscriptions.user_id
-    INNER JOIN subtidders ON subscriptions.subtidder_id = subtidders.id
+    INNER JOIN views ON subscriptions.view_id = views.id
     WHERE users.id = $1;
     `, [user_id], (error, result) => {
         if (error) {
@@ -110,20 +110,20 @@ subscriptions.get('/:user_id/count', (req, res) => {
     })
 })
 
-// check if user is subscribed to subtidder
-subscriptions.get('/:user_id/:subtidder', (req, res) => {
-    let { user_id, subtidder } = req.params;
+// check if user is subscribed to view
+subscriptions.get('/:user_id/:view', (req, res) => {
+    let { user_id, view } = req.params;
 
     db.query(`
-    SELECT COUNT(1) FROM subtidders
+    SELECT COUNT(1) FROM views
     WHERE name = $1
     AND NAME IN (
-        SELECT subtidders.name FROM users
+        SELECT views.name FROM users
         INNER JOIN subscriptions ON users.id = subscriptions.user_id
-        INNER JOIN subtidders ON subscriptions.subtidder_id = subtidders.id
+        INNER JOIN views ON subscriptions.view_id = views.id
         WHERE users.id = $2
     );
-    `, [subtidder, user_id], (error, result) => {
+    `, [view, user_id], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
@@ -135,51 +135,51 @@ subscriptions.get('/:user_id/:subtidder', (req, res) => {
     })
 })
 
-subscriptions.post('/:user_id/:subtidder', (req, res) => {
-    let { user_id, subtidder } = req.params;
+subscriptions.post('/:user_id/:view', (req, res) => {
+    let { user_id, view } = req.params;
 
     db.query(`
     INSERT INTO subscriptions
-    (user_id, subtidder_id)
-    SELECT $1, subtidders.id FROM subtidders
-    WHERE subtidders.name = $2;
-    `, [user_id, subtidder], (error, result) => {
+    (user_id, view_id)
+    SELECT $1, views.id FROM views
+    WHERE views.name = $2;
+    `, [user_id, view], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
             if (!result.rowCount) {
-                return res.status(404).send({ error: 'Subtidder does not exist.' });
+                return res.status(404).send({ error: 'View does not exist.' });
             }
             else {
-                return res.status(200).send({ message: 'Subscribed to ' + subtidder + '.' });
+                return res.status(200).send({ message: 'Subscribed to ' + view + '.' });
             }
         }
     })
 })
 
-subscriptions.delete('/:user_id/:subtidder', (req, res) => {
-    let { user_id, subtidder } = req.params;
+subscriptions.delete('/:user_id/:view', (req, res) => {
+    let { user_id, view } = req.params;
 
     db.query(`
     DELETE FROM subscriptions
     WHERE user_id = $1
-    AND subtidder_id IN (
-        SELECT id FROM subtidders
+    AND view_id IN (
+        SELECT id FROM views
         WHERE name = $2
     );
-    `, [user_id, subtidder], (error, result) => {
+    `, [user_id, view], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
             if (!result.rowCount) {
-                return res.status(404).send({ error: 'Subtidder not found in subscriptions.' });
+                return res.status(404).send({ error: 'View not found in subscriptions.' });
             }
             else {
-                return res.status(200).send({ message: 'Unsubscribed from ' + subtidder + '.' });
+                return res.status(200).send({ message: 'Unsubscribed from ' + view + '.' });
             }
         }
     })

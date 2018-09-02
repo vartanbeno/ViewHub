@@ -1,7 +1,7 @@
-<div class="subtidder header" *ngIf="!subtidderDoesNotExist && subtidderLoaded">
+<div class="view header" *ngIf="!viewDoesNotExist && viewLoaded">
     <div class="header">
         <h2>
-            <span class="grey text">/t/</span>{{ subtidderData.name }}
+            <span class="grey text">/v/</span>{{ viewData.name }}
         </h2>
 
         &nbsp;
@@ -15,35 +15,35 @@
             </button>
 
             <button class="ui positive right floated right labeled icon button"
-                    #addPostToSubtidderButton>
+                    #addPostToViewButton>
                 Add Post<i class="plus icon"></i>
             </button>
         </span>
     </div>
 
-    <app-add-post *ngIf="!isAll" [subtidder]="subtidder"></app-add-post>
+    <app-add-post *ngIf="!isAll" [view]="view"></app-add-post>
 
     <h5 *ngIf="!isAll">
-        <span class="preline">{{ subtidderData.description }}</span>
+        <span class="preline">{{ viewData.description }}</span>
         <span class="grey text">
-            - created {{ subtidderData.creation_date }} by
-            <a class="link to user profile" routerLink="/u/{{ subtidderData.creator }}">{{ subtidderData.creator }}</a>
+            - created {{ viewData.creation_date }} by
+            <a class="link to user profile" routerLink="/u/{{ viewData.creator }}">{{ viewData.creator }}</a>
         </span>
     </h5>
 
     <app-list-of-posts [posts]="posts" [pages]="pages" [currentPage]="currentPage"></app-list-of-posts>
 </div>
 
-<app-loader *ngIf="!subtidderLoaded"></app-loader>
+<app-loader *ngIf="!viewLoaded"></app-loader>
 
-<div *ngIf="subtidderLoaded">
-    <app-error-message *ngIf="!posts?.length && !subtidderDoesNotExist"
-        header="There doesn't seem to be any posts on /t/{{ subtidder }} at the moment."
+<div *ngIf="viewLoaded">
+    <app-error-message *ngIf="!posts?.length && !viewDoesNotExist"
+        header="There doesn't seem to be any posts on /v/{{ view }} at the moment."
         message="You can change that!">
     </app-error-message>
 
-    <app-error-message *ngIf="subtidderDoesNotExist"
-        header="There's no subtidder with the name &quot;{{ subtidder }}&quot;."
+    <app-error-message *ngIf="viewDoesNotExist"
+        header="There's no view with the name &quot;{{ view }}&quot;."
         message="Go on and create it!">
     </app-error-message>
 </div>

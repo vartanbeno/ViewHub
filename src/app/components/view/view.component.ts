@@ -2,22 +2,22 @@ import { Component, OnInit, Renderer, ViewChild, ElementRef } from '@angular/cor
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from '../../services/post.service';
 import { AuthService } from '../../services/auth.service';
-import { SubtidderService } from '../../services/subtidder.service';
+import { ViewService } from '../../services/view.service';
 import { UserService } from '../../services/user.service';
-import { Subtidder } from '../../models/subtidder';
+import { View } from '../../models/view';
 import { Post } from '../../models/post';
 declare var $: any;
 
 @Component({
-  selector: 'app-subtidder',
-  templateUrl: './subtidder.component.html',
-  styleUrls: ['./subtidder.component.css']
+  selector: 'app-view',
+  templateUrl: './view.component.html',
+  styleUrls: ['./view.component.css']
 })
-export class SubtidderComponent implements OnInit {
+export class ViewComponent implements OnInit {
 
-  subtidder: string;
-  subtidderData: Subtidder;
-  @ViewChild('addPostToSubtidderButton') addPostToSubtidderButton: ElementRef;
+  view: string;
+  viewData: View;
+  @ViewChild('addPostToViewButton') addPostToViewButton: ElementRef;
 
   user_id: number;
   isSubscribed: boolean;
@@ -28,25 +28,25 @@ export class SubtidderComponent implements OnInit {
   posts: Array<Post>;
   isAll: boolean = false;
 
-  subtidderLoaded: boolean = false;
-  subtidderDoesNotExist: boolean = false;
+  viewLoaded: boolean = false;
+  viewDoesNotExist: boolean = false;
 
   constructor(
     private postService: PostService,
-    private subtidderService: SubtidderService,
+    private viewService: ViewService,
     private userService: UserService,
     private authService: AuthService,
     private renderer: Renderer,
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.subtidder = this.route.snapshot.paramMap.get('subtidder');
+    this.view = this.route.snapshot.paramMap.get('view');
 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 
     this.route.queryParams.subscribe(params => this.currentPage = params.page);
     if (this.currentPage && isNaN(this.currentPage) || this.currentPage < 1) {
-      this.router.navigate([`/t/${this.subtidder}`], { queryParams: { page: 1 } });
+      this.router.navigate([`/v/${this.view}`], { queryParams: { page: 1 } });
       return;
     }
     this.currentPage = this.currentPage || 1;
@@ -54,53 +54,53 @@ export class SubtidderComponent implements OnInit {
 
   ngOnInit() {
     this.user_id = this.authService.getId();
-    this.subtidderData = new Subtidder();
+    this.viewData = new View();
 
-    this.isAll = (this.subtidder.toLowerCase() === 'all');
+    this.isAll = (this.view.toLowerCase() === 'all');
 
     if (this.isAll) {
-      this.subtidderData.name = 'all';
-      this.getSubtidderPosts();
+      this.viewData.name = 'all';
+      this.getViewPosts();
     }
     else {
-      this.getSubtidderInfo();
+      this.getViewInfo();
     }
 
-    this.postService.postAdded_Or_Deleted_Observable.subscribe(res => this.getSubtidderPosts());
+    this.postService.postAdded_Or_Deleted_Observable.subscribe(res => this.getViewPosts());
   }
 
-  getSubtidderInfo() {
-    this.subtidderService.getSubtidderInfo(this.subtidder).subscribe(
+  getViewInfo() {
+    this.viewService.getViewInfo(this.view).subscribe(
       res => {
-        this.subtidderData = res.subtidderData;
+        this.viewData = res.viewData;
 
-        // url in browser should get correct case representation of subtidder name
-        if (this.subtidder !== this.subtidderData.name) {
-          this.router.navigate([`/t/${this.subtidderData.name}`], { queryParams: { page: this.currentPage } });
+        // url in browser should get correct case representation of view name
+        if (this.view !== this.viewData.name) {
+          this.router.navigate([`/v/${this.viewData.name}`], { queryParams: { page: this.currentPage } });
           return;
         }
         
-        this.getSubtidderPosts();
+        this.getViewPosts();
         if (this.authService.loggedIn()) this.checkIfSubscribed();
       },
       err => {
         if (err.status === 404) {
-          this.subtidderDoesNotExist = true;
-          this.subtidderLoaded = true;
+          this.viewDoesNotExist = true;
+          this.viewLoaded = true;
         }
       }
     )
   }
 
   checkIfSubscribed() {
-    this.userService.checkIfSubscribed(this.user_id, this.subtidderData.name).subscribe(
+    this.userService.checkIfSubscribed(this.user_id, this.viewData.name).subscribe(
       res => this.isSubscribed = res.isSubscribed,
       err => console.log(err)
     )
   }
 
   subscribe() {
-    this.userService.subscribe(this.user_id, this.subtidderData.name).subscribe(
+    this.userService.subscribe(this.user_id, this.viewData.name).subscribe(
       res => {
         this.isSubscribed = true;
         this.userService.refreshSubscriptions();
@@ -110,7 +110,7 @@ export class SubtidderComponent implements OnInit {
   }
 
   unsubscribe() {
-    this.userService.unsubscribe(this.user_id, this.subtidderData.name).subscribe(
+    this.userService.unsubscribe(this.user_id, this.viewData.name).subscribe(
       res => {
         this.isSubscribed = false;
         this.userService.refreshSubscriptions();
@@ -119,8 +119,8 @@ export class SubtidderComponent implements OnInit {
     )
   }
 
-  getSubtidderPosts() {
-    this.postService.getPostsFromSubtidder(this.subtidderData.name, this.currentPage.toString()).subscribe(
+  getViewPosts() {
+    this.postService.getPostsFromView(this.viewData.name, this.currentPage.toString()).subscribe(
       res => {
         this.posts = res.posts;
 
@@ -130,11 +130,11 @@ export class SubtidderComponent implements OnInit {
         if (!this.posts.length && this.currentPage != 1) {
           let maxPage = this.pages[this.pages.length - 1];
           this.currentPage = (this.currentPage > maxPage) ? maxPage : 1;
-          this.router.navigate([`t/${this.subtidderData.name}`], { queryParams: { page: this.currentPage } });
+          this.router.navigate([`t/${this.viewData.name}`], { queryParams: { page: this.currentPage } });
           return;
         }
 
-        this.subtidderLoaded = true;
+        this.viewLoaded = true;
         if (!this.isAll && this.authService.loggedIn()) setTimeout(() => this.attachClickEventListener());
       },
       err => console.log(err)
@@ -142,7 +142,7 @@ export class SubtidderComponent implements OnInit {
   }
 
   attachClickEventListener() {
-    this.renderer.listen(this.addPostToSubtidderButton.nativeElement, 'click', (event) => {
+    this.renderer.listen(this.addPostToViewButton.nativeElement, 'click', (event) => {
       $('#addpost')
         .modal({
           transition: 'slide down',

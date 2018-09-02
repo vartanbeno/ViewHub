@@ -8,7 +8,7 @@
     <div class="header">
       <div class="ui grid">
         <div class="column fourteen wide">
-          <a class="link to post" routerLink="/t/comments/{{ post.id }}">{{ post.title }}</a>
+          <a class="link to post" routerLink="/v/comments/{{ post.id }}">{{ post.title }}</a>
         </div>
         <div class="column two wide right aligned" *ngIf="authService.loggedIn() && post.author_id === authService.getId()">
           <i class="black edit alternate outline icon" (click)="postService.setPostToEdit(post)"></i>
@@ -19,7 +19,7 @@
     <div class="meta post information">
       {{ post.pub_date }} by
       <a class="ui link to user profile" routerLink="/u/{{ post.author }}">{{ post.author }}</a>
-      <a class="ui right floated link to subtidder" routerLink="/t/{{ post.subtidder }}">{{ post.subtidder }}</a>
+      <a class="ui right floated link to view" routerLink="/v/{{ post.view }}">{{ post.view }}</a>
     </div>
   </div>
   <div class="content">

@@ -117,10 +117,10 @@ users.get('/u/:username/posts', (req, res) => {
 
     let { username } = req.params;
     db.query(`
-    SELECT posts.id, title, content, author_id, username AS author, subtidders.name AS subtidder, pub_date
+    SELECT posts.id, title, content, author_id, username AS author, views.name AS view, pub_date
     FROM posts
     LEFT OUTER JOIN users ON (posts.author_id = users.id)
-    INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
+    INNER JOIN views ON (posts.view_id = views.id)
     WHERE username = $1
     ORDER BY pub_date DESC
     LIMIT 10
@@ -141,7 +141,7 @@ users.get('/u/:username/posts', (req, res) => {
             SELECT COUNT(*)
             FROM posts
             LEFT OUTER JOIN users ON (posts.author_id = users.id)
-            INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
+            INNER JOIN views ON (posts.view_id = views.id)
             WHERE username = $1;
             `, [username], (error, result) => {
                 if (error) {

@@ -1,13 +1,13 @@
 <div class="ui top fixed inverted sidebar menu visible">
   <div class="ui container">
-    <a class="header item" routerLink="/">Tidder</a>
-    <a class="item" routerLink="/t/all" routerLinkActive="active">All</a>
+    <a class="header item" routerLink="/">ViewHub</a>
+    <a class="item" routerLink="/v/all" routerLinkActive="active">All</a>
     <a class="item" routerLink="/u" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Members</a>
     <div class="ui scrolling dropdown item" *ngIf="authService.loggedIn()">
-      My Subtidders
+      My Views
       <i class="dropdown icon"></i>
       <div class="menu">
-        <div class="item" *ngFor="let subscription of subscriptions" routerLink="/t/{{ subscription.name }}"><span class="subscription">{{ subscription.name }}</span></div>
+        <div class="item" *ngFor="let subscription of subscriptions" routerLink="/v/{{ subscription.name }}"><span class="subscription">{{ subscription.name }}</span></div>
         <div class="item" *ngIf="!subscriptions.length" (click)="searchBox.focus()"><span class="subscription empty">Search and subscribe!</span></div>
       </div>
     </div>

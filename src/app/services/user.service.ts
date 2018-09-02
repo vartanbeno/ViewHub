@@ -65,16 +65,16 @@ export class UserService {
     this.authentication_Observable.next();
   }
 
-  checkIfSubscribed(user_id: number, subtidder: string) {
-    return this.http.get<any>(`${this.subscriptionsUrl}/${user_id}/${subtidder}`);
+  checkIfSubscribed(user_id: number, view: string) {
+    return this.http.get<any>(`${this.subscriptionsUrl}/${user_id}/${view}`);
   }
 
-  subscribe(user_id: number, subtidder: string) {
-    return this.http.post<any>(`${this.subscriptionsUrl}/${user_id}/${subtidder}`, null);
+  subscribe(user_id: number, view: string) {
+    return this.http.post<any>(`${this.subscriptionsUrl}/${user_id}/${view}`, null);
   }
 
-  unsubscribe(user_id: number, subtidder: string) {
-    return this.http.delete<any>(`${this.subscriptionsUrl}/${user_id}/${subtidder}`);
+  unsubscribe(user_id: number, view: string) {
+    return this.http.delete<any>(`${this.subscriptionsUrl}/${user_id}/${view}`);
   }
 
   editBiography(user_id: number, biography: string) {

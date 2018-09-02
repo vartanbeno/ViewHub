@@ -1,4 +1,4 @@
-export class Subtidder {
+export class View {
     constructor(
         public id: number = null,
         public name: string = '',
