@@ -11,7 +11,7 @@ import { Comment } from '../../models/comment';
 export class ListOfCommentsComponent implements OnInit {
 
   @Input() post_id: number;
-  comments: Array<Comment> = [];
+  comments: Array<Comment>;
   noComments: boolean = false;
 
   constructor(
