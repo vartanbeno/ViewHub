@@ -5,8 +5,8 @@ export class Post {
         public content: string = '',
         public author_id: number = null,
         public author: string = '',
-        public subtidder_id: number = null,
-        public subtidder: string = '',
+        public view_id: number = null,
+        public view: string = '',
         public pub_date: string = '',
         public last_edited: string = ''
     ) { }

@@ -62,11 +62,11 @@ describe('HomeComponent', () => {
   });
 
   describe('greeting message', () => {
-    it(`should say 'Welcome to Tidder!' on the homepage if user is not logged in`, () => {
+    it(`should say 'Welcome to ViewHub!' on the homepage if user is not logged in`, () => {
       expect(authService.loggedIn()).toBe(false);
       debugElement = fixture.debugElement.query(By.css('div[class=header]'));
       loggedOutHeader = debugElement.nativeElement;
-      expect(loggedOutHeader.textContent).toEqual('Welcome to Tidder!');
+      expect(loggedOutHeader.textContent).toEqual('Welcome to ViewHub!');
     })
 
     it(`should say 'Hello, [name]' on the homepage if user is logged in`, () => {

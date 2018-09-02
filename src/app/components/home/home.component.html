@@ -13,12 +13,12 @@
         <app-list-of-posts [posts]="posts" [pages]="pages" [currentPage]="currentPage"></app-list-of-posts>
 
         <app-error-message *ngIf="!posts?.length && !userService.noSubscriptions"
-            header="There doesn't seem to be any posts from your subscribed subtidders at the moment."
+            header="There doesn't seem to be any posts from your subscribed views at the moment."
             message="Subscribe to others to populate your feed!">
         </app-error-message>
 
         <app-error-message *ngIf="userService.noSubscriptions"
-            header="You aren't subscribed to any subtidders, so there are no posts."
+            header="You aren't subscribed to any views, so there are no posts."
             message="Subscribe to some to populate your feed!">
         </app-error-message>
     </div>
@@ -28,11 +28,11 @@
     <div class="ui main text container">
         <div class="ui warning message">
             <div class="content">
-                <div class="header">Welcome to Tidder!</div>
+                <div class="header">Welcome to ViewHub!</div>
                 <p>
                     <a routerLink="/login">Click here</a> to log in.<br>
                     <a routerLink="/register">Click here</a> to register.<br>
-                    <a routerLink="/t/all">Click here</a> to visit /t/all.
+                    <a routerLink="/v/all">Click here</a> to visit /v/all.
                 </p>
             </div>
         </div>

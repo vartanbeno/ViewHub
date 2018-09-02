@@ -21,7 +21,7 @@ html, body {
 
 .link.to.post,
 .link.to.user.profile,
-.link.to.subtidder {
+.link.to.view {
     color: #2284d1;
     cursor: pointer;
     outline: none;

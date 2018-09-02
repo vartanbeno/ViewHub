@@ -1,19 +1,19 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { SubtidderService } from './subtidder.service';
+import { ViewService } from './view.service';
 import { HttpClientModule } from '@angular/common/http';
 
-describe('SubtidderService', () => {
+describe('ViewService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [SubtidderService],
+      providers: [ViewService],
       imports: [
         HttpClientModule
       ]
     });
   });
 
-  it('should be created', inject([SubtidderService], (service: SubtidderService) => {
+  it('should be created', inject([ViewService], (service: ViewService) => {
     expect(service).toBeTruthy();
   }));
 });

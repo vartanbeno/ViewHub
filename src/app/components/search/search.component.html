@@ -1,12 +1,12 @@
-<h1 class="ui dividing header" *ngIf="subtidders.length">Subtidders</h1>
+<h1 class="ui dividing header" *ngIf="views.length">Views</h1>
 
-<div class="ui divided items" *ngIf="subtidders.length">
-  <div class="item" *ngFor="let subtidder of subtidders">
+<div class="ui divided items" *ngIf="views.length">
+  <div class="item" *ngFor="let view of views">
     <div class="content">
-      <div class="header"><a class="link to subtidder" routerLink="/t/{{ subtidder.name }}">{{ subtidder.name }}</a></div>
-      <div class="meta">Created {{ subtidder.creation_date }} by <a class="ui link to user profile" routerLink="/u/{{ subtidder.creator }}">{{ subtidder.creator }}</a></div>
+      <div class="header"><a class="link to view" routerLink="/v/{{ view.name }}">{{ view.name }}</a></div>
+      <div class="meta">Created {{ view.creation_date }} by <a class="ui link to user profile" routerLink="/u/{{ view.creator }}">{{ view.creator }}</a></div>
       <div class="description">
-        <p class="preline">{{ subtidder.description }}</p>
+        <p class="preline">{{ view.description }}</p>
       </div>
     </div>
   </div>
@@ -17,10 +17,10 @@
 <div class="ui divided items" *ngIf="posts.length">
   <div class="item" *ngFor="let post of posts">
     <div class="content">
-      <div class="header"><a routerLink="/t/comments/{{ post.id }}">{{ post.title }}</a></div>
+      <div class="header"><a routerLink="/v/comments/{{ post.id }}">{{ post.title }}</a></div>
       <div class="meta">
         {{ post.pub_date }} by <a class="ui link to user profile" routerLink="/u/{{ post.author }}">{{ post.author }}</a>
-        <a class="ui right floated link to subtidder" routerLink="/t/{{ post.subtidder }}">{{ post.subtidder }}</a>
+        <a class="ui right floated link to view" routerLink="/v/{{ post.view }}">{{ post.view }}</a>
       </div>
       <div class="description">
         <p class="justify preline">{{ (post.content.length > 200) ? (post.content | slice:0:200) + '...' : (post.content) }}</p>
@@ -29,7 +29,7 @@
   </div>
 </div>
 
-<app-error-message *ngIf="isLoaded && !subtidders.length && !posts.length"
+<app-error-message *ngIf="isLoaded && !views.length && !posts.length"
     header="Your search didn't return any results."
     message="Try searching for something else!">
 </app-error-message>

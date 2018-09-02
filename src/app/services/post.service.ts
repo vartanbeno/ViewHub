@@ -9,8 +9,8 @@ declare var $: any;
 })
 export class PostService {
   
-  // used for adding/editing/deleting posts, and looking at a subtidder
-  private subtidderUrl = 'http://localhost:3000/t';
+  // used for adding/editing/deleting posts, and looking at a view
+  private viewUrl = 'http://localhost:3000/v';
 
   private searchPostsUrl = 'http://localhost:3000/search/posts';
 
@@ -25,7 +25,7 @@ export class PostService {
   constructor(private http: HttpClient) { }
 
   submitPost(post: Post) {
-    return this.http.post<any>(`${this.subtidderUrl}/${post.subtidder}/add`, post);
+    return this.http.post<any>(`${this.viewUrl}/${post.view}/add`, post);
   }
 
   notifyPostAdditionOrDeletion() {
@@ -33,7 +33,7 @@ export class PostService {
   }
 
   deletePost() {
-    return this.http.delete<any>(`${this.subtidderUrl}/${this.postToBeDeleted.subtidder}/${this.postToBeDeleted.id}`);
+    return this.http.delete<any>(`${this.viewUrl}/${this.postToBeDeleted.view}/${this.postToBeDeleted.id}`);
   }
 
   setPostToDelete(post: Post) {
@@ -46,7 +46,7 @@ export class PostService {
   }
 
   editPost(post: Post) {
-    return this.http.put<any>(`${this.subtidderUrl}/${this.postToBeEdited.subtidder}/${this.postToBeEdited.id}`, post);
+    return this.http.put<any>(`${this.viewUrl}/${this.postToBeEdited.view}/${this.postToBeEdited.id}`, post);
   }
 
   notifyPostEdition() {
@@ -68,8 +68,8 @@ export class PostService {
     return this.http.get<any>(this.searchPostsUrl, { params: { q } });
   }
 
-  getPostsFromSubtidder(subtidder: string, page: string) {
-    return this.http.get<any>(`${this.subtidderUrl}/${subtidder}`, { params: { page } });
+  getPostsFromView(view: string, page: string) {
+    return this.http.get<any>(`${this.viewUrl}/${view}`, { params: { page } });
   }
 
   getPost(post_id: number) {

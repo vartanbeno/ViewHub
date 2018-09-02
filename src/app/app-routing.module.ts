@@ -7,8 +7,8 @@ import { ListOfUsersComponent } from './components/list-of-users/list-of-users.c
 import { AuthGuard } from './auth.guard';
 import { SearchComponent } from './components/search/search.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
-import { SubtidderComponent } from './components/subtidder/subtidder.component';
-import { CreateSubtidderComponent } from './components/create-subtidder/create-subtidder.component';
+import { ViewComponent } from './components/view/view.component';
+import { CreateViewComponent } from './components/create-view/create-view.component';
 import { PostComponent } from './components/post/post.component';
 
 const routes: Routes = [
@@ -21,10 +21,10 @@ const routes: Routes = [
   { path: 'u', component: ListOfUsersComponent, canActivate: [AuthGuard] },
   { path: 'u/:username', component: UserProfileComponent, canActivate: [AuthGuard] },
 
-  { path: 't/:subtidder', component: SubtidderComponent },
-  { path: 't/comments/:post_id', component: PostComponent },
-  // { path: 't/:subtidder/comments/:post_id/', component: PostComponent },
-  { path: 'subtidders/create', component: CreateSubtidderComponent, canActivate: [AuthGuard] },
+  { path: 'v/:view', component: ViewComponent },
+  { path: 'v/comments/:post_id', component: PostComponent },
+  // { path: 'v/:view/comments/:post_id/', component: PostComponent },
+  { path: 'views/create', component: CreateViewComponent, canActivate: [AuthGuard] },
 
   { path: 'search', component: SearchComponent },
 ];

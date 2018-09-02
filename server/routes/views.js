@@ -4,56 +4,56 @@ const express = require('express'),
     t = express.Router();
 
 t.get('/', (req, res) => {
-    db.query(`SELECT name FROM subtidders ORDER BY name`, (error, result) => {
+    db.query(`SELECT name FROM views ORDER BY name`, (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            let subtidders = result.rows;
-            return res.status(200).send({ subtidders });
+            let views = result.rows;
+            return res.status(200).send({ views });
         }
     })
 })
 
-t.post('/subtidders/create', (req, res) => {
+t.post('/views/create', (req, res) => {
     let { name, description, creator_id } = req.body;
 
     db.query(`
-    INSERT INTO subtidders (name, description, creator_id) VALUES ($1, $2, $3)
+    INSERT INTO views (name, description, creator_id) VALUES ($1, $2, $3)
     RETURNING name;
     `,
     [name, description, creator_id], (error, result) => {
         if (error) {
             console.log(error);
-            if (error.constraint === 'subtidders_name_key' || error.constraint === 'check_not_all') {
-                return res.status(400).send({ error: 'Subtidder with this name already exists.' });
+            if (error.constraint === 'views_name_key' || error.constraint === 'check_not_all') {
+                return res.status(400).send({ error: 'View with this name already exists.' });
             }
             else {
                 return res.status(500).send({ error: 'Something went wrong.' });
             }
         }
         else {
-            let subtidder = result.rows[0].name;
-            return res.status(200).send({ message: 'Subtidder ' + subtidder + ' created.' });
+            let view = result.rows[0].name;
+            return res.status(200).send({ message: 'View ' + view + ' created.' });
         }
     })
 })
 
-t.get('/:subtidder', (req, res) => {
-    let { subtidder } = req.params;
+t.get('/:view', (req, res) => {
+    let { view } = req.params;
     let page = +req.query.page;
     page = (page > 0) ? (page - 1) : 0;
 
-    let isAll = (subtidder === 'all');
+    let isAll = (view === 'all');
 
     if (isAll) {
         db.query(`
         SELECT posts.id, title, content,
         CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
-        author_id, subtidders.name AS subtidder, pub_date FROM posts
+        author_id, views.name AS view, pub_date FROM posts
         LEFT OUTER JOIN users ON (posts.author_id = users.id)
-        INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
+        INNER JOIN views ON (posts.view_id = views.id)
         ORDER BY pub_date DESC
         LIMIT 10
         OFFSET 10 * $1;
@@ -85,27 +85,27 @@ t.get('/:subtidder', (req, res) => {
 
     else {
         db.query(`
-        SELECT COUNT(1) FROM subtidders WHERE name = $1;
-        `, [subtidder], (error, result) => {
+        SELECT COUNT(1) FROM views WHERE name = $1;
+        `, [view], (error, result) => {
             if (error) {
                 console.log(error);
                 return res.status(500).send({ error: 'Something went wrong.' });
             }
             else if (result.rows[0].count === '0') {
-                return res.status(404).send({ error: 'Subtidder not found.' });
+                return res.status(404).send({ error: 'View not found.' });
             }
             else {
                 db.query(`
                 SELECT posts.id, title, content,
                 CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
-                author_id, subtidders.name AS subtidder, pub_date FROM posts
+                author_id, views.name AS view, pub_date FROM posts
                 LEFT OUTER JOIN users ON (posts.author_id = users.id)
-                INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
-                WHERE subtidders.name = $1
+                INNER JOIN views ON (posts.view_id = views.id)
+                WHERE views.name = $1
                 ORDER BY pub_date DESC
                 LIMIT 10
                 OFFSET 10 * $2;
-                `, [subtidder, page], (error, result) => {
+                `, [view, page], (error, result) => {
                     if (error) {
                         console.log(error);
                         return res.status(500).send({ error: 'Something went wrong.' });
@@ -119,9 +119,9 @@ t.get('/:subtidder', (req, res) => {
 
                         db.query(`
                         SELECT COUNT(*) FROM posts
-                        INNER JOIN subtidders ON (posts.subtidder_id = subtidders.id)
-                        WHERE subtidders.name = $1;
-                        `, [subtidder], (error, result) => {
+                        INNER JOIN views ON (posts.view_id = views.id)
+                        WHERE views.name = $1;
+                        `, [view], (error, result) => {
                             if (error) {
                                 console.log(error);
                                 return res.status(500).send({ error: 'Something went wrong.' });
@@ -138,42 +138,42 @@ t.get('/:subtidder', (req, res) => {
     }
 })
 
-t.get('/all/countSubtidders', (req, res) => {
-    db.query(`SELECT COUNT(*) FROM subtidders`, (error, result) => {
+t.get('/all/countViews', (req, res) => {
+    db.query(`SELECT COUNT(*) FROM views`, (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            let numberOfSubtidders = result.rows[0].count;
-            return res.status(200).send({ numberOfSubtidders });
+            let numberOfViews = result.rows[0].count;
+            return res.status(200).send({ numberOfViews });
         }
     })
 })
 
-t.get('/:subtidder/info', (req, res) => {
-    let { subtidder } = req.params;
+t.get('/:view/info', (req, res) => {
+    let { view } = req.params;
 
     db.query(`
     SELECT name, description,
     CASE WHEN users.username IS NULL THEN '[deleted]' ELSE users.username END AS creator,
     creation_date
-    FROM subtidders LEFT OUTER JOIN users ON
-    (subtidders.creator_id = users.id)
+    FROM views LEFT OUTER JOIN users ON
+    (views.creator_id = users.id)
     WHERE name = $1
-    `, [subtidder], (error, result) => {
+    `, [view], (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
             if (result.rowCount) {
-                let subtidderData = result.rows[0];
-                subtidderData.creation_date = moment(subtidderData.creation_date, 'MMMM DD YYYY').fromNow();
-                return res.status(200).send({ subtidderData });
+                let viewData = result.rows[0];
+                viewData.creation_date = moment(viewData.creation_date, 'MMMM DD YYYY').fromNow();
+                return res.status(200).send({ viewData });
             }
             else {
-                return res.status(404).send({ error: 'Subtidder does not exist.' });
+                return res.status(404).send({ error: 'View does not exist.' });
             }
         }
     })
@@ -185,31 +185,31 @@ t.get('/:subtidder/info', (req, res) => {
  * Adding, editing, and deleting posts below.
  */
 
-t.post('/:subtidder/add', (req, res) => {
+t.post('/:view/add', (req, res) => {
     let { title, content, author_id } = req.body;
-    let { subtidder } = req.params;
+    let { view } = req.params;
 
     db.query(`
-    INSERT INTO posts (title, content, author_id, subtidder_id)
+    INSERT INTO posts (title, content, author_id, view_id)
     SELECT $1, $2, $3, s.id
-    FROM (SELECT id FROM subtidders WHERE name = $4) s;`,
-    [title, content, author_id, subtidder],
+    FROM (SELECT id FROM views WHERE name = $4) s;`,
+    [title, content, author_id, view],
     (error, result) => {
         if (error) {
             console.log(error);
             return res.status(500).send({ error: 'Something went wrong.' });
         }
         else {
-            return res.status(200).send({ message: 'Post added to ' + subtidder + '.' });
+            return res.status(200).send({ message: 'Post added to ' + view + '.' });
         }
     })
 })
 
-t.route('/:subtidder/:post_id')
+t.route('/:view/:post_id')
 
     .put((req, res) => {
         let { content } = req.body;
-        let { subtidder, post_id } = req.params;
+        let { view, post_id } = req.params;
 
         /**
          * We could very well just do:
@@ -222,10 +222,10 @@ t.route('/:subtidder/:post_id')
         WHERE id = $2
         AND id IN
             (SELECT posts.id
-            FROM posts INNER JOIN subtidders
-            ON posts.subtidder_id = subtidders.id
-            WHERE subtidders.name = $3)
-        `, [content, post_id, subtidder], (error, result) => {
+            FROM posts INNER JOIN views
+            ON posts.view_id = views.id
+            WHERE views.name = $3)
+        `, [content, post_id, view], (error, result) => {
             if (error) {
                 console.log(error);
                 return res.status(500).send({ error: 'Something went wrong.' });
@@ -242,17 +242,17 @@ t.route('/:subtidder/:post_id')
     })
 
     .delete((req, res) => {
-        let { subtidder, post_id } = req.params;
+        let { view, post_id } = req.params;
     
         db.query(`
         DELETE FROM posts
         WHERE id = $1
         AND id IN
             (SELECT posts.id AS id
-            FROM posts INNER JOIN subtidders
-            ON posts.subtidder_id = subtidders.id
-            WHERE subtidders.name = $2)
-        `, [post_id, subtidder], (error, result) => {
+            FROM posts INNER JOIN views
+            ON posts.view_id = views.id
+            WHERE views.name = $2)
+        `, [post_id, view], (error, result) => {
             if (error) {
                 console.log(error);
                 return res.status(500).send({ error: 'Something went wrong.' });

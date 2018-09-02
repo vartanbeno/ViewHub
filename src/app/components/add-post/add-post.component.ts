@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Post } from '../../models/post';
 import { PostService } from '../../services/post.service';
-import { SubtidderService } from '../../services/subtidder.service';
+import { ViewService } from '../../services/view.service';
 import { AuthService } from '../../services/auth.service';
-import { Subtidder } from '../../models/subtidder';
+import { View } from '../../models/view';
 declare var $: any;
 
 @Component({
@@ -13,20 +13,20 @@ declare var $: any;
 })
 export class AddPostComponent implements OnInit {
 
-  @Input() subtidder: string;
+  @Input() view: string;
 
   postData: Post;
-  subtidders: Array<Subtidder> = [];
+  views: Array<View> = [];
 
   constructor(
     private postService: PostService,
-    private subtidderService: SubtidderService,
+    private viewService: ViewService,
     private authService: AuthService
   ) { }
 
   ngOnInit() {
     this.makeNewPost();
-    this.getAllSubtidders();
+    this.getAllViews();
   }
 
   submitPost() {
@@ -40,11 +40,11 @@ export class AddPostComponent implements OnInit {
     )
   }
 
-  getAllSubtidders() {
-    this.subtidderService.getAllSubtidders().subscribe(
+  getAllViews() {
+    this.viewService.getAllViews().subscribe(
       res => {
-        this.subtidders = res.subtidders;
-        $('#select-subtidder').dropdown();
+        this.views = res.views;
+        $('#select-view').dropdown();
       },
       err => console.log(err)
     )
@@ -52,7 +52,7 @@ export class AddPostComponent implements OnInit {
 
   makeNewPost() {
     this.postData = new Post();
-    if (this.subtidder) this.postData.subtidder = this.subtidder;
+    if (this.view) this.postData.view = this.view;
   }
 
 }

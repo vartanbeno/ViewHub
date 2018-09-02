@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { Subtidder } from '../../models/subtidder';
+import { View } from '../../models/view';
 declare var $: any;
 
 @Component({
@@ -13,7 +13,7 @@ declare var $: any;
 export class HeaderComponent implements OnInit, AfterViewInit {
 
   user_id: number;
-  subscriptions: Array<Subtidder> = [];
+  subscriptions: Array<View> = [];
   @ViewChild('searchBox') searchBox: ElementRef;
   q: string;
 

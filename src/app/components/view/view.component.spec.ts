@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SubtidderComponent } from './subtidder.component';
+import { ViewComponent } from './view.component';
 import { AddPostComponent } from '../add-post/add-post.component';
 import { ListOfPostsComponent } from '../list-of-posts/list-of-posts.component';
 import { LoaderComponent } from '../loader/loader.component';
@@ -11,14 +11,14 @@ import { EditPostComponent } from '../edit-post/edit-post.component';
 import { DeletePostComponent } from '../delete-post/delete-post.component';
 import { HttpClientModule } from '@angular/common/http';
 
-describe('SubtidderComponent', () => {
-  let component: SubtidderComponent;
-  let fixture: ComponentFixture<SubtidderComponent>;
+describe('ViewComponent', () => {
+  let component: ViewComponent;
+  let fixture: ComponentFixture<ViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        SubtidderComponent,
+        ViewComponent,
         AddPostComponent,
         ListOfPostsComponent,
         LoaderComponent,
@@ -36,9 +36,9 @@ describe('SubtidderComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SubtidderComponent);
+    fixture = TestBed.createComponent(ViewComponent);
     component = fixture.componentInstance;
-    component.subtidder = 'nba';
+    component.view = 'nba';
     fixture.detectChanges();
   });
 

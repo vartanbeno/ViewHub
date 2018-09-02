@@ -10,7 +10,7 @@ import { AuthService } from './services/auth.service';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { PostService } from './services/post.service';
-import { SubtidderService } from './services/subtidder.service';
+import { ViewService } from './services/view.service';
 import { AuthGuard } from './auth.guard';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { ListOfUsersComponent } from './components/list-of-users/list-of-users.component';
@@ -23,9 +23,9 @@ import { FooterComponent } from './components/footer/footer.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { ListOfPostsComponent } from './components/list-of-posts/list-of-posts.component';
-import { SubtidderComponent } from './components/subtidder/subtidder.component';
+import { ViewComponent } from './components/view/view.component';
 import { LoaderComponent } from './components/loader/loader.component';
-import { CreateSubtidderComponent } from './components/create-subtidder/create-subtidder.component';
+import { CreateViewComponent } from './components/create-view/create-view.component';
 import { PostComponent } from './components/post/post.component';
 import { ListOfCommentsComponent } from './components/list-of-comments/list-of-comments.component';
 import { AddCommentComponent } from './components/add-comment/add-comment.component';
@@ -46,9 +46,9 @@ import { AddCommentComponent } from './components/add-comment/add-comment.compon
     UserProfileComponent,
     ErrorMessageComponent,
     ListOfPostsComponent,
-    SubtidderComponent,
+    ViewComponent,
     LoaderComponent,
-    CreateSubtidderComponent,
+    CreateViewComponent,
     PostComponent,
     ListOfCommentsComponent,
     AddCommentComponent,
@@ -59,7 +59,7 @@ import { AddCommentComponent } from './components/add-comment/add-comment.compon
     FormsModule,
     HttpClientModule,
   ],
-  providers: [AuthService, PostService, SubtidderService, AuthGuard,
+  providers: [AuthService, PostService, ViewService, AuthGuard,
   {
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,

@@ -8,11 +8,11 @@
 			<form #postForm="ngForm" autocomplete="off" (ngSubmit)="editPost()">
 
 				<div class="field">
-					<label>Subtidder</label>
-					<input [(ngModel)]="postEditData.subtidder"
+					<label>View</label>
+					<input [(ngModel)]="postEditData.view"
 							type="text"
-							name="subtidder"
-							id="subtidder"
+							name="view"
+							id="view"
 							pattern=".{3,20}"
 							disabled
 							required>

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "tidder": {
+    "ViewHub": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/tidder",
+            "outputPath": "dist/ViewHub",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -50,18 +50,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "tidder:build"
+            "browserTarget": "ViewHub:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "tidder:build:production"
+              "browserTarget": "ViewHub:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "tidder:build"
+            "browserTarget": "ViewHub:build"
           }
         },
         "test": {
@@ -95,7 +95,7 @@
         }
       }
     },
-    "tidder-e2e": {
+    "ViewHub-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -103,11 +103,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "tidder:serve"
+            "devServerTarget": "ViewHub:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "tidder:serve:production"
+              "devServerTarget": "ViewHub:serve:production"
             }
           }
         },
@@ -123,5 +123,5 @@
       }
     }
   },
-  "defaultProject": "tidder"
+  "defaultProject": "ViewHub"
 }

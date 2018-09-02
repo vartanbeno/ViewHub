@@ -7,7 +7,7 @@
             <span class="grey text">{{ post.pub_date }} by <a class="link to user profile" routerLink="/u/{{ post.author }}">{{ post.author }}</a></span>
         </div>
         <div class="column eight wide right aligned">
-            <a class="link to subtidder" routerLink="/t/{{ post.subtidder }}">{{ post.subtidder }}</a>
+            <a class="link to views" routerLink="/v/{{ post.view }}">{{ post.view }}</a>
         </div>
     </div>
     <div class="ui grid small text edit info" *ngIf="post.last_edited">

@@ -1,13 +1,13 @@
 <div class="main">
   <div class="column">
-    <h2>Create a Subtidder</h2>
+    <h2>Create a View</h2>
 
-    <form class="ui form" #subtidderForm="ngForm" (ngSubmit)="createSubtidder()" autocomplete="off">
+    <form class="ui form" #viewForm="ngForm" (ngSubmit)="createView()" autocomplete="off">
     
       <div class="field">
         <label>Name</label>
-        <input [(ngModel)]="subtidderData.name"
-                #subtidderNameInput
+        <input [(ngModel)]="viewData.name"
+                #viewNameInput
                 type="text"
                 name="name"
                 id="name"
@@ -16,13 +16,13 @@
                 (input)="nameInvalid = false"
                 required>
         <div class="ui red pointing label" *ngIf="nameInvalid">
-          Subtidder with this name already exists.
+          View with this name already exists.
         </div>
       </div>
     
       <div class="field">
         <label>Description</label>
-        <textarea [(ngModel)]="subtidderData.description"
+        <textarea [(ngModel)]="viewData.description"
                   name="description"
                   id="description"
                   placeholder="Description"
@@ -30,7 +30,7 @@
                   required></textarea>
       </div>
 
-      <button class="ui black button" type="submit" [disabled]="subtidderForm.form.invalid">Create</button>
+      <button class="ui black button" type="submit" [disabled]="viewForm.form.invalid">Create</button>
 
     </form>
 
