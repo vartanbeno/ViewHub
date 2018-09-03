@@ -70,8 +70,13 @@ fdescribe('ListOfCommentsComponent', () => {
     })
 
     it(`should show edit and delete options if it's the logged in user's comment`, () => {
-      expect(debugElements.length).toEqual(component.comments.length);
-      expect(debugElements[0].query(By.css('.actions'))).toBeTruthy();
+      let firstCommentActions = debugElements[0].query(By.css('.actions'));
+      let buttons = firstCommentActions.queryAll(By.css('a'));
+
+      expect(firstCommentActions).toBeTruthy();
+      expect(buttons[0].nativeElement.textContent).toEqual('Edit');
+      expect(buttons[1].nativeElement.textContent).toEqual('Delete');
+      
       expect(debugElements[1].query(By.css('.actions'))).toBeNull();
     })
 
@@ -80,7 +85,12 @@ fdescribe('ListOfCommentsComponent', () => {
 
       firstComment['editing'] = true;
       fixture.detectChanges();
-      expect(debugElements[0].query(By.css('form'))).toBeTruthy();
+
+      let editForm = debugElements[0].query(By.css('form'));
+      expect(editForm).toBeTruthy();
+      expect(editForm.query(By.css('textarea'))).toBeTruthy();
+      expect(editForm.query(By.css('button[type=submit]')).nativeElement.textContent).toEqual('Save');
+      expect(editForm.query(By.css('button[type=button]')).nativeElement.textContent).toEqual('Cancel');
     })
 
     afterEach(() => {

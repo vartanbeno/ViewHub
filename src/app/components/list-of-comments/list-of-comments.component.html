@@ -15,12 +15,8 @@
 						<div class="field">
 							<textarea [(ngModel)]="comment.editedBody" id="body{{comment.id}}" name="body" rows="3" placeholder="Edit your comment..." required></textarea>
 						</div>
-						<button type="submit" class="ui blue mini button"[disabled]="editForm.form.invalid">
-							Save
-						</button>
-						<button type="button" class="ui red mini button" (click)="unsetCommentToEdit(comment.id)">
-							Cancel
-						</button>
+						<button type="submit" class="ui blue mini button"[disabled]="editForm.form.invalid">Save</button>
+						<button type="button" class="ui red mini button" (click)="unsetCommentToEdit(comment.id)">Cancel</button>
 					</form>
 				</div>
 
