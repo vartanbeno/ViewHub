@@ -1,37 +1,39 @@
-<div class="ui comments" *ngIf="!noComments">
-	<div class="comment" *ngFor="let comment of comments">
-		<div class="content">
+<div *ngIf="commentsLoaded">
+	<div class="ui comments" *ngIf="comments?.length">
+		<div class="comment" *ngFor="let comment of comments">
+			<div class="content">
 
-			<a class="author link to user profile" routerLink="/u/{{ comment.author }}">{{ comment.author }}</a>
-			<div class="metadata">
-				<span class="date">{{ comment.pub_date }}<span *ngIf="comment.last_edited">* (last edited {{ comment.last_edited }})</span></span>
-			</div>
+				<a class="author link to user profile" routerLink="/u/{{ comment.author }}">{{ comment.author }}</a>
+				<div class="metadata">
+					<span class="date">{{ comment.pub_date }}<span *ngIf="comment.last_edited">* (last edited {{ comment.last_edited }})</span></span>
+				</div>
 
-			<div class="text preline" *ngIf="!comment.editing">{{ comment.body }}</div>
-			
-			<div class="text" *ngIf="comment.editing">
-				<form #editForm="ngForm" class="ui form" autocomplete="off" (ngSubmit)="editComment(comment.id)">
-					<div class="field">
-						<textarea [(ngModel)]="comment.editedBody" id="body{{comment.id}}" name="body" rows="3" placeholder="Edit your comment..." required></textarea>
-					</div>
-					<button type="submit" class="ui blue mini button"[disabled]="editForm.form.invalid">
-						Save
-					</button>
-					<button type="button" class="ui red mini button" (click)="unsetCommentToEdit(comment.id)">
-						Cancel
-					</button>
-				</form>
-			</div>
+				<div class="text preline" *ngIf="!comment.editing">{{ comment.body }}</div>
+				
+				<div class="text" *ngIf="comment.editing">
+					<form #editForm="ngForm" class="ui form" autocomplete="off" (ngSubmit)="editComment(comment.id)">
+						<div class="field">
+							<textarea [(ngModel)]="comment.editedBody" id="body{{comment.id}}" name="body" rows="3" placeholder="Edit your comment..." required></textarea>
+						</div>
+						<button type="submit" class="ui blue mini button"[disabled]="editForm.form.invalid">
+							Save
+						</button>
+						<button type="button" class="ui red mini button" (click)="unsetCommentToEdit(comment.id)">
+							Cancel
+						</button>
+					</form>
+				</div>
 
-			<div class="actions" *ngIf="authService.loggedIn() && comment.author_id === authService.getId()">
-				<a (click)="setCommentToEdit(comment.id)" *ngIf="!comment.editing">Edit</a>
-				<a (click)="deleteComment(comment.id)">Delete</a>
+				<div class="actions" *ngIf="authService.loggedIn() && comment.author_id === authService.getId()">
+					<a (click)="setCommentToEdit(comment.id)" *ngIf="!comment.editing">Edit</a>
+					<a (click)="deleteComment(comment.id)">Delete</a>
+				</div>
+				
 			</div>
-			
 		</div>
 	</div>
-</div>
 
-<div class="no comments" *ngIf="noComments">
-	<span class="grey text">There seems to be nothing here...</span>
+	<div class="no comments" *ngIf="!comments?.length">
+		<span class="grey text">There seems to be nothing here...</span>
+	</div>
 </div>
