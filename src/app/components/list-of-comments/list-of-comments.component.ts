@@ -10,9 +10,7 @@ import { Comment } from '../../models/comment';
 })
 export class ListOfCommentsComponent implements OnInit {
 
-  @Input() post_id: number;
-  comments: Array<Comment>;
-  commentsLoaded: boolean = false;
+  @Input() comments: Array<Comment>;
 
   constructor(
     private commentService: CommentService,
@@ -20,18 +18,6 @@ export class ListOfCommentsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getComments();
-    this.commentService.commentAdded_or_Edited_or_Deleted_Observable.subscribe(res => this.getComments());
-  }
-
-  getComments() {
-    this.commentService.getPostComments(this.post_id).subscribe(
-      res => {
-        this.comments = res.comments;
-        this.commentsLoaded = true;
-      },
-      err => console.log(err)
-    )
   }
 
   setCommentToEdit(comment_id: number) {

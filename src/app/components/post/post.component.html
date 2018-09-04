@@ -32,7 +32,7 @@
         <app-add-comment post_id="{{ post.id }}" *ngIf="authService.loggedIn()"></app-add-comment>
         <br/>
     </div>
-    <app-list-of-comments post_id="{{ post.id }}"></app-list-of-comments>
+    <app-list-of-comments [comments]="comments"></app-list-of-comments>
 
 </div>
 

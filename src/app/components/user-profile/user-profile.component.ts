@@ -46,7 +46,7 @@ export class UserProfileComponent implements OnInit {
 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 
-    this.route.queryParams.subscribe(params => this.currentPage = params.page);
+    this.route.queryParams.subscribe(params => this.currentPage = +params.page);
     if (this.currentPage && isNaN(this.currentPage) || this.currentPage < 1) {
       this.router.navigate([`/u/${this.username}`], { queryParams: { page: 1 } });
       return;
