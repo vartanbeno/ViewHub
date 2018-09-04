@@ -8,7 +8,7 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Comment } from '../../models/comment';
 
-fdescribe('ListOfCommentsComponent', () => {
+describe('ListOfCommentsComponent', () => {
   let component: ListOfCommentsComponent;
   let fixture: ComponentFixture<ListOfCommentsComponent>;
 
@@ -30,7 +30,6 @@ fdescribe('ListOfCommentsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ListOfCommentsComponent);
     component = fixture.componentInstance;
-    component.post_id = 1;
     fixture.detectChanges();
   });
 
@@ -40,7 +39,6 @@ fdescribe('ListOfCommentsComponent', () => {
 
   it(`should display 'There seems to be nothing here...' if there are no comments`, () => {
     component.comments = [];
-    component.commentsLoaded = true;
     fixture.detectChanges();
 
     debugElement = fixture.debugElement.query(By.css('.no.comments'));
@@ -49,7 +47,6 @@ fdescribe('ListOfCommentsComponent', () => {
 
   it('should display comments and not the empty message if the post has comments', () => {
     component.comments = [firstComment, secondComment];
-    component.commentsLoaded = true;
     fixture.detectChanges();
 
     debugElement = fixture.debugElement.query(By.css('.no.comments'));
@@ -64,7 +61,6 @@ fdescribe('ListOfCommentsComponent', () => {
     beforeEach(() => {
       login();
       component.comments = [firstComment, secondComment];
-      component.commentsLoaded = true;
       fixture.detectChanges();
       debugElements = fixture.debugElement.queryAll(By.css('.comment'));
     })
