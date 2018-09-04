@@ -44,7 +44,7 @@ export class ViewComponent implements OnInit {
 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 
-    this.route.queryParams.subscribe(params => this.currentPage = params.page);
+    this.route.queryParams.subscribe(params => this.currentPage = +params.page);
     if (this.currentPage && isNaN(this.currentPage) || this.currentPage < 1) {
       this.router.navigate([`/v/${this.view}`], { queryParams: { page: 1 } });
       return;
