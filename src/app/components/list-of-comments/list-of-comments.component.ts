@@ -12,7 +12,7 @@ export class ListOfCommentsComponent implements OnInit {
 
   @Input() post_id: number;
   comments: Array<Comment>;
-  noComments: boolean = false;
+  commentsLoaded: boolean = false;
 
   constructor(
     private commentService: CommentService,
@@ -28,7 +28,7 @@ export class ListOfCommentsComponent implements OnInit {
     this.commentService.getPostComments(this.post_id).subscribe(
       res => {
         this.comments = res.comments;
-        this.noComments = !Boolean(this.comments.length);
+        this.commentsLoaded = true;
       },
       err => console.log(err)
     )
@@ -47,6 +47,11 @@ export class ListOfCommentsComponent implements OnInit {
 
   editComment(comment_id: number) {
     let editedComment = this.comments.find(comment => comment.id === comment_id);
+    
+    if (editedComment.body === editedComment['editedBody']) {
+      this.unsetCommentToEdit(comment_id);
+      return;
+    }
 
     this.commentService.editComment(comment_id, editedComment['editedBody']).subscribe(
       res => {
