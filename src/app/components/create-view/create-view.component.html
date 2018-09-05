@@ -15,9 +15,7 @@
                 pattern=".{3,20}"
                 (input)="nameInvalid = false"
                 required>
-        <div class="ui red pointing label" *ngIf="nameInvalid">
-          View with this name already exists.
-        </div>
+        <div id="error-message" class="ui red pointing label" *ngIf="nameInvalid">View with this name already exists.</div>
       </div>
     
       <div class="field">
