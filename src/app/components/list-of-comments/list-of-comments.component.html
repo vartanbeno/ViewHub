@@ -2,6 +2,7 @@
 	<div class="comment" *ngFor="let comment of comments">
 		<div class="content">
 
+			<h3 class="link to post" *ngIf="isUserProfile"><a routerLink="/v/comments/{{ comment.post_id }}">{{ comment.post_title }}</a></h3>
 			<a class="author link to user profile" routerLink="/u/{{ comment.author }}">{{ comment.author }}</a>
 			<div class="metadata">
 				<span class="date">{{ comment.pub_date }}<span *ngIf="comment.last_edited">* (last edited {{ comment.last_edited }})</span></span>

@@ -5,7 +5,8 @@ import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user';
 import { Post } from '../../models/post';
 import { PostService } from '../../services/post.service';
-declare var $: any;
+import { CommentService } from '../../services/comment.service';
+import { Comment } from '../../models/comment';
 
 @Component({
   selector: 'app-user-profile',
@@ -24,9 +25,11 @@ export class UserProfileComponent implements OnInit {
   imageSource: string;
   defaultImageSource: string = 'assets/images/default.png';
 
-  pages: Array<number>;
+  pages: number[];
   currentPage: number;
-  posts: Array<Post>;
+  posts: Post[];
+
+  comments: Comment[];
 
   userDoesNotExist: boolean = false;
   isOwnProfile: boolean = false;
@@ -38,6 +41,7 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private userService: UserService,
     private postService: PostService,
+    private commentService: CommentService,
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
@@ -58,10 +62,8 @@ export class UserProfileComponent implements OnInit {
     this.user = new User();
     this.loggedInUserId = this.authService.getId();
     this.getUserInfo();
-    this.getLoggedInUsername();
-    this.getUserPosts();
     this.postService.postAdded_Or_Deleted_Observable.subscribe(res => this.getUserPosts());
-
+    this.commentService.commentAdded_or_Edited_or_Deleted_Observable.subscribe(res => this.getUserComments());
   }
 
   getUserInfo() {
@@ -76,6 +78,8 @@ export class UserProfileComponent implements OnInit {
         }
 
         this.imageSource = (this.user.image) ? 'data:image/png;base64,' + this.user.image : this.defaultImageSource;
+
+        this.getLoggedInUsername();
       },
       err => {
         console.log(err);
@@ -88,7 +92,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   updateProfilePicture() {
-    this.userService.updateProfilePicture(this.username, this.base64String).subscribe(
+    this.userService.updateProfilePicture(this.user.username, this.base64String).subscribe(
       res => void 0,
       err => console.log(err)
     )
@@ -116,7 +120,8 @@ export class UserProfileComponent implements OnInit {
     this.userService.getUsername(this.loggedInUserId).subscribe(
       res => {
         this.loggedInUsername = res.username;
-        this.isOwnProfile = (this.loggedInUsername.toLowerCase() === this.username.toLowerCase());
+        this.isOwnProfile = (this.loggedInUsername.toLowerCase() === this.user.username.toLowerCase());
+        this.getUserPosts();
       },
       err => console.log(err)
     )
@@ -131,14 +136,14 @@ export class UserProfileComponent implements OnInit {
     let confirmDelete = confirm('Are you sure you want to delete your profile picture?');
     if (!confirmDelete) return;
 
-    this.userService.deleteProfilePicture(this.username).subscribe(
+    this.userService.deleteProfilePicture(this.user.username).subscribe(
       res => this.imageSource = 'assets/images/default.png',
       err => console.log(err)
     )
   }
 
   getUserPosts() {
-    this.userService.getUserPosts(this.username, this.currentPage.toString()).subscribe(
+    this.userService.getUserPosts(this.user.username, this.currentPage.toString()).subscribe(
       res => {
         this.posts = res.posts;
 
@@ -148,10 +153,20 @@ export class UserProfileComponent implements OnInit {
         if (!this.posts.length && this.currentPage != 1) {
           let maxPage = this.pages[this.pages.length - 1];
           this.currentPage = (this.currentPage > maxPage) ? maxPage : 1;
-          this.router.navigate([`u/${this.username}`], { queryParams: { page: this.currentPage } });
+          this.router.navigate([`u/${this.user.username}`], { queryParams: { page: this.currentPage } });
           return;
         }
 
+        this.getUserComments();
+      },
+      err => console.log(err)
+    )
+  }
+
+  getUserComments() {
+    this.commentService.getUserComments(this.user.username).subscribe(
+      res => {
+        this.comments = res.comments;
         this.profileLoaded = true;
       },
       err => console.log(err)

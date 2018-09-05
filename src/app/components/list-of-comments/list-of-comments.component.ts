@@ -11,6 +11,7 @@ import { Comment } from '../../models/comment';
 export class ListOfCommentsComponent implements OnInit {
 
   @Input() comments: Array<Comment>;
+  @Input() isUserProfile?: boolean;
 
   constructor(
     private commentService: CommentService,

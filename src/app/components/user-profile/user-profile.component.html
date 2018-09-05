@@ -53,15 +53,18 @@
     <h1 class="ui dividing header">Posts</h1>
     <app-list-of-posts [posts]="posts" [pages]="pages" [currentPage]="currentPage"></app-list-of-posts>
     
-    <app-error-message *ngIf="!posts.length && isOwnProfile"
+    <app-error-message *ngIf="!posts?.length && isOwnProfile"
         header="You haven't posted anything yet."
         message="Submit a post!">
     </app-error-message>
 
-    <app-error-message *ngIf="!posts.length && !isOwnProfile"
+    <app-error-message *ngIf="!posts?.length && !isOwnProfile"
         header="{{ username }} hasn't posted anything yet."
         message="Any day now...">
     </app-error-message>
+
+    <h1 class="ui dividing header">Comments</h1>
+    <app-list-of-comments [isUserProfile]="true" [comments]="comments"></app-list-of-comments>
 </div>
 
 <app-loader *ngIf="!profileLoaded"></app-loader>
