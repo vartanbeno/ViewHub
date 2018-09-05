@@ -15,10 +15,10 @@ export class HomeComponent implements OnInit {
 
   @ViewChild('addPostButton') addPostButton: ElementRef;
 
-  pages: Array<number>;
+  pages: number[];
   currentPage: number;
 
-  posts: Array<Post>;
+  posts: Post[];
   user_id: number;
 
   homeLoaded: boolean = false;

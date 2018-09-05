@@ -22,10 +22,10 @@ export class ViewComponent implements OnInit {
   user_id: number;
   isSubscribed: boolean;
 
-  pages: Array<number>;
+  pages: number[];
   currentPage: number;
-
-  posts: Array<Post>;
+  posts: Post[];
+  
   isAll: boolean = false;
 
   viewLoaded: boolean = false;

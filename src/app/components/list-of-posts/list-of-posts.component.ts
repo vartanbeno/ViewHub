@@ -11,8 +11,8 @@ import { Post } from '../../models/post';
 })
 export class ListOfPostsComponent implements OnInit {
 
-  @Input() posts: Array<Post>;
-  @Input() pages: Array<number>;
+  @Input() posts: Post[];
+  @Input() pages: number[];
   @Input() currentPage: number;
 
   constructor(

@@ -10,7 +10,7 @@ import { Comment } from '../../models/comment';
 })
 export class ListOfCommentsComponent implements OnInit {
 
-  @Input() comments: Array<Comment>;
+  @Input() comments: Comment[];
   @Input() isUserProfile?: boolean;
 
   constructor(

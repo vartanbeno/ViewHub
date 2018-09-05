@@ -1,6 +1,6 @@
-<h1 class="ui dividing header" *ngIf="views.length">Views</h1>
+<h1 class="ui dividing header" *ngIf="views?.length">Views</h1>
 
-<div class="ui divided items" *ngIf="views.length">
+<div class="ui divided items" *ngIf="views?.length">
   <div class="item" *ngFor="let view of views">
     <div class="content">
       <div class="header"><a class="link to view" routerLink="/v/{{ view.name }}">{{ view.name }}</a></div>
@@ -12,9 +12,9 @@
   </div>
 </div>
 
-<h1 class="ui dividing header" *ngIf="posts.length">Posts</h1>
+<h1 class="ui dividing header" *ngIf="posts?.length">Posts</h1>
 
-<div class="ui divided items" *ngIf="posts.length">
+<div class="ui divided items" *ngIf="posts?.length">
   <div class="item" *ngFor="let post of posts">
     <div class="content">
       <div class="header"><a routerLink="/v/comments/{{ post.id }}">{{ post.title }}</a></div>
@@ -29,7 +29,7 @@
   </div>
 </div>
 
-<app-error-message *ngIf="isLoaded && !views.length && !posts.length"
+<app-error-message *ngIf="isLoaded && !views?.length && !posts?.length"
     header="Your search didn't return any results."
     message="Try searching for something else!">
 </app-error-message>

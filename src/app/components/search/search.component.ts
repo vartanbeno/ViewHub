@@ -13,8 +13,8 @@ import { Post } from '../../models/post';
 export class SearchComponent implements OnInit {
 
   searchQuery: string;
-  views: Array<View> = [];
-  posts: Array<Post> = [];
+  views: View[];
+  posts: Post[];
   isLoaded: boolean = false;
 
   constructor(

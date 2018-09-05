@@ -16,7 +16,7 @@ export class AddPostComponent implements OnInit {
   @Input() view: string;
 
   postData: Post;
-  views: Array<View> = [];
+  views: View[];
 
   constructor(
     private postService: PostService,
