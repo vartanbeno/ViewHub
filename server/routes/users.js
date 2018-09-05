@@ -157,6 +157,36 @@ users.get('/u/:username/posts', (req, res) => {
     })
 })
 
+users.get('/u/:username/comments', (req, res) => {
+    let { username } = req.params;
+
+    db.query(`
+    SELECT
+    comments.id, post_id, posts.title AS post_title,
+    comments.body AS body, comments.author_id AS author_id,
+    username AS author, views.name AS view, comments.pub_date, comments.last_edited
+    FROM comments
+    LEFT OUTER JOIN users ON (comments.author_id = users.id)
+    INNER JOIN posts ON (comments.post_id = posts.id)
+    INNER JOIN views ON (posts.view_id = views.id)
+    WHERE users.username = $1
+    ORDER BY comments.pub_date DESC
+    `, [username], (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+        else {
+            let comments = result.rows;
+            comments.forEach((comment) => {
+                comment.pub_date = moment(comment.pub_date, 'MMMM DD YYYY').fromNow();
+                comment.last_edited = (comment.last_edited) ? moment(comment.last_edited, 'MMMM DD YYYY').fromNow() : comment.last_edited;
+            })
+            return res.status(200).send({ comments });
+        }
+    })
+})
+
 users.put('/u/:user_id/bio', (req, res) => {
     let { user_id } = req.params;
     let { biography } = req.body;

@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 export class CommentService {
 
   private commentsUrl = 'http://localhost:3000/comments';
+  private userUrl = 'http://localhost:3000/users/u';
 
   commentAdded_or_Edited_or_Deleted_Observable = new Subject();
 
@@ -32,6 +33,10 @@ export class CommentService {
 
   notifyCommentAdditionOrEditionOrDeletion() {
     this.commentAdded_or_Edited_or_Deleted_Observable.next();
+  }
+
+  getUserComments(username: string) {
+    return this.http.get<Comment[]>(`${this.userUrl}/${username}/comments`);
   }
 
 }
