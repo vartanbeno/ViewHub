@@ -96,13 +96,13 @@ describe('ListOfCommentsComponent', () => {
   })
 });
 
-let firstComment = new Comment();
+let firstComment: Comment = new Comment();
 firstComment.author = 'test-author';
 firstComment.author_id = 1;
 firstComment.body = 'test-comment';
 firstComment.pub_date = new Date().toDateString();
 
-let secondComment = new Comment();
+let secondComment: Comment = new Comment();
 secondComment.author = 'test-author-2';
 secondComment.author_id = 2;
 secondComment.body = 'test-comment-2';
