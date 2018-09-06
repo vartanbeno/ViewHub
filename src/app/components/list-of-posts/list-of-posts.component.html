@@ -3,27 +3,29 @@
   <app-delete-post></app-delete-post>
 </div>
 
-<div class="ui fluid black card" *ngFor="let post of posts; let i = index">
-  <div class="content">
-    <div class="header">
-      <div class="ui grid">
-        <div class="column fourteen wide">
-          <a class="link to post" routerLink="/v/comments/{{ post.id }}">{{ post.title }}</a>
-        </div>
-        <div class="column two wide right aligned" *ngIf="authService.loggedIn() && post.author_id === authService.getId()">
-          <i class="black edit alternate outline icon" (click)="postService.setPostToEdit(post)"></i>
-          <i class="black trash alternate outline icon" (click)="postService.setPostToDelete(post)"></i>
+<div class="ui divided items" *ngIf="posts?.length">
+  <div class="item" *ngFor="let post of posts">
+    <div class="content">
+      <div class="header" style="width: 100%">
+        <div class="ui grid">
+          <div class="column fourteen wide">
+            <span class="link to post"><a routerLink="/v/comments/{{ post.id }}">{{ post.title }}</a></span>
+          </div>
+          <div class="column two wide right aligned" *ngIf="authService.loggedIn() && post.author_id === authService.getId()">
+            <i class="black edit alternate outline icon" (click)="postService.setPostToEdit(post)"></i>
+            <i class="black trash alternate outline icon" (click)="postService.setPostToDelete(post)"></i>
+          </div>
         </div>
       </div>
+      <div class="meta">
+        {{ post.pub_date }} by <a class="ui link to user profile" routerLink="/u/{{ post.author }}">{{ post.author }}</a>
+        <a class="ui right floated link to view" routerLink="/v/{{ post.view }}">{{ post.view }}</a>
+      </div>
+      <div class="description">
+        <p class="justify preline">{{ (post.content.length > 200) ? (post.content | slice:0:200) + '...' :
+          (post.content) }}</p>
+      </div>
     </div>
-    <div class="meta post information">
-      {{ post.pub_date }} by
-      <a class="ui link to user profile" routerLink="/u/{{ post.author }}">{{ post.author }}</a>
-      <a class="ui right floated link to view" routerLink="/v/{{ post.view }}">{{ post.view }}</a>
-    </div>
-  </div>
-  <div class="content">
-    <p class="justify preline">{{ (post.content.length > 200) ? (post.content | slice:0:200) + '...' : (post.content) }}</p>
   </div>
 </div>
 
