@@ -166,7 +166,7 @@ export class UserProfileComponent implements OnInit {
   getUserComments() {
     this.commentService.getUserComments(this.user.username).subscribe(
       res => {
-        this.comments = res.comments;
+        this.comments = res['comments'];
         this.profileLoaded = true;
       },
       err => console.log(err)
