@@ -28,7 +28,7 @@ export class ListOfUsersComponent implements OnInit {
   getAllUsers() {
     this.userService.getAllUsers().subscribe(
       res => {
-        this.users = res.users;
+        this.users = res['users'];
         this.users.forEach((user) => {
           user.image = (user.image) ? 'data:image/png;base64,' + user.image : this.defaultImageSource;
         })

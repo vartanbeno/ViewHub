@@ -72,7 +72,7 @@ export class ViewComponent implements OnInit {
   getViewInfo() {
     this.viewService.getViewInfo(this.view).subscribe(
       res => {
-        this.viewData = res.viewData;
+        this.viewData = res['viewData'];
 
         // url in browser should get correct case representation of view name
         if (this.view !== this.viewData.name) {
@@ -94,7 +94,7 @@ export class ViewComponent implements OnInit {
 
   checkIfSubscribed() {
     this.userService.checkIfSubscribed(this.user_id, this.viewData.name).subscribe(
-      res => this.isSubscribed = res.isSubscribed,
+      res => this.isSubscribed = res['isSubscribed'],
       err => console.log(err)
     )
   }
@@ -122,9 +122,9 @@ export class ViewComponent implements OnInit {
   getViewPosts() {
     this.postService.getPostsFromView(this.viewData.name, this.currentPage.toString()).subscribe(
       res => {
-        this.posts = res.posts;
+        this.posts = res['posts'];
 
-        let numberOfPages = Math.ceil((res.numberOfPosts) / 10);
+        let numberOfPages = Math.ceil((res['numberOfPosts']) / 10);
         this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
 
         if (!this.posts.length && this.currentPage != 1) {
