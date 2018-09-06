@@ -17,19 +17,19 @@ export class ViewService {
   constructor(private http: HttpClient) { }
 
   getAllViews() {
-    return this.http.get<any>(this.allViewsUrl);
+    return this.http.get<View[]>(this.allViewsUrl);
   }
 
   searchViews(q: string) {
-    return this.http.get<any>(this.searchViewsUrl, { params: { q } });
+    return this.http.get<View[]>(this.searchViewsUrl, { params: { q } });
   }
 
   createView(view: View) {
-    return this.http.post<any>(this.createViewUrl, view);
+    return this.http.post<View>(this.createViewUrl, view);
   }
 
   getViewInfo(viewName: string) {
-    return this.http.get<any>(`${this.allViewsUrl}/${viewName}/info`);
+    return this.http.get(`${this.allViewsUrl}/${viewName}/info`);
   }
 
   notifyViewInfo() {

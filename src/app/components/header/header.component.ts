@@ -13,7 +13,7 @@ declare var $: any;
 export class HeaderComponent implements OnInit, AfterViewInit {
 
   user_id: number;
-  subscriptions: Array<View> = [];
+  subscriptions: View[];
   @ViewChild('searchBox') searchBox: ElementRef;
   q: string;
 

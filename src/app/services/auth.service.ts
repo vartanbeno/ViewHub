@@ -18,11 +18,11 @@ export class AuthService {
   ) { }
 
   registerUser(user: User): Observable<any> {
-    return this.http.post<any>(this.registerUrl, user);
+    return this.http.post<User>(this.registerUrl, user);
   }
 
   loginUser(user: User): Observable<any> {
-    return this.http.post<any>(this.loginUrl, user);
+    return this.http.post<User>(this.loginUrl, user);
   }
 
   loggedIn(): boolean {

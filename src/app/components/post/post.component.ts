@@ -15,7 +15,7 @@ export class PostComponent implements OnInit {
 
   post_id: number;
   post: Post;
-  comments: Array<Comment>;
+  comments: Comment[];
 
   postLoaded: boolean = false;
 
