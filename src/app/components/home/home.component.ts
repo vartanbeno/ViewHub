@@ -51,9 +51,9 @@ export class HomeComponent implements OnInit {
   getPostsFromSubscriptions() {
     this.userService.getPostsFromSubscriptions(this.user_id, this.currentPage.toString()).subscribe(
       res => {
-        this.posts = res.posts;
+        this.posts = res['posts'];
 
-        let numberOfPages = Math.ceil((res.numberOfPosts) / 10);
+        let numberOfPages = Math.ceil((res['numberOfPosts']) / 10);
         this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
 
         if (!this.posts.length && this.currentPage != 1) {

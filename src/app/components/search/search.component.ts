@@ -34,7 +34,7 @@ export class SearchComponent implements OnInit {
 
   searchViews() {
     this.viewService.searchViews(this.searchQuery).subscribe(
-      res => this.views = res.views,
+      res => this.views = res['views'],
       err => console.log(err)
     )
   }
@@ -42,7 +42,7 @@ export class SearchComponent implements OnInit {
   searchPosts() {
     this.postService.searchPosts(this.searchQuery).subscribe(
       res => {
-        this.posts = res.posts;
+        this.posts = res['posts'];
         this.isLoaded = true;
       },
       err => console.log(err)

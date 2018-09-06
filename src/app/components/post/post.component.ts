@@ -37,7 +37,7 @@ export class PostComponent implements OnInit {
   getPost() {
     this.postService.getPost(this.post_id).subscribe(
       res => {
-        this.post = res.post;
+        this.post = res['post'];
         this.getComments();
       },
       err => {
@@ -49,7 +49,7 @@ export class PostComponent implements OnInit {
   getComments() {
     this.commentService.getPostComments(this.post_id).subscribe(
       res => {
-        this.comments = res.comments;
+        this.comments = res['comments'];
         this.postLoaded = true;
       },
       err => console.log(err)

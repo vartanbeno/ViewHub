@@ -69,7 +69,7 @@ export class UserProfileComponent implements OnInit {
   getUserInfo() {
     this.userService.getUser(this.username).subscribe(
       res => {
-        this.user = res.user;
+        this.user = res['user'];
 
         // url in browser should at least get correct case representation of username
         if (this.username !== this.user.username) {
@@ -119,7 +119,7 @@ export class UserProfileComponent implements OnInit {
   getLoggedInUsername() {
     this.userService.getUsername(this.loggedInUserId).subscribe(
       res => {
-        this.loggedInUsername = res.username;
+        this.loggedInUsername = res['username'];
         this.isOwnProfile = (this.loggedInUsername.toLowerCase() === this.user.username.toLowerCase());
         this.getUserPosts();
       },
@@ -145,9 +145,9 @@ export class UserProfileComponent implements OnInit {
   getUserPosts() {
     this.userService.getUserPosts(this.user.username, this.currentPage.toString()).subscribe(
       res => {
-        this.posts = res.posts;
+        this.posts = res['posts'];
 
-        let numberOfPages = Math.ceil((res.numberOfPosts) / 10);
+        let numberOfPages = Math.ceil((res['numberOfPosts']) / 10);
         this.pages = Array.from(Array(numberOfPages)).map((x, i) => i + 1);
 
         if (!this.posts.length && this.currentPage != 1) {

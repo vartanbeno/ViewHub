@@ -43,7 +43,7 @@ export class AddPostComponent implements OnInit {
   getAllViews() {
     this.viewService.getAllViews().subscribe(
       res => {
-        this.views = res.views;
+        this.views = res['views'];
         $('#select-view').dropdown();
       },
       err => console.log(err)
