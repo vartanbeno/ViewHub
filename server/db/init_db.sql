@@ -47,7 +47,8 @@ CREATE TABLE IF NOT EXISTS post_votes(
     user_id INTEGER REFERENCES users(id)
         ON DELETE CASCADE,
     vote INTEGER NOT NULL
-        CHECK(vote = 1 OR vote = -1),
+        CHECK(vote in (1, -1)),
+    vote_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(post_id, user_id)
 );
 
