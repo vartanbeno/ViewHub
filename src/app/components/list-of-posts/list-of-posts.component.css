@@ -2,11 +2,3 @@ div.pagination > a.item.active {
     cursor: default;
     pointer-events: none;
 }
-
-.ui.grid > * {
-    padding-bottom: 0;
-}
-
-.post.information {
-    padding-bottom: 1rem;
-}

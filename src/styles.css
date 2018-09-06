@@ -47,7 +47,3 @@ html, body {
 .grey.text {
     color: rgba(0, 0, 0, 0.4)
 }
-
-.edit.icon, .trash.icon {
-    cursor: pointer;
-}
