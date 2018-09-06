@@ -41,6 +41,16 @@ CREATE TABLE IF NOT EXISTS posts(
     tokens TSVECTOR
 );
 
+CREATE TABLE IF NOT EXISTS post_votes(
+    post_id INTEGER REFERENCES posts(id)
+        ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users(id)
+        ON DELETE CASCADE,
+    vote INTEGER NOT NULL
+        CHECK(vote = 1 OR vote = -1),
+    PRIMARY KEY(post_id, user_id)
+);
+
 CREATE TABLE IF NOT EXISTS subscriptions(
     user_id INTEGER REFERENCES users(id)
         ON DELETE CASCADE,
