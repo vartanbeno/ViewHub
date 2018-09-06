@@ -24,8 +24,10 @@
         <a class="ui right floated link to view" routerLink="/v/{{ post.view }}">{{ post.view }}</a>
       </div>
       <div class="description">
-        <p class="justify preline">{{ (post.content.length > 200) ? (post.content | slice:0:200) + '...' :
-          (post.content) }}</p>
+        <p class="justify preline">{{ (post.content.length > 200) ? (post.content | slice:0:200) + '...' : (post.content) }}</p>
+        <i [className]="post.upvoted ? 'arrow alternate circle up large blue icon' : 'arrow alternate circle up large outline grey icon'" (click)="upvote(post.id)" id="up-post{{ post.id }}"></i>
+        645&nbsp;
+        <i [className]="post.downvoted ? 'arrow alternate circle down large red icon' : 'arrow alternate circle down large outline grey icon'" (click)="downvote(post.id)" id="down-post{{ post.id }}"></i>
       </div>
     </div>
   </div>

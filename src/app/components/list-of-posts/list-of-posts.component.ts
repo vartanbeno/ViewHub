@@ -15,7 +15,7 @@ export class ListOfPostsComponent implements OnInit {
   @Input() pages: number[];
   @Input() currentPage: number;
 
-  pagesCorrected: any[] = [];
+  pagesCorrected: any[];
 
   constructor(
     private postService: PostService,
@@ -24,6 +24,7 @@ export class ListOfPostsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.pagesCorrected = [];
     if (this.pages.length >= 1 && this.currentPage <= this.pages.length) {
       this.pagesCorrected.push(1);
       let i = Math.max(2, this.currentPage - 2);
@@ -45,6 +46,30 @@ export class ListOfPostsComponent implements OnInit {
   navigateToPage(page: string) {
     if (page === '...') return;
     this.router.navigate([this.router.url.split('?')[0]], { queryParams: { page } });
+  }
+
+  upvote(post_id: number) {
+    let post = this.posts.find(post => post.id === post_id);
+
+    if (post['upvoted']) {
+      post['upvoted'] = false;
+      return;
+    }
+
+    post['upvoted'] = true;
+    post['downvoted'] = false;
+  }
+
+  downvote(post_id: number) {
+    let post = this.posts.find(post => post.id === post_id);
+
+    if (post['downvoted']) {
+      post['downvoted'] = false;
+      return;
+    }
+
+    post['downvoted'] = true;
+    post['upvoted'] = false;
   }
 
 }

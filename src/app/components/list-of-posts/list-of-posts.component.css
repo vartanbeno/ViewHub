@@ -2,3 +2,7 @@ div.pagination > a.item.active {
     cursor: default;
     pointer-events: none;
 }
+
+.arrow.icon {
+    cursor: pointer;
+}
