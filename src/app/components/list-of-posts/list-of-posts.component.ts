@@ -37,6 +37,7 @@ export class ListOfPostsComponent implements OnInit {
         this.pagesCorrected.push('...');
       }
       this.pagesCorrected.push(this.pages.length);
+      if (this.pagesCorrected[0] === this.pagesCorrected[this.pagesCorrected.length - 1]) this.pagesCorrected = [this.pagesCorrected[0]];
       this.pages = this.pagesCorrected;
     }
   }
