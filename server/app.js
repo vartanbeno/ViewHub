@@ -19,6 +19,7 @@ app.use('/search', require('./routes/search'));
 app.use('/posts', require('./routes/posts'));
 app.use('/comments', require('./routes/comments'));
 app.use('/subscriptions', require('./routes/subscriptions'));
+app.use('/votes', require('./routes/votes'));
 
 db.query(sql, (err, res) => {
     if (err) {
