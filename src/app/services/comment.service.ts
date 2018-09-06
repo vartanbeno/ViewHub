@@ -16,19 +16,19 @@ export class CommentService {
   constructor(private http: HttpClient) { }
 
   getPostComments(post_id: number) {
-    return this.http.get<any>(`${this.commentsUrl}/${post_id}`);
+    return this.http.get<Comment[]>(`${this.commentsUrl}/${post_id}`);
   }
 
   addComment(comment: Comment) {
-    return this.http.post<any>(this.commentsUrl, comment);
+    return this.http.post<Comment>(this.commentsUrl, comment);
   }
 
   editComment(comment_id: number, body: string) {
-    return this.http.put<any>(`${this.commentsUrl}/${comment_id}`, { body: body });
+    return this.http.put(`${this.commentsUrl}/${comment_id}`, { body: body });
   }
 
   deleteComment(comment_id: number) {
-    return this.http.delete<any>(`${this.commentsUrl}/${comment_id}`);
+    return this.http.delete(`${this.commentsUrl}/${comment_id}`);
   }
 
   notifyCommentAdditionOrEditionOrDeletion() {

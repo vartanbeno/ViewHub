@@ -25,7 +25,7 @@ export class PostService {
   constructor(private http: HttpClient) { }
 
   submitPost(post: Post) {
-    return this.http.post<any>(`${this.viewUrl}/${post.view}/add`, post);
+    return this.http.post<Post>(`${this.viewUrl}/${post.view}/add`, post);
   }
 
   notifyPostAdditionOrDeletion() {
@@ -33,7 +33,7 @@ export class PostService {
   }
 
   deletePost() {
-    return this.http.delete<any>(`${this.viewUrl}/${this.postToBeDeleted.view}/${this.postToBeDeleted.id}`);
+    return this.http.delete(`${this.viewUrl}/${this.postToBeDeleted.view}/${this.postToBeDeleted.id}`);
   }
 
   setPostToDelete(post: Post) {
@@ -46,7 +46,7 @@ export class PostService {
   }
 
   editPost(post: Post) {
-    return this.http.put<any>(`${this.viewUrl}/${this.postToBeEdited.view}/${this.postToBeEdited.id}`, post);
+    return this.http.put<Post>(`${this.viewUrl}/${this.postToBeEdited.view}/${this.postToBeEdited.id}`, post);
   }
 
   notifyPostEdition() {
@@ -65,15 +65,15 @@ export class PostService {
   }
 
   searchPosts(q: string) {
-    return this.http.get<any>(this.searchPostsUrl, { params: { q } });
+    return this.http.get<Post[]>(this.searchPostsUrl, { params: { q } });
   }
 
   getPostsFromView(view: string, page: string) {
-    return this.http.get<any>(`${this.viewUrl}/${view}`, { params: { page } });
+    return this.http.get<Post[]>(`${this.viewUrl}/${view}`, { params: { page } });
   }
 
   getPost(post_id: number) {
-    return this.http.get<any>(`${this.getPostUrl}/${post_id}`);
+    return this.http.get<Post>(`${this.getPostUrl}/${post_id}`);
   }
 
 }
