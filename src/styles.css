@@ -31,8 +31,12 @@ html, body {
     color: black;
 }
 
+.link.to.post:hover,
+.link.to.post:active,
 .link.to.user.profile:hover,
-.link.to.user.profile:active {
+.link.to.user.profile:active,
+.link.to.view:hover,
+.link.to.view:active {
     text-decoration: underline;
 }
 
