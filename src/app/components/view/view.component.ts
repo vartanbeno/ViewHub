@@ -130,7 +130,7 @@ export class ViewComponent implements OnInit {
         if (!this.posts.length && this.currentPage != 1) {
           let maxPage = this.pages[this.pages.length - 1];
           this.currentPage = (this.currentPage > maxPage) ? maxPage : 1;
-          this.router.navigate([`t/${this.viewData.name}`], { queryParams: { page: this.currentPage } });
+          this.router.navigate([`/v/${this.viewData.name}`], { queryParams: { page: this.currentPage } });
           return;
         }
 
