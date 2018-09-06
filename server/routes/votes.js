@@ -2,6 +2,25 @@ const express = require('express'),
     db = require('../db'),
     votes = express.Router();
 
+// get all posts upvoted/downvoted by a user
+votes.get('/:user_id', (req, res) => {
+    let { user_id } = req.params;
+
+    db.query(`
+    SELECT post_id, vote
+    FROM post_votes WHERE user_id = $1;
+    `, [user_id], (error, result) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ error: 'Something went wrong.' });
+        }
+        else {
+            let votes = result.rows;
+            return res.status(200).send({ votes });
+        }
+    })
+})
+
 // upvote or downvote
 votes.post('/:post_id/:user_id/:vote', (req, res) => {
     let { post_id, user_id, vote } = req.params;
