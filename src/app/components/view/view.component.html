@@ -1,36 +1,36 @@
-<div class="view header" *ngIf="!viewDoesNotExist && viewLoaded">
-    <div class="header">
-        <h2>
-            <span class="grey text">/v/</span>{{ viewData.name }}
+<div class="header" *ngIf="!viewDoesNotExist && viewLoaded">
+    <div class="view header">
+        <h2 class="ui dividing header">
+            <div class="content">
+                <span class="grey text">/v/</span>{{ viewData.name }}
+                <div class="sub header">
+                    <div *ngIf="!isAll">
+                        <span class="preline">{{ viewData.description }}</span>
+                        <span class="grey text">
+                            - created {{ viewData.creation_date }} by
+                            <a class="link to user profile" routerLink="/u/{{ viewData.creator }}">{{ viewData.creator }}</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </h2>
 
-        &nbsp;
-
-        <span *ngIf="authService.loggedIn() && !isAll">
-            <button class="ui circular icon mini button"
+        <div class="buttons" *ngIf="authService.loggedIn() && !isAll">
+            <button class="ui left floated labeled icon button"
                     [class.green]="!isSubscribed"
                     [class.red]="isSubscribed"
                     (click)="isSubscribed ? unsubscribe() : subscribe()">
-                <i class="icon" [class.plus]="!isSubscribed" [class.minus]="isSubscribed"></i>
+                <i class="icon" [class.plus]="!isSubscribed" [class.minus]="isSubscribed"></i>{{ isSubscribed ? 'Unsubscribe' : 'Subscribe' }}
             </button>
 
             <button class="ui positive right floated right labeled icon button"
                     #addPostToViewButton>
                 Add Post<i class="plus icon"></i>
             </button>
-        </span>
+        </div>
     </div>
 
-    <app-add-post *ngIf="!isAll" [view]="view"></app-add-post>
-
-    <h5 *ngIf="!isAll">
-        <span class="preline">{{ viewData.description }}</span>
-        <span class="grey text">
-            - created {{ viewData.creation_date }} by
-            <a class="link to user profile" routerLink="/u/{{ viewData.creator }}">{{ viewData.creator }}</a>
-        </span>
-    </h5>
-
+    <app-add-post *ngIf="!isAll && authService.loggedIn()" [view]="viewData.name"></app-add-post>
     <app-list-of-posts [posts]="posts" [pages]="pages" [currentPage]="currentPage"></app-list-of-posts>
 </div>
 

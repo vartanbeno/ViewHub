@@ -5,3 +5,11 @@
 div.header > h2 {
     display: inline-block;
 }
+
+.ui.dividing.header {
+    width: 100%;
+}
+
+div.buttons {
+    padding-bottom: 2em;
+}
