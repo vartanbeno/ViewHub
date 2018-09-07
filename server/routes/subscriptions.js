@@ -11,6 +11,7 @@ subscriptions.get('/:user_id/posts', (req, res) => {
 
     db.query(`
     SELECT posts.id, title, content,
+    (SELECT CASE WHEN SUM(vote) IS NULL THEN 0 ELSE SUM(vote) END AS score FROM post_votes WHERE post_id = posts.id),
     CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
     author_id, views.name AS view, pub_date
     FROM posts

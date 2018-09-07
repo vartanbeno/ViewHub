@@ -89,12 +89,21 @@ export class ListOfPostsComponent implements OnInit {
 
     if (!this.upvotedPosts.includes(post_id)) {
       this.voteService.upvotePost(post_id, this.authService.getId()).subscribe(
-        res => this.voteService.notifyVotes(),
+        res => {
+          if (this.downvotedPosts.includes(post_id)) {
+            this.adjustPostScore(post_id, 2);
+          }
+          else {
+            this.adjustPostScore(post_id, 1);
+          }
+          this.voteService.notifyVotes();
+        },
         err => console.log(err)
       )
     }
     else {
       this.removeVote(post_id);
+      this.adjustPostScore(post_id, -1);
     }
   }
 
@@ -106,12 +115,21 @@ export class ListOfPostsComponent implements OnInit {
 
     if (!this.downvotedPosts.includes(post_id)) {
       this.voteService.downvotePost(post_id, this.authService.getId()).subscribe(
-        res => this.voteService.notifyVotes(),
+        res => {
+          if (this.upvotedPosts.includes(post_id)) {
+            this.adjustPostScore(post_id, -2);
+          }
+          else {
+            this.adjustPostScore(post_id, -1);
+          }
+          this.voteService.notifyVotes();
+        },
         err => console.log(err)
       )
     }
     else {
       this.removeVote(post_id);
+      this.adjustPostScore(post_id, 1);
     }
   }
 
@@ -120,6 +138,15 @@ export class ListOfPostsComponent implements OnInit {
       res => this.voteService.notifyVotes(),
       err => console.log(err)
     )
+  }
+
+  /**
+   * @param post_id id of post
+   * @param adjustment positive or negative number which will adjust the score by that amount
+   */
+  adjustPostScore(post_id: number, adjustment: number) {
+    let postScore = +this.posts.find(post => post.id === post_id)['score'];
+    this.posts.find(post => post.id === post_id)['score'] = postScore + adjustment;
   }
 
 }
