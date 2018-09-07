@@ -4,6 +4,7 @@ import { UserService } from '../../services/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Post } from '../../models/post';
 import { PostService } from '../../services/post.service';
+import { VoteService } from '../../services/vote.service';
 declare var $: any;
 
 @Component({
@@ -27,6 +28,7 @@ export class HomeComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private postService: PostService,
+    private voteService: VoteService,
     private renderer: Renderer,
     private router: Router,
     private route: ActivatedRoute
@@ -45,7 +47,10 @@ export class HomeComponent implements OnInit {
     this.user_id = this.authService.getId();
 
     if (this.authService.loggedIn()) this.getPostsFromSubscriptions();
-    this.postService.postAdded_Or_Deleted_Observable.subscribe(res => this.getPostsFromSubscriptions());
+    this.postService.postAdded_Or_Deleted_Observable.subscribe(res => {
+      this.getPostsFromSubscriptions();
+      this.voteService.notifyVotes();
+    });
   }
 
   getPostsFromSubscriptions() {

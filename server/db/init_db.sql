@@ -112,6 +112,16 @@ END
 $$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION upvote_own_post() RETURNS TRIGGER AS
+$$
+BEGIN
+    INSERT INTO post_votes (post_id, user_id, vote)
+    VALUES (NEW.id, NEW.author_id, 1);
+    RETURN NEW;
+END
+$$
+LANGUAGE plpgsql;
+
 CREATE TRIGGER hash_password
 BEFORE INSERT ON users
     FOR EACH ROW EXECUTE PROCEDURE hash_password();
@@ -137,6 +147,10 @@ BEFORE UPDATE ON posts
 CREATE TRIGGER set_comment_edited_date
 BEFORE UPDATE ON comments
     FOR EACH ROW EXECUTE PROCEDURE set_edited_date();
+
+CREATE TRIGGER upvote_own_post
+AFTER INSERT ON posts
+    FOR EACH ROW EXECUTE PROCEDURE upvote_own_post();
 
 INSERT INTO users (first_name, last_name, email, username, password) VALUES
     ('Vartan', 'Benohanian', 'vartabeno@gmail.com', 'vartanbeno', '1234'),

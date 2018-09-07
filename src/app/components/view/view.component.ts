@@ -6,6 +6,7 @@ import { ViewService } from '../../services/view.service';
 import { UserService } from '../../services/user.service';
 import { View } from '../../models/view';
 import { Post } from '../../models/post';
+import { VoteService } from '../../services/vote.service';
 declare var $: any;
 
 @Component({
@@ -35,6 +36,7 @@ export class ViewComponent implements OnInit {
     private postService: PostService,
     private viewService: ViewService,
     private userService: UserService,
+    private voteService: VoteService,
     private authService: AuthService,
     private renderer: Renderer,
     private router: Router,
@@ -66,7 +68,10 @@ export class ViewComponent implements OnInit {
       this.getViewInfo();
     }
 
-    this.postService.postAdded_Or_Deleted_Observable.subscribe(res => this.getViewPosts());
+    this.postService.postAdded_Or_Deleted_Observable.subscribe(res => {
+      this.getViewPosts();
+      this.voteService.notifyVotes();
+    });
   }
 
   getViewInfo() {
