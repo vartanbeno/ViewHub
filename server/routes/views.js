@@ -51,6 +51,7 @@ t.get('/:view', (req, res) => {
         db.query(`
         SELECT posts.id, title, content,
         CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
+        (SELECT CASE WHEN SUM(vote) IS NULL THEN 0 ELSE SUM(vote) END AS score FROM post_votes WHERE post_id = posts.id),
         author_id, views.name AS view, pub_date FROM posts
         LEFT OUTER JOIN users ON (posts.author_id = users.id)
         INNER JOIN views ON (posts.view_id = views.id)
@@ -97,6 +98,7 @@ t.get('/:view', (req, res) => {
             else {
                 db.query(`
                 SELECT posts.id, title, content,
+                (SELECT CASE WHEN SUM(vote::bigint) IS NULL THEN 0 ELSE SUM(vote::bigint) END AS score FROM post_votes WHERE post_id = posts.id),
                 CASE WHEN username IS NULL THEN '[deleted]' ELSE username END AS author,
                 author_id, views.name AS view, pub_date FROM posts
                 LEFT OUTER JOIN users ON (posts.author_id = users.id)

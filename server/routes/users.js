@@ -117,7 +117,9 @@ users.get('/u/:username/posts', (req, res) => {
 
     let { username } = req.params;
     db.query(`
-    SELECT posts.id, title, content, author_id, username AS author, views.name AS view, pub_date
+    SELECT posts.id, title, content,
+    (SELECT CASE WHEN SUM(vote) IS NULL THEN 0 ELSE SUM(vote) END AS score FROM post_votes WHERE post_id = posts.id),
+    author_id, username AS author, views.name AS view, pub_date
     FROM posts
     LEFT OUTER JOIN users ON (posts.author_id = users.id)
     INNER JOIN views ON (posts.view_id = views.id)

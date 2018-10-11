@@ -1,13 +1,13 @@
 <div class="ui main text container" *ngIf="postLoaded">
 
-    <h2 class="ui dividing header justify">{{ post.title }}</h2>
+    <h2 class="ui dividing header">{{ post.title }}</h2>
     <p class="justify preline">{{ post.content }}</p>
     <div class="ui grid small text post info">
         <div class="column eight wide left aligned">
             <span class="grey text">{{ post.pub_date }} by <a class="link to user profile" routerLink="/u/{{ post.author }}">{{ post.author }}</a></span>
         </div>
         <div class="column eight wide right aligned">
-            <a class="link to views" routerLink="/v/{{ post.view }}">{{ post.view }}</a>
+            <a class="link to view" routerLink="/v/{{ post.view }}">{{ post.view }}</a>
         </div>
     </div>
     <div class="ui grid small text edit info" *ngIf="post.last_edited">

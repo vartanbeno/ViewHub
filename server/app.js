@@ -3,7 +3,7 @@ const express = require('express'),
     cors = require('cors'),
     db = require('./db'),
     fs = require('fs'),
-    PORT = 3000,
+    port = process.env.PORT || 3000,
     app = express();
 
 const sql = fs.readFileSync('./db/init_db.sql').toString();
@@ -19,6 +19,7 @@ app.use('/search', require('./routes/search'));
 app.use('/posts', require('./routes/posts'));
 app.use('/comments', require('./routes/comments'));
 app.use('/subscriptions', require('./routes/subscriptions'));
+app.use('/votes', require('./routes/votes'));
 
 db.query(sql, (err, res) => {
     if (err) {
@@ -29,6 +30,4 @@ db.query(sql, (err, res) => {
     }
 })
 
-app.listen(PORT, () => {
-    console.log('Server running on localhost:' + PORT);
-})
+app.listen(port)
