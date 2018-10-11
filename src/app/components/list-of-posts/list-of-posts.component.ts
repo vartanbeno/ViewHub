@@ -18,8 +18,8 @@ export class ListOfPostsComponent implements OnInit {
 
   pagesCorrected: any[];
 
-  upvotedPosts: number[];
-  downvotedPosts: number[];
+  upvotedPosts: Set<number>;
+  downvotedPosts: Set<number>;
 
   constructor(
     private postService: PostService,
@@ -69,14 +69,14 @@ export class ListOfPostsComponent implements OnInit {
 
   getUpvotedPosts() {
     this.voteService.getUpvotedPosts(this.authService.getId()).subscribe(
-      res => this.upvotedPosts = res['posts'],
+      res => this.upvotedPosts = new Set(res['posts']),
       err => console.log(err)
     )
   }
 
   getDownvotedPosts() {
     this.voteService.getDownvotedPosts(this.authService.getId()).subscribe(
-      res => this.downvotedPosts = res['posts'],
+      res => this.downvotedPosts = new Set(res['posts']),
       err => console.log(err)
     )
   }
@@ -87,21 +87,22 @@ export class ListOfPostsComponent implements OnInit {
       return;
     }
 
-    if (!this.upvotedPosts.includes(post_id)) {
+    if (!this.upvotedPosts.has(post_id)) {
       this.voteService.upvotePost(post_id, this.authService.getId()).subscribe(
         res => {
-          if (this.downvotedPosts.includes(post_id)) {
+          this.upvotedPosts.add(post_id);
+          if (this.downvotedPosts.delete(post_id)) {
             this.adjustPostScore(post_id, 2);
           }
           else {
             this.adjustPostScore(post_id, 1);
           }
-          this.voteService.notifyVotes();
         },
         err => console.log(err)
       )
     }
     else {
+      this.upvotedPosts.delete(post_id);
       this.removeVote(post_id);
       this.adjustPostScore(post_id, -1);
     }
@@ -113,21 +114,22 @@ export class ListOfPostsComponent implements OnInit {
       return;
     }
 
-    if (!this.downvotedPosts.includes(post_id)) {
+    if (!this.downvotedPosts.has(post_id)) {
       this.voteService.downvotePost(post_id, this.authService.getId()).subscribe(
         res => {
-          if (this.upvotedPosts.includes(post_id)) {
+          this.downvotedPosts.add(post_id);
+          if (this.upvotedPosts.delete(post_id)) {
             this.adjustPostScore(post_id, -2);
           }
           else {
             this.adjustPostScore(post_id, -1);
           }
-          this.voteService.notifyVotes();
         },
         err => console.log(err)
       )
     }
     else {
+      this.downvotedPosts.delete(post_id);
       this.removeVote(post_id);
       this.adjustPostScore(post_id, 1);
     }
@@ -135,7 +137,7 @@ export class ListOfPostsComponent implements OnInit {
 
   removeVote(post_id: number) {
     this.voteService.removeVote(post_id, this.authService.getId()).subscribe(
-      res => this.voteService.notifyVotes(),
+      res => { },
       err => console.log(err)
     )
   }

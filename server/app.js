@@ -3,7 +3,7 @@ const express = require('express'),
     cors = require('cors'),
     db = require('./db'),
     fs = require('fs'),
-    PORT = 3000,
+    port = process.env.PORT || 3000,
     app = express();
 
 const sql = fs.readFileSync('./db/init_db.sql').toString();
@@ -30,6 +30,4 @@ db.query(sql, (err, res) => {
     }
 })
 
-app.listen(PORT, () => {
-    console.log('Server running on localhost:' + PORT);
-})
+app.listen(port)

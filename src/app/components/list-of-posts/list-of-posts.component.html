@@ -25,9 +25,9 @@
       </div>
       <div class="description">
         <p class="justify preline">{{ (post.content.length > 200) ? (post.content | slice:0:200) + '...' : (post.content) }}</p>
-        <i [className]="upvotedPosts?.includes(post.id) ? 'arrow alternate circle up large blue icon' : 'arrow alternate circle up large outline grey icon'" (click)="upvote(post.id)" id="up-post{{ post.id }}"></i>
+        <i [className]="upvotedPosts?.has(post.id) ? 'arrow alternate circle up large blue icon' : 'arrow alternate circle up large outline grey icon'" (click)="upvote(post.id)" id="up-post{{ post.id }}"></i>
         {{ post.score }}&nbsp;
-        <i [className]="downvotedPosts?.includes(post.id) ? 'arrow alternate circle down large red icon' : 'arrow alternate circle down large outline grey icon'" (click)="downvote(post.id)" id="down-post{{ post.id }}"></i>
+        <i [className]="downvotedPosts?.has(post.id) ? 'arrow alternate circle down large red icon' : 'arrow alternate circle down large outline grey icon'" (click)="downvote(post.id)" id="down-post{{ post.id }}"></i>
       </div>
     </div>
   </div>
