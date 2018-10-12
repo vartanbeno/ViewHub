@@ -3,10 +3,11 @@ const express = require('express'),
     cors = require('cors'),
     db = require('./db'),
     fs = require('fs'),
+    path = require('path'),
     port = process.env.PORT || 3000,
     app = express();
 
-const sql = fs.readFileSync('./db/init_db.sql').toString();
+const sql = fs.readFileSync(path.resolve(__dirname, './db/init_db.sql')).toString();
 
 app.use(cors());
 app.use(bodyParser.json());

@@ -1,5 +1,7 @@
 # ViewHub
 
+To run the application, run `npm run serve` on the command line. Make sure to have `nodemon` installed on your machine!
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
 
 ## Development server
