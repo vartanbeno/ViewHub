@@ -10,10 +10,10 @@ export class AppComponent {
   constructor() { }
 
   killModals() {
-    let modals = Array.from(document.querySelectorAll('#addpost'));
+    const modals = Array.from(document.querySelectorAll('#addpost'));
     modals.forEach((modal) => {
       modal.id = (modal.className.includes('hidden')) ? '' : modal.id;
-    })
+    });
   }
 
 }
