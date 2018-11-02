@@ -29,8 +29,8 @@ export class HomeComponent implements OnInit {
     private userService: UserService,
     private postService: PostService,
     private voteService: VoteService,
-    private renderer: Renderer,
-    private router: Router,
+    private renderer:Renderer,
+    private router: Router ,
     private route: ActivatedRoute
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
 
         if (!this.posts.length && this.currentPage != 1) {
           let maxPage = this.pages[this.pages.length - 1];
-          this.currentPage = (this.currentPage > maxPage) ? maxPage : 1;
+          this.currentPage = (this.currentPage > maxPage) ? maxPage : 1; 
           this.router.navigate([''], { queryParams: { page: this.currentPage } });
           return;
         }
